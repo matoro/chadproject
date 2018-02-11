@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>sigproject_game</title>
+<meta name="generator" content="Etherpad">
+<meta name="author" content="Etherpad">
+<meta name="changedby" content="Etherpad">
+<meta charset="utf-8">
+<style>
+* {
+  font-family: arial, sans-serif;
+  font-size: 13px;
+  line-height: 17px;
+}
+ul.indent {
+  list-style-type: none;
+}
+ol {
+  list-style-type: none;
+  padding-left: 0;
+}
+body > ol {
+  counter-reset: first second third fourth fifth sixth seventh eigth ninth tenth eleventh twelth thirteenth fourteenth fifteenth sixteenth;
+}
+ol > li:before {
+  content: counter(first) ". ";
+  counter-increment: first;
+}
+ol > ol > li:before {
+  content: counter(first) "." counter(second) ". ";
+  counter-increment: second;
+}
+ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) ". ";
+  counter-increment: third;
+}
+ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) ". ";
+  counter-increment: fourth;
+}
+ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) ". ";
+  counter-increment: fifth;
+}
+ol > ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) ". ";
+  counter-increment: sixth;
+}
+ol > ol > ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) ". ";
+  counter-increment: seventh;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) ". ";
+  counter-increment: eigth;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) ". ";
+  counter-increment: ninth;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) ". ";
+  counter-increment: tenth;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) ". ";
+  counter-increment: eleventh;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) "." counter(twelth) ". ";
+  counter-increment: twelth;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) "." counter(twelth) "." counter(thirteenth) ". ";
+  counter-increment: thirteenth;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) "." counter(twelth) "." counter(thirteenth) "." counter(fourteenth) ". ";
+  counter-increment: fourteenth;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) "." counter(twelth) "." counter(thirteenth) "." counter(fourteenth) "." counter(fifteenth) ". ";
+  counter-increment: fifteenth;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
+  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) "." counter(twelth) "." counter(thirteenth) "." counter(fourteenth) "." counter(fifteenth) "." counter(sixthteenth) ". ";
+  counter-increment: sixthteenth;
+}
+ol {
+  text-indent: 0px;
+}
+ol > ol {
+  text-indent: 10px;
+}
+ol > ol > ol {
+  text-indent: 20px;
+}
+ol > ol > ol > ol {
+  text-indent: 30px;
+}
+ol > ol > ol > ol > ol {
+  text-indent: 40px;
+}
+ol > ol > ol > ol > ol > ol {
+  text-indent: 50px;
+}
+ol > ol > ol > ol > ol > ol > ol {
+  text-indent: 60px;
+}
+ol > ol > ol > ol > ol > ol > ol > ol {
+  text-indent: 70px;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol {
+  text-indent: 80px;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
+  text-indent: 90px;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
+  text-indent: 100px;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
+  text-indent: 110px;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
+  text-indent: 120px;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
+  text-indent: 130px;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
+  text-indent: 140px;
+}
+ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
+  text-indent: 150px;
+}
+h1{font-size: 2.0em;line-height: 120%;}   h2{font-size: 1.5em;line-height: 120%;}   h3{font-size: 1.17em;line-height: 120%;}   h4{line-height: 120%;}   h5{font-size: 0.83em;line-height: 120%;}   h6{font-size: 0.75em;line-height: 120%;}   code{font-family: monospace;}[data-color="black"], .color\:black  { color:black; }
+[data-color="red"], .color\:red    { color:red; }
+[data-color="green"], .color\:green  { color:green; }
+[data-color="blue"], .color\:blue   { color:blue; }
+[data-color="yellow"], .color\:yellow { color:yellow; }
+[data-color="orange"], .color\:orange { color:orange; }
+</style>
+</head>
+<body>
+ <h1>2D SHOOTER GAME - SLOWMO</h1><br><br><br> <h2>END USER OBJECTIVE</h2>  <center style="">END USER OBJECTIVE</center>Primary Objective:<br><ul class="indent"><li>Survival mode -&gt; Kill all enemies</li><li>Level&#x2F;career mode -&gt; Reaching a certain point in the map.</li><li><br></li></ul>Secondary Objective:<br><ul class="indent"><li>High score:</li><ul class="bullet"><li>Survival mode -&gt; Time record.</li><li>Career mode -&gt; Kill enemies and complete level faster.</li></ul><li>Collect health potions&#x2F;powerups&#x2F;score items</li><li><br></li></ul> <h2>COMPONENTS</h2>  <center style="">COMPONENTS</center>Visible Components:<br><ul class="indent"><li>Player character</li><li>Enemies</li><li>Weapons</li><li>Bullets</li><li>Timer&#x2F;Score</li><li>Level map</li><li>Health bar&#x2F;Ammo</li><li>Health potions</li></ul><br>Invisible Components:<br><ul class="indent"><li>Loading levels</li><li>Enemy AI</li><li>Bullet&#x27;s trajectory</li><li>Key listener -&gt; triggers events.</li><li>Object movement - including rotation both user and NPC.</li><li>Collision Logic.</li><li>Screen boundaries and Map design.</li><li>Time&#x2F;Clock&nbsp;</li><li><br></li><li><br></li><li><br></li><li>LAYERING COMPONENTS</li><li><br></li><li>Always in play:</li><li><br></li><li>Screen</li><li>KeyListener</li><li><br></li><li>Usually in play:</li><li><br></li><li>Time&#x2F;Clock</li><li>Player&#x2F;NPCs</li><li>Player&#x27;s Health&#x2F;Ammo bar</li><li>All collision logic.</li><li>All AI .&nbsp;&nbsp;</li><li>Level map (!surv mode)</li><li>Object movement</li><li>Model controller?</li><li><br></li><li>Sometimes in play:</li><li><br></li><li>Bullets</li><li>Health potions</li><li>Bullet&#x27;s trajectory</li><li>Load level.</li><li><br></li><li><br></li><li>STRUCTURE DATA</li><li><br></li><li><br></li><li>struct coordinates{</li><ul class="indent"><li>int x;</li><li>int y;</li></ul><li>}</li><li><br></li><li>struct player{</li><ul class="indent"><li>int direction; &#x2F;&#x2F;some number between 0 and 360(or whatever number of degrees we choose), determines the direction that the player is facing. potential issues: direction becomes set to a number outside of range.</li><li>int health; &#x2F;&#x2F;the current health the player has. Decreases when shot, increases on picking up a health pot. When health = 0, player is dead, game over.</li><li>int ammo; &#x2F;&#x2F;the remaining number of bullets a player has. When the player shoots, ammo decreases by 1. Player can no longer shoot when ammo = 0.</li><li>struct coordinates position; &#x2F;&#x2F; players x &amp; y coordinates. &#x2F;&#x2F; potential issues: location outside of screen.</li></ul><li>};</li><li><br></li><li>enum state {DEFAULT, ATTACK, LOOK};</li><li><br></li><li>struct enemy{</li><ul class="indent"><li>int direction;&nbsp;</li><li>int health;</li><li>boolean can_see_player;</li><li>enum state;</li><li>struct coordinates position;</li><li><br></li></ul><li>};</li><li><br></li><li><br></li><li>FUNCTIONS</li><li><br></li><li>COLLISION LOGIC:</li><li><br></li><li><br></li><li>What should it do? what should it receive? what should it respond?</li><li><br></li><li>First we should lay out what happens when various objects collide:</li><li>When a player or NPC collides with a wall, they stop moving.</li><li>When a bullet collides with a player or NPC the bullet is deleted and the player or NPC&#x27;s health decreases by 1.</li><li>When a bullet collides with a wall, the bullet is deleted.</li><li>Absolutely.</li><li><br></li><li>Now, in order to achieve that, this function should regulate what? I think that it should enable the possibility for NPC&#x2F;players to make a move, so you could think of this function as one that gives you an answer like; is this new move possible? Yeah, I&#x27;d need to think for a bit about how to actually implement that though.</li><li><br></li><li>Is this function all-encompasing or does it focus on a number of&nbsp; arguments given? Like would you give this function just an array of all enemies, all players, all bullets (with their directions and positions) and make it output some kind of result.</li><li>Or are you going to pass it an object and a move&nbsp; like, NPC_01, (future_position) -&gt; possible or not.</li><li><br></li><li>?I&#x27;m not sure, the second option you listed makes more sense to me. Yea I agree although this solution would require to make some kind of &quot;Movement&quot; component. We need to keep them in order, not just randomly throw them at collision_logic() whenever we might think the game requires. Like the AI should rule a set of future movements for the NPCs and the player may also need or want to make a move so we need to interact all this. Dont you think? Are you suggesting a hierarchy of object movement? Yea, kind of.</li><li><br></li><li>How do the bullets mingle in all this?</li><li>I&#x27;m still not 100% sure of what you were suggesting, were you saying that the collision detection should preemptively rule out certain movements for players and npcs? Yes, either by giving a negative or giving instructions to whatever to not update the entity&#x27;s position to the &#x27;new one&#x27;</li><li>Then it actually seems like the bullets should have their own collision detection function. Because while when the collision for players, NPCs, and walls simply results in the player or npc not being able to go past a certain coordinate, the bullets actually cause a change when they collide with something.</li><li><br></li><li>Whats the difference between having the npc&#x2F;player movement disabled (that is, the possibility of changing x-y to that new x-y) and just treating bullets recursively untill they do get a negative? we know that bullets will hit something sooner or later, we can be sure of that. so its a matter of using the same logic but at smaller paces. We can treat a bullet&#x27;s negative as a sign or trigger to something else depending on what they hit. Although I don&#x27;t know if we can do this inside this very same function.</li><li>What we could do is have the function return NULL until the object collides with something, then return the object it collided with. That sounds good but we would need to make some kind of standalone function that tells you which object is at (x,y) be it either a npc, player or wall.&nbsp;</li><li>If we dont make these then I think we are mixing the two concepts I said earlier of an all emcompasing collision logic and a object focus function (obj, move) because we end up needing the entire current state of all elements... Idk if this makes sense That does make sense. I was kind of moving away from the object focused function idea i guess. I guess it would be a matter of a compromise between the two, we probably end up doing a mix, be it either in separate functions or in one.&nbsp;</li><li><br></li><li>Lets talk this one out as well tomorrow. Yeah.</li><li><br></li><li><br></li><li>TIMING&#x2F;CLOCK</li><li><br></li><li>Lets just lay out some foundations for this one and I&#x27;ll call it a day.</li><li><br></li><li>I haven&#x27;t looked into the c time library yet, but we should probably start with a simple overall clock that just counts seconds, then manipulate the increments depending on what is happening in the game.</li><li><br></li><li>I didn&#x27;t work that much with the time lib as well so we would need to look up the possibilities it give us. Apart from the simple task of measuring the seconds passed in regards to a posibly score or whatever we should focus on what the clock is going to do in regards to the slow mo.</li><li><br></li><li>I personally don&#x27;t think this should be very hard to implement. We should just make game function and move completely normal and let the clock change the multipliers of those.</li><li><br></li><li>It wouldn&#x27;t be hard to make the clock increments change, we could make it so that the clock counts seconds as (1s&#x2F;1000ms) normally, but (1s&#x2F;10000ms) during slow mo. Yea I was thinking right now how we should implement this..</li><li>Like, its pretty obvious that the clock should be the chief in the sense that it should execute orders such as update screen and all those underneath it &#x2F;that goes with it like movement functions or whatever.&nbsp;</li><li>So if the player hits the W key for 1 seconds -&gt; 100 updates should be made to the game.</li><li>But if the player hits the A key for 1 secods (rotation, normal mode) -&gt;1000 updates should be made to the game.</li><li><br></li><li>After all, hitting a KEY like W for X seconds just means an update of x&#x2F;y ++, but we should treat these like discrete events in order to process them. Am I making sense?</li><li>&nbsp;Yes, but wouldn&#x27;t the number of updates be the opposite of what you said up there? (1000 for W, 100 for A)</li><li>I don&#x27;t think so, maybe I&#x27;m wrong or you&#x27;re still thinking on ms instead of events. if a &#x27;move right event&#x27; is x++. 100 updates on that event moves the player 100px right, but 1000 updates move it way further (&quot;faster&quot;).</li><li><br></li><li>All this is for the same amount of KEY-PRESSING time.</li></ul><br><ul class="indent"><li>I was just reading it wrong. You&#x27;re right.</li><li><br></li><li>How is the clock goint to actually function or what functions are actually going to depend on the clock (only the screen and whatever is dependent of it ???)&nbsp; I think goes far beyond our scope in this initial draft.</li><li><br></li><li>With that being said Imma call an end for today.</li><li>Alright, talk to you tommorow. See you then.</li><li><br></li><li>Etherpad should keep this thing safe but anyways feel free to save it.&nbsp;</li><li><br></li><li>DISCUSSION</li><li><br></li><li>It comes to mind that these entities should be modeled like objects with getters, setters and so forth for us to implement on other parts of the code when necessary, as well as having other functions like boolean hasAmmo(), boolean isAlive() and all that...?</li><li>I think that the goal was to make this without using objects.</li><li>&nbsp;But what good are the player and enemys struct&#x27;s then? how do you see them being played by the rest of components?</li><li>I don&#x27;t know.Hmm lets see what do we get in response tomorrow. I mean I know I will tend to OOP this thing but I dont know how can we model these things and keep track of them by a range of components without it.</li><li>Like for example lets suppose the AI component receives order from the load_map to take control on an array of X enemies. How are we going to pass these things around if we don&#x27;t see them as inmutable instances of, say , the class NPC?</li><li><br></li><li>Plus I think matoro said that structs are the most similar concept to that of classes so I don&#x27;t think he&#x27;ll see wrondoing by our part.</li><li>Okay, we should ask him for clarification.</li><li>Do you want to stop here? Or do we model some more? Some of the things we got in components are pure functions. Do you wanna talk about those?</li><li>I&#x27;m good to keep going, but I know it must be getting pretty late for you. Would you like to call it a day?</li><li>Don&#x27;t worry I&#x27;ll stick around for half an hour or so. What can we think of next? Do you want to lay out the principles of our collision logic and bullets trajectory thingy? Sure.</li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li>-&gt; NPCs should trigger themselves a call to something once they are dead, shouldnt they? Like a Controller() that keeps things tidy? Hmm. I don&#x27;t know. I think this one goes for matoro. I dont know whats the norm in games; either having a godlike function that checks the status of every entity X times a second or whatever or the inverse. Having the entities trigger calls to a controller when they reach new states. Like...&nbsp; im dead remove me! I would think it would be the triggering calls to a controller option, especially for a simple game like this. Matoro did say that he wanted us to try things even if they didn&#x27;t end up being the best way to do it. I think that objects should rule and trigger the correspondent function... the other way around seems like a pain in the ass... only if we integrate it within the CLOCK&#x2F;TIME thingy that regulates flow movement but even then... it looks shitty. Yeah.</li><li><br></li></ul><br><ul class="indent"><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li>Where do include the &quot;factory of NPCs&quot; and their removal? as well as the players endgame? I&#x27;m not sure what you mean by &quot;factory of NPCS&quot;.</li><li>What would be the component responsible for spawning NPCs &amp; player on the right spot as well as deleting them from the map as necessary?</li><li>We could have a load_level() function that sets the player&#x27;s location and spawns enemies. I don&#x27;t think the player should ever be deleted while the game is still going, just moved. But you could also have an end_level() function that deletes NPCs. Yea I like the load_level idea, I think this alone can handle the removal of old entities and place them around as necessary. With respect to their removal, I think this could be implemented as a boolean state that regulates visibility and functionality (an invisible object shouldnt intercept bullets). Just a big 1 for it lives and 0 for dead.Sure. OK!</li><li><br></li></ul><br><br><br><br><br><br><br><ul class="indent"><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li>Lets talk a little about Enemy AI. Movement for these should be the same as for the players. Right?</li><li>Yes. We can use a general movement function for both. Totally.</li><li><br></li><li>If we do a survival mode I think the AI would become easier because its just a matter of telling the NPC to follow the player or to move towards the current players position and shoot in the meanwhile. Would the enemies just try to get as close to the player as possible, or would they maintain some distance sometimes? I think the norm would be to keep them at a distance but I don&#x27;t think that would be very hard to do.</li><li>Maybe if an enemy gets too close to the player(lets say 5ft ingame) then it stops moving towards him. Yea, we can map a radius around the players position that marks the no-go zone. The lazy man job would be to just make it a &#x27;if the npc touchs you you ded&#x27;.</li><li>Also, would the AI have friendly fire(if one enemy shoots another by accident would it die)? I think it would be epic to just watch the enemies kill themselves while you move and shoot like a ninja around them so its a big yes by me... I agree</li><li>If we treat bullets as bullets, no matter what they come from (npc or users) then i think it would be easier to implement. Just have some kind of update function that takes away health from the entity being hit. Okay</li><li><br></li><li>I think thats it for the survival mode. Lets see what we come across on the map mode.</li><li>Also, I think we should keep these discussions in the file, so we can reference them later. Yea I agree, my &#x27;cleaning&#x27; that I was refering before was just to keep those lines parsed correctly but these talks I&#x27;m saving...Good</li><li><br></li><li><br></li><li><br></li><li>What about our map mode?</li><li><br></li><li>Should the NPC just stand in their corners and shoot when available(they see the player)? Enemies definitely shouldn&#x27;t act until they see the player. They should move toward the player as they shoot though. Ok, so as long as they are seeing the player they move towards him and shoot; if the player hides from them then what? Do they remember? Do they go to their default spot? It makes more sense for them to remember, we could have multiple states like: default, attack, and looking. If they haven&#x27;t seen the player at all they are in the default state, if they see the player now they are in the attack state, and if they have seen the player once but can&#x27;t see him anymore they are in the &#x27;looking&#x27; state. Whats the NPC behaviour during the looking state? Does him just stay put for a while until he returns to his default mode and default position? Does him advance towards the players last known position? Depends, I don&#x27;t know if we should try to create a &quot;memory&quot; for the enemies, do you think that is getting too complicated? Yea you read me good. I mean idk maybe its not as complicated... I mean I get that the superb thing would be to make them as intelligent as possible but a &#x27;looking state&#x27; that just keep them on the spot, maybe rotating from one direction to the other and then returnting to OG spot is sufficient enough for me.Sounds good.</li><li><br></li><li>Anything else on Enemy AI?</li><li>Other things will probably come up at some point, but I&#x27;d rather focus on getting the outline done for now. Lets move on then</li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li></ul><br><br><br><br><br><br><br><br><br><br><br><br><ul class="indent"><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li>My idea&nbsp; relating to the superhot &#x27;style&#x27; is having a clock ruling the pace of events and the normal flow of the game whille the user is giving us INPUT (let say he&#x27;s moving somewhere) but slow-mo when the user isn&#x27;t doing anything. I don&#x27;t know what is your take on this? we need to emulate their thingy.</li><li>Sounds good but I have 1 question. What is the speed while the player is turning(not moving forward or backward)? regular or slow? hmm.. I didn&#x27;t really though it... idk if this would give the user a tremendous help or not... I mean if we give him slowmo during rotation then its just a matter of standing still and doing A and E&#x27;s and hitting space. I think we shouldn&#x27;t give the player slowmo during rotation. Ok, lets just agree that we should have two kinds of movements. Linear movement and rotational movement. Only one of them triggers slowmo. Okay</li><li><br></li><li>Now that I think of it. How can we keep track of the users pointing direction? Keeping good track of this vector would give us all the info we need. int direction =0- 360? we could do something like that and then turn the character based on the degree. Hmm interesting</li><li>Imagine our user is a square on the map. this square has x and y and then its direction should rule in which direction the bullets will come out of him? Thats what I was thinking, and we could rotate the sprite based on direction. Yea totally, for simplicity lets think of it as a triangule for now, with one point doing the aiming. How would you approach this in relationship with the graphics area? Do we need vector maths?</li><li><br></li><li><br></li><li>It comes to my mind doing the following although Idk if it would work... We create some kind of formula&#x2F;function that rule the movement&#x2F;trajectory of the bullet based on the degree of its launch Thats pretty much what I was imagining. This shouldnt have problem with the bullet being shoot from diferrent possitions because given a pair (x0,y0) then the trajectory would already be traced.</li><li><br></li><li><br></li><li><br></li><li>The game will exit if:</li><li>the player clicks the X button.</li><li>we&#x27;ve got an error.</li><li>player hits exit key (Q)</li><li>player wins all maps.</li><li>player loose in map or survival mode -&gt; game over -&gt; player doesn&#x27;t want to play again?&nbsp; No -&gt; exit</li><li><br></li><li><br></li><li><br></li><li>pressed_space</li><li><br></li><li>pressed_W</li><li><br></li><li>pressed_S</li><li><br></li><li>pressed_A</li><li><br></li><li>pressed_D</li><li><br></li><li>pressed_Q</li><li><br></li><li>pressed_Enter</li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li></ul>
+<div style="display:none"><a href="/javascript" data-jslicense="1">JavaScript license information</a></div>
+</body>
+</html>
