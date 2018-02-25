@@ -20,7 +20,7 @@ struct player{
 
 struct texture{
 	int red = 255;
-	inr green = 255;
+	int green = 255;
 	int blue = 255;
 	//DEFAULTS TO WHITE?
 };
@@ -47,7 +47,7 @@ int main(){
 	//functions then??
 
 	//VARs
-	SDL_Plotter plotter(HEIGHT,WIDTH);
+	SDL_Plotter plotter(HEIGHT,WIDTH); //can I use constants defined in the SCREEN.h file???
 	struct player jugador1;
 
 	player.position.x = WIDTH/2;
