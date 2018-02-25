@@ -1,149 +1,736 @@
+
 <!doctype html>
-<html lang="en">
-<head>
-<title>sigproject_game</title>
-<meta name="generator" content="Etherpad">
-<meta name="author" content="Etherpad">
-<meta name="changedby" content="Etherpad">
-<meta charset="utf-8">
+
+<html>
+
+
+        <title>etherpad.net Pad</title>
+        <script>
+          /*
+          |@licstart  The following is the entire license notice for the
+          JavaScript code in this page.|
+
+          Copyright 2011 Peter Martischka, Primary Technology.
+
+          Licensed under the Apache License, Version 2.0 (the "License");
+          you may not use this file except in compliance with the License.
+          You may obtain a copy of the License at
+
+             http://www.apache.org/licenses/LICENSE-2.0
+
+          Unless required by applicable law or agreed to in writing, software
+          distributed under the License is distributed on an "AS IS" BASIS,
+          WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+          See the License for the specific language governing permissions and
+          limitations under the License.
+
+          |@licend  The above is the entire license notice
+          for the JavaScript code in this page.|
+          */
+        </script>
+
+        <meta charset="utf-8">
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="referrer" content="no-referrer">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+        <link rel="shortcut icon" href="../favicon.ico">
+
+        
+        <link href="../static/css/pad.css" rel="stylesheet">
+
+        
+        <link href="../static/custom/pad.css" rel="stylesheet">
+        
+
+        <style title="dynamicsyntax"></style>
+        <link href="../static/plugins/ep_page_view/static/css/page_view.css" rel="stylesheet"><link href='../static/plugins/ep_copy_paste_images/static/css/ace.css' rel='stylesheet'>
+
+        <link rel="localizations" type="application/l10n+json" href="../locales.json" />
+        <script type="text/javascript" src="../static/js/html10n.js"></script>
+        <script type="text/javascript" src="../static/js/l10n.js"></script>
+
+        <!-- head and body had been removed intentionally -->
+
+        
+        <div id="editbar" class="toolbar" title="Toolbar (Alt F9)">
+            <div id="overlay">
+                <div id="overlay-inner"></div>
+            </div>
+
+            <ul class="menu_left" role="toolbar">
+                
+                <li data-type="button" data-key="bold"><a class="grouped-left" data-l10n-id="pad.toolbar.bold.title"><button class=" buttonicon buttonicon-bold" data-l10n-id="pad.toolbar.bold.title"></button></a></li>
+<li data-type="button" data-key="italic"><a class="grouped-middle" data-l10n-id="pad.toolbar.italic.title"><button class=" buttonicon buttonicon-italic" data-l10n-id="pad.toolbar.italic.title"></button></a></li>
+<li data-type="button" data-key="underline"><a class="grouped-middle" data-l10n-id="pad.toolbar.underline.title"><button class=" buttonicon buttonicon-underline" data-l10n-id="pad.toolbar.underline.title"></button></a></li>
+<li data-type="button" data-key="strikethrough"><a class="grouped-right" data-l10n-id="pad.toolbar.strikethrough.title"><button class=" buttonicon buttonicon-strikethrough" data-l10n-id="pad.toolbar.strikethrough.title"></button></a></li><li class="separator"></li><li data-type="button" data-key="insertorderedlist"><a class="grouped-left" data-l10n-id="pad.toolbar.ol.title"><button class=" buttonicon buttonicon-insertorderedlist" data-l10n-id="pad.toolbar.ol.title"></button></a></li>
+<li data-type="button" data-key="insertunorderedlist"><a class="grouped-middle" data-l10n-id="pad.toolbar.ul.title"><button class=" buttonicon buttonicon-insertunorderedlist" data-l10n-id="pad.toolbar.ul.title"></button></a></li>
+<li data-type="button" data-key="indent"><a class="grouped-middle" data-l10n-id="pad.toolbar.indent.title"><button class=" buttonicon buttonicon-indent" data-l10n-id="pad.toolbar.indent.title"></button></a></li>
+<li data-type="button" data-key="outdent"><a class="grouped-right" data-l10n-id="pad.toolbar.unindent.title"><button class=" buttonicon buttonicon-outdent" data-l10n-id="pad.toolbar.unindent.title"></button></a></li><li class="separator"></li><li data-type="button" data-key="undo"><a class="grouped-left" data-l10n-id="pad.toolbar.undo.title"><button class=" buttonicon buttonicon-undo" data-l10n-id="pad.toolbar.undo.title"></button></a></li>
+<li data-type="button" data-key="redo"><a class="grouped-right" data-l10n-id="pad.toolbar.redo.title"><button class=" buttonicon buttonicon-redo" data-l10n-id="pad.toolbar.redo.title"></button></a></li><li class="separator"></li><li data-type="button" data-key="clearauthorship"><a class="" data-l10n-id="pad.toolbar.clearAuthorship.title"><button class=" buttonicon buttonicon-clearauthorship" data-l10n-id="pad.toolbar.clearAuthorship.title"></button></a></li>
+                <li class="separator acl-write"></li>
+<li id="headings" class="acl-write">
+    <select id="heading-selection">
+        <option value="dummy" selected data-l10n-id="ep_headings.style">Style</option>
+        <option value="-1" data-l10n-id="ep_headings.normal">Normal</option>
+        <option value="0" data-l10n-id="ep_headings.h1">Heading 1</option>
+        <option value="1" data-l10n-id="ep_headings.h2">Heading 2</option>
+        <option value="2" data-l10n-id="ep_headings.h3">Heading 3</option>
+        <option value="3" data-l10n-id="ep_headings.h4">Heading 4</option>
+        <option value="4" data-l10n-id="ep_headings.h5">Heading 5</option>
+        <option value="5" data-l10n-id="ep_headings.h6">Heading 6</option>
+        <option value="6" data-l10n-id="ep_headings.code">Code</option>
+        
+    </select>
+</li><li class="separator acl-write"></li>
+<li class="acl-write font-color-icon ep_font_color">
+  <a title="Font color">
+    <span class="buttonicon"></span>
+  </a>
+</li>
+<li id="font-color" class="acl-write" style="display:none;">
+    <select class="color-selection">
+        <option value="dummy" selected data-l10n-id="ep_font_color.color">Color</option>
+        <option value="0" data-l10n-id="ep_font_color.black">black</option>
+        <option value="1" data-l10n-id="ep_font_color.red">red</option>
+        <option value="2" data-l10n-id="ep_font_color.green">green</option>
+        <option value="3" data-l10n-id="ep_font_color.blue">blue</option>
+        <option value="4" data-l10n-id="ep_font_color.yellow">yellow</option>
+        <option value="5" data-l10n-id="ep_font_color.orange">orange</option>
+    </select>
+</li>
+
 <style>
-* {
-  font-family: arial, sans-serif;
-  font-size: 13px;
-  line-height: 17px;
+.ep_font_color {
+  font-family:font-awesome;
 }
-ul.indent {
-  list-style-type: none;
+.ep_font_color .buttonicon:before{
+  content:"\e81b";
+  top: 2px !important;
+  border-bottom:solid 1px red;
 }
-ol {
-  list-style-type: none;
-  padding-left: 0;
-}
-body > ol {
-  counter-reset: first second third fourth fifth sixth seventh eigth ninth tenth eleventh twelth thirteenth fourteenth fifteenth sixteenth;
-}
-ol > li:before {
-  content: counter(first) ". ";
-  counter-increment: first;
-}
-ol > ol > li:before {
-  content: counter(first) "." counter(second) ". ";
-  counter-increment: second;
-}
-ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) ". ";
-  counter-increment: third;
-}
-ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) ". ";
-  counter-increment: fourth;
-}
-ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) ". ";
-  counter-increment: fifth;
-}
-ol > ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) ". ";
-  counter-increment: sixth;
-}
-ol > ol > ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) ". ";
-  counter-increment: seventh;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) ". ";
-  counter-increment: eigth;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) ". ";
-  counter-increment: ninth;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) ". ";
-  counter-increment: tenth;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) ". ";
-  counter-increment: eleventh;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) "." counter(twelth) ". ";
-  counter-increment: twelth;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) "." counter(twelth) "." counter(thirteenth) ". ";
-  counter-increment: thirteenth;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) "." counter(twelth) "." counter(thirteenth) "." counter(fourteenth) ". ";
-  counter-increment: fourteenth;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) "." counter(twelth) "." counter(thirteenth) "." counter(fourteenth) "." counter(fifteenth) ". ";
-  counter-increment: fifteenth;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > li:before {
-  content: counter(first) "." counter(second) "." counter(third) "." counter(fourth) "." counter(fifth) "." counter(sixth) "." counter(seventh) "." counter(eigth) "." counter(ninth) "." counter(tenth) "." counter(eleventh) "." counter(twelth) "." counter(thirteenth) "." counter(fourteenth) "." counter(fifteenth) "." counter(sixthteenth) ". ";
-  counter-increment: sixthteenth;
-}
-ol {
-  text-indent: 0px;
-}
-ol > ol {
-  text-indent: 10px;
-}
-ol > ol > ol {
-  text-indent: 20px;
-}
-ol > ol > ol > ol {
-  text-indent: 30px;
-}
-ol > ol > ol > ol > ol {
-  text-indent: 40px;
-}
-ol > ol > ol > ol > ol > ol {
-  text-indent: 50px;
-}
-ol > ol > ol > ol > ol > ol > ol {
-  text-indent: 60px;
-}
-ol > ol > ol > ol > ol > ol > ol > ol {
-  text-indent: 70px;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol {
-  text-indent: 80px;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
-  text-indent: 90px;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
-  text-indent: 100px;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
-  text-indent: 110px;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
-  text-indent: 120px;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
-  text-indent: 130px;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
-  text-indent: 140px;
-}
-ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol > ol {
-  text-indent: 150px;
-}
-h1{font-size: 2.0em;line-height: 120%;}   h2{font-size: 1.5em;line-height: 120%;}   h3{font-size: 1.17em;line-height: 120%;}   h4{line-height: 120%;}   h5{font-size: 0.83em;line-height: 120%;}   h6{font-size: 0.75em;line-height: 120%;}   code{font-family: monospace;}[data-color="black"], .color\:black  { color:black; }
-[data-color="red"], .color\:red    { color:red; }
-[data-color="green"], .color\:green  { color:green; }
-[data-color="blue"], .color\:blue   { color:blue; }
-[data-color="yellow"], .color\:yellow { color:yellow; }
-[data-color="orange"], .color\:orange { color:orange; }
 </style>
-</head>
-<body>
- <h1>2D SHOOTER GAME - SLOWMO</h1><br><br><br> <h2>END USER OBJECTIVE</h2>  <center style="">END USER OBJECTIVE</center>Primary Objective:<br><ul class="indent"><li>Survival mode -&gt; Kill all enemies</li><li>Level&#x2F;career mode -&gt; Reaching a certain point in the map.</li><li><br></li></ul>Secondary Objective:<br><ul class="indent"><li>High score:</li><ul class="bullet"><li>Survival mode -&gt; Time record.</li><li>Career mode -&gt; Kill enemies and complete level faster.</li></ul><li>Collect health potions&#x2F;powerups&#x2F;score items</li><li><br></li></ul> <h2>COMPONENTS</h2>  <center style="">COMPONENTS</center>Visible Components:<br><ul class="indent"><li>Player character</li><li>Enemies</li><li>Weapons</li><li>Bullets</li><li>Timer&#x2F;Score</li><li>Level map</li><li>Health bar&#x2F;Ammo</li><li>Health potions</li></ul><br>Invisible Components:<br><ul class="indent"><li>Loading levels</li><li>Enemy AI</li><li>Bullet&#x27;s trajectory</li><li>Key listener -&gt; triggers events.</li><li>Object movement - including rotation both user and NPC.</li><li>Collision Logic.</li><li>Screen boundaries and Map design.</li><li>Time&#x2F;Clock&nbsp;</li><li><br></li><li><br></li><li><br></li><li>LAYERING COMPONENTS</li><li><br></li><li>Always in play:</li><li><br></li><li>Screen</li><li>KeyListener</li><li><br></li><li>Usually in play:</li><li><br></li><li>Time&#x2F;Clock</li><li>Player&#x2F;NPCs</li><li>Player&#x27;s Health&#x2F;Ammo bar</li><li>All collision logic.</li><li>All AI .&nbsp;&nbsp;</li><li>Level map (!surv mode)</li><li>Object movement</li><li>Model controller?</li><li><br></li><li>Sometimes in play:</li><li><br></li><li>Bullets</li><li>Health potions</li><li>Bullet&#x27;s trajectory</li><li>Load level.</li><li><br></li><li><br></li><li>STRUCTURE DATA</li><li><br></li><li><br></li><li>struct coordinates{</li><ul class="indent"><li>int x;</li><li>int y;</li></ul><li>}</li><li><br></li><li>struct player{</li><ul class="indent"><li>int direction; &#x2F;&#x2F;some number between 0 and 360(or whatever number of degrees we choose), determines the direction that the player is facing. potential issues: direction becomes set to a number outside of range.</li><li>int health; &#x2F;&#x2F;the current health the player has. Decreases when shot, increases on picking up a health pot. When health = 0, player is dead, game over.</li><li>int ammo; &#x2F;&#x2F;the remaining number of bullets a player has. When the player shoots, ammo decreases by 1. Player can no longer shoot when ammo = 0.</li><li>struct coordinates position; &#x2F;&#x2F; players x &amp; y coordinates. &#x2F;&#x2F; potential issues: location outside of screen.</li></ul><li>};</li><li><br></li><li>enum state {DEFAULT, ATTACK, LOOK};</li><li><br></li><li>struct enemy{</li><ul class="indent"><li>int direction;&nbsp;</li><li>int health;</li><li>boolean can_see_player;</li><li>enum state;</li><li>struct coordinates position;</li><li><br></li></ul><li>};</li><li><br></li><li><br></li><li>FUNCTIONS</li><li><br></li><li>COLLISION LOGIC:</li><li><br></li><li><br></li><li>What should it do? what should it receive? what should it respond?</li><li><br></li><li>First we should lay out what happens when various objects collide:</li><li>When a player or NPC collides with a wall, they stop moving.</li><li>When a bullet collides with a player or NPC the bullet is deleted and the player or NPC&#x27;s health decreases by 1.</li><li>When a bullet collides with a wall, the bullet is deleted.</li><li>Absolutely.</li><li><br></li><li>Now, in order to achieve that, this function should regulate what? I think that it should enable the possibility for NPC&#x2F;players to make a move, so you could think of this function as one that gives you an answer like; is this new move possible? Yeah, I&#x27;d need to think for a bit about how to actually implement that though.</li><li><br></li><li>Is this function all-encompasing or does it focus on a number of&nbsp; arguments given? Like would you give this function just an array of all enemies, all players, all bullets (with their directions and positions) and make it output some kind of result.</li><li>Or are you going to pass it an object and a move&nbsp; like, NPC_01, (future_position) -&gt; possible or not.</li><li><br></li><li>?I&#x27;m not sure, the second option you listed makes more sense to me. Yea I agree although this solution would require to make some kind of &quot;Movement&quot; component. We need to keep them in order, not just randomly throw them at collision_logic() whenever we might think the game requires. Like the AI should rule a set of future movements for the NPCs and the player may also need or want to make a move so we need to interact all this. Dont you think? Are you suggesting a hierarchy of object movement? Yea, kind of.</li><li><br></li><li>How do the bullets mingle in all this?</li><li>I&#x27;m still not 100% sure of what you were suggesting, were you saying that the collision detection should preemptively rule out certain movements for players and npcs? Yes, either by giving a negative or giving instructions to whatever to not update the entity&#x27;s position to the &#x27;new one&#x27;</li><li>Then it actually seems like the bullets should have their own collision detection function. Because while when the collision for players, NPCs, and walls simply results in the player or npc not being able to go past a certain coordinate, the bullets actually cause a change when they collide with something.</li><li><br></li><li>Whats the difference between having the npc&#x2F;player movement disabled (that is, the possibility of changing x-y to that new x-y) and just treating bullets recursively untill they do get a negative? we know that bullets will hit something sooner or later, we can be sure of that. so its a matter of using the same logic but at smaller paces. We can treat a bullet&#x27;s negative as a sign or trigger to something else depending on what they hit. Although I don&#x27;t know if we can do this inside this very same function.</li><li>What we could do is have the function return NULL until the object collides with something, then return the object it collided with. That sounds good but we would need to make some kind of standalone function that tells you which object is at (x,y) be it either a npc, player or wall.&nbsp;</li><li>If we dont make these then I think we are mixing the two concepts I said earlier of an all emcompasing collision logic and a object focus function (obj, move) because we end up needing the entire current state of all elements... Idk if this makes sense That does make sense. I was kind of moving away from the object focused function idea i guess. I guess it would be a matter of a compromise between the two, we probably end up doing a mix, be it either in separate functions or in one.&nbsp;</li><li><br></li><li>Lets talk this one out as well tomorrow. Yeah.</li><li><br></li><li><br></li><li>TIMING&#x2F;CLOCK</li><li><br></li><li>Lets just lay out some foundations for this one and I&#x27;ll call it a day.</li><li><br></li><li>I haven&#x27;t looked into the c time library yet, but we should probably start with a simple overall clock that just counts seconds, then manipulate the increments depending on what is happening in the game.</li><li><br></li><li>I didn&#x27;t work that much with the time lib as well so we would need to look up the possibilities it give us. Apart from the simple task of measuring the seconds passed in regards to a posibly score or whatever we should focus on what the clock is going to do in regards to the slow mo.</li><li><br></li><li>I personally don&#x27;t think this should be very hard to implement. We should just make game function and move completely normal and let the clock change the multipliers of those.</li><li><br></li><li>It wouldn&#x27;t be hard to make the clock increments change, we could make it so that the clock counts seconds as (1s&#x2F;1000ms) normally, but (1s&#x2F;10000ms) during slow mo. Yea I was thinking right now how we should implement this..</li><li>Like, its pretty obvious that the clock should be the chief in the sense that it should execute orders such as update screen and all those underneath it &#x2F;that goes with it like movement functions or whatever.&nbsp;</li><li>So if the player hits the W key for 1 seconds -&gt; 100 updates should be made to the game.</li><li>But if the player hits the A key for 1 secods (rotation, normal mode) -&gt;1000 updates should be made to the game.</li><li><br></li><li>After all, hitting a KEY like W for X seconds just means an update of x&#x2F;y ++, but we should treat these like discrete events in order to process them. Am I making sense?</li><li>&nbsp;Yes, but wouldn&#x27;t the number of updates be the opposite of what you said up there? (1000 for W, 100 for A)</li><li>I don&#x27;t think so, maybe I&#x27;m wrong or you&#x27;re still thinking on ms instead of events. if a &#x27;move right event&#x27; is x++. 100 updates on that event moves the player 100px right, but 1000 updates move it way further (&quot;faster&quot;).</li><li><br></li><li>All this is for the same amount of KEY-PRESSING time.</li></ul><br><ul class="indent"><li>I was just reading it wrong. You&#x27;re right.</li><li><br></li><li>How is the clock goint to actually function or what functions are actually going to depend on the clock (only the screen and whatever is dependent of it ???)&nbsp; I think goes far beyond our scope in this initial draft.</li><li><br></li><li>With that being said Imma call an end for today.</li><li>Alright, talk to you tommorow. See you then.</li><li><br></li><li>Etherpad should keep this thing safe but anyways feel free to save it.&nbsp;</li><li><br></li><li>DISCUSSION</li><li><br></li><li>It comes to mind that these entities should be modeled like objects with getters, setters and so forth for us to implement on other parts of the code when necessary, as well as having other functions like boolean hasAmmo(), boolean isAlive() and all that...?</li><li>I think that the goal was to make this without using objects.</li><li>&nbsp;But what good are the player and enemys struct&#x27;s then? how do you see them being played by the rest of components?</li><li>I don&#x27;t know.Hmm lets see what do we get in response tomorrow. I mean I know I will tend to OOP this thing but I dont know how can we model these things and keep track of them by a range of components without it.</li><li>Like for example lets suppose the AI component receives order from the load_map to take control on an array of X enemies. How are we going to pass these things around if we don&#x27;t see them as inmutable instances of, say , the class NPC?</li><li><br></li><li>Plus I think matoro said that structs are the most similar concept to that of classes so I don&#x27;t think he&#x27;ll see wrondoing by our part.</li><li>Okay, we should ask him for clarification.</li><li>Do you want to stop here? Or do we model some more? Some of the things we got in components are pure functions. Do you wanna talk about those?</li><li>I&#x27;m good to keep going, but I know it must be getting pretty late for you. Would you like to call it a day?</li><li>Don&#x27;t worry I&#x27;ll stick around for half an hour or so. What can we think of next? Do you want to lay out the principles of our collision logic and bullets trajectory thingy? Sure.</li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li>-&gt; NPCs should trigger themselves a call to something once they are dead, shouldnt they? Like a Controller() that keeps things tidy? Hmm. I don&#x27;t know. I think this one goes for matoro. I dont know whats the norm in games; either having a godlike function that checks the status of every entity X times a second or whatever or the inverse. Having the entities trigger calls to a controller when they reach new states. Like...&nbsp; im dead remove me! I would think it would be the triggering calls to a controller option, especially for a simple game like this. Matoro did say that he wanted us to try things even if they didn&#x27;t end up being the best way to do it. I think that objects should rule and trigger the correspondent function... the other way around seems like a pain in the ass... only if we integrate it within the CLOCK&#x2F;TIME thingy that regulates flow movement but even then... it looks shitty. Yeah.</li><li><br></li></ul><br><ul class="indent"><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li>Where do include the &quot;factory of NPCs&quot; and their removal? as well as the players endgame? I&#x27;m not sure what you mean by &quot;factory of NPCS&quot;.</li><li>What would be the component responsible for spawning NPCs &amp; player on the right spot as well as deleting them from the map as necessary?</li><li>We could have a load_level() function that sets the player&#x27;s location and spawns enemies. I don&#x27;t think the player should ever be deleted while the game is still going, just moved. But you could also have an end_level() function that deletes NPCs. Yea I like the load_level idea, I think this alone can handle the removal of old entities and place them around as necessary. With respect to their removal, I think this could be implemented as a boolean state that regulates visibility and functionality (an invisible object shouldnt intercept bullets). Just a big 1 for it lives and 0 for dead.Sure. OK!</li><li><br></li></ul><br><br><br><br><br><br><br><ul class="indent"><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li>Lets talk a little about Enemy AI. Movement for these should be the same as for the players. Right?</li><li>Yes. We can use a general movement function for both. Totally.</li><li><br></li><li>If we do a survival mode I think the AI would become easier because its just a matter of telling the NPC to follow the player or to move towards the current players position and shoot in the meanwhile. Would the enemies just try to get as close to the player as possible, or would they maintain some distance sometimes? I think the norm would be to keep them at a distance but I don&#x27;t think that would be very hard to do.</li><li>Maybe if an enemy gets too close to the player(lets say 5ft ingame) then it stops moving towards him. Yea, we can map a radius around the players position that marks the no-go zone. The lazy man job would be to just make it a &#x27;if the npc touchs you you ded&#x27;.</li><li>Also, would the AI have friendly fire(if one enemy shoots another by accident would it die)? I think it would be epic to just watch the enemies kill themselves while you move and shoot like a ninja around them so its a big yes by me... I agree</li><li>If we treat bullets as bullets, no matter what they come from (npc or users) then i think it would be easier to implement. Just have some kind of update function that takes away health from the entity being hit. Okay</li><li><br></li><li>I think thats it for the survival mode. Lets see what we come across on the map mode.</li><li>Also, I think we should keep these discussions in the file, so we can reference them later. Yea I agree, my &#x27;cleaning&#x27; that I was refering before was just to keep those lines parsed correctly but these talks I&#x27;m saving...Good</li><li><br></li><li><br></li><li><br></li><li>What about our map mode?</li><li><br></li><li>Should the NPC just stand in their corners and shoot when available(they see the player)? Enemies definitely shouldn&#x27;t act until they see the player. They should move toward the player as they shoot though. Ok, so as long as they are seeing the player they move towards him and shoot; if the player hides from them then what? Do they remember? Do they go to their default spot? It makes more sense for them to remember, we could have multiple states like: default, attack, and looking. If they haven&#x27;t seen the player at all they are in the default state, if they see the player now they are in the attack state, and if they have seen the player once but can&#x27;t see him anymore they are in the &#x27;looking&#x27; state. Whats the NPC behaviour during the looking state? Does him just stay put for a while until he returns to his default mode and default position? Does him advance towards the players last known position? Depends, I don&#x27;t know if we should try to create a &quot;memory&quot; for the enemies, do you think that is getting too complicated? Yea you read me good. I mean idk maybe its not as complicated... I mean I get that the superb thing would be to make them as intelligent as possible but a &#x27;looking state&#x27; that just keep them on the spot, maybe rotating from one direction to the other and then returnting to OG spot is sufficient enough for me.Sounds good.</li><li><br></li><li>Anything else on Enemy AI?</li><li>Other things will probably come up at some point, but I&#x27;d rather focus on getting the outline done for now. Lets move on then</li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li></ul><br><br><br><br><br><br><br><br><br><br><br><br><ul class="indent"><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li>My idea&nbsp; relating to the superhot &#x27;style&#x27; is having a clock ruling the pace of events and the normal flow of the game whille the user is giving us INPUT (let say he&#x27;s moving somewhere) but slow-mo when the user isn&#x27;t doing anything. I don&#x27;t know what is your take on this? we need to emulate their thingy.</li><li>Sounds good but I have 1 question. What is the speed while the player is turning(not moving forward or backward)? regular or slow? hmm.. I didn&#x27;t really though it... idk if this would give the user a tremendous help or not... I mean if we give him slowmo during rotation then its just a matter of standing still and doing A and E&#x27;s and hitting space. I think we shouldn&#x27;t give the player slowmo during rotation. Ok, lets just agree that we should have two kinds of movements. Linear movement and rotational movement. Only one of them triggers slowmo. Okay</li><li><br></li><li>Now that I think of it. How can we keep track of the users pointing direction? Keeping good track of this vector would give us all the info we need. int direction =0- 360? we could do something like that and then turn the character based on the degree. Hmm interesting</li><li>Imagine our user is a square on the map. this square has x and y and then its direction should rule in which direction the bullets will come out of him? Thats what I was thinking, and we could rotate the sprite based on direction. Yea totally, for simplicity lets think of it as a triangule for now, with one point doing the aiming. How would you approach this in relationship with the graphics area? Do we need vector maths?</li><li><br></li><li><br></li><li>It comes to my mind doing the following although Idk if it would work... We create some kind of formula&#x2F;function that rule the movement&#x2F;trajectory of the bullet based on the degree of its launch Thats pretty much what I was imagining. This shouldnt have problem with the bullet being shoot from diferrent possitions because given a pair (x0,y0) then the trajectory would already be traced.</li><li><br></li><li><br></li><li><br></li><li>The game will exit if:</li><li>the player clicks the X button.</li><li>we&#x27;ve got an error.</li><li>player hits exit key (Q)</li><li>player wins all maps.</li><li>player loose in map or survival mode -&gt; game over -&gt; player doesn&#x27;t want to play again?&nbsp; No -&gt; exit</li><li><br></li><li><br></li><li><br></li><li>pressed_space</li><li><br></li><li>pressed_W</li><li><br></li><li>pressed_S</li><li><br></li><li>pressed_A</li><li><br></li><li>pressed_D</li><li><br></li><li>pressed_Q</li><li><br></li><li>pressed_Enter</li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li><li><br></li></ul>
-<div style="display:none"><a href="/javascript" data-jslicense="1">JavaScript license information</a></div>
-</body>
+<li class="separator acl-write"></li>
+<li id="align" class="acl-write">
+  <a class="grouped-left ep_align ep_align_left" title="Align Left">
+    <span class="buttonicon"></span>
+  </a>
+</li>
+<li id="align" class="acl-write">
+  <a class="grouped-middle ep_align ep_align_center" title="Align Center">                         
+    <span class="buttonicon"></span>
+  </a>
+</li>
+<li id="align" class="acl-write">
+  <a class="grouped-middle ep_align ep_align_justify" title="Align Justify">
+    <span class="buttonicon"></span>
+  </a>
+</li>
+<li id="align" class="acl-write">
+  <a class="grouped-right ep_align ep_align_right" title="Align Right">                         
+    <span class="buttonicon"></span>
+  </a>
+</li>
+<style>
+
+  .ep_align{
+    font-family:font-awesome;
+
+  }
+
+  .ep_align > .buttonicon {
+    top:2px!important;
+  }
+
+  .ep_align_left > .buttonicon:before{
+    content:"\e800";
+  }
+  .ep_align_center > .buttonicon:before{
+    content:"\e80f";
+  }
+  .ep_align_justify > .buttonicon:before{
+    content:"\e811";
+  }
+  .ep_align_right > .buttonicon:before{
+    content:"\e810";
+  }
+	
+</style>
+
+            </ul>
+            <ul class="menu_right" role="toolbar">
+                
+                <li data-type="button" data-key="import_export"><a class="grouped-left" data-l10n-id="pad.toolbar.import_export.title"><button class=" buttonicon buttonicon-import_export" data-l10n-id="pad.toolbar.import_export.title"></button></a></li>
+<li data-type="button" data-key="showTimeSlider"><a class="grouped-right" data-l10n-id="pad.toolbar.timeslider.title"><button class=" buttonicon buttonicon-history" data-l10n-id="pad.toolbar.timeslider.title"></button></a></li><li class="separator"></li><li data-type="button" data-key="settings"><a class="grouped-left" data-l10n-id="pad.toolbar.settings.title"><button class=" buttonicon buttonicon-settings" data-l10n-id="pad.toolbar.settings.title"></button></a></li>
+<li data-type="button" data-key="embed"><a class="grouped-right" data-l10n-id="pad.toolbar.embed.title"><button class=" buttonicon buttonicon-embed" data-l10n-id="pad.toolbar.embed.title"></button></a></li><li class="separator"></li><li data-type="button" data-key="showusers"><a class="" data-l10n-id="pad.toolbar.showusers.title"><button class=" buttonicon buttonicon-showusers" data-l10n-id="pad.toolbar.showusers.title"></button></a></li>
+                
+            </ul>
+        </div>
+        
+
+        <div id="users">
+            
+            <div id="connectionstatus"></div>
+            <div id="myuser">
+                <div id="mycolorpicker">
+                    <div id="colorpicker"></div>
+                    <button id="mycolorpickersave" data-l10n-id="pad.colorpicker.save"></button>
+                    <button id="mycolorpickercancel" data-l10n-id="pad.colorpicker.cancel"></button>
+                    <span id="mycolorpickerpreview" class="myswatchboxhoverable"></span>
+                </div>
+                <div id="myswatchbox"><div id="myswatch"></div></div>
+                <div id="myusernameform"><input type="text" id="myusernameedit" disabled="disabled" data-l10n-id="pad.userlist.entername"></div>
+                <div id="mystatusform"><input type="text" id="mystatusedit" disabled="disabled"></div>
+            </div>
+            <div id="otherusers" aria-role="document">
+                <div id="guestprompts"></div>
+                <table id="otheruserstable" cellspacing="0" cellpadding="0" border="0">
+                    <tr><td></td></tr>
+                </table>
+                <div id="nootherusers"></div>
+            </div>
+            <div id="userlistbuttonarea"></div>
+            
+        </div>
+
+        <div id="editorcontainerbox">
+            <div id="editorcontainer" class="editorcontainer"></div>
+            <div id="editorloadingbox">
+              <div id="passwordRequired">
+                <p data-l10n-id="pad.passwordRequired">You need a password to access this pad</p>
+                <form class='passForm' method='POST'>
+                  <input id='passwordinput' type='password' name='password'><input type='submit' value='Submit'>
+                </form>
+              </div>
+              <div id="permissionDenied">
+                <p data-l10n-id="pad.permissionDenied">You do not have permission to access this pad</p>
+              </div>
+              <div id="wrongPassword">
+                <p data-l10n-id="pad.wrongPassword">Your password was wrong</p>
+              </div>
+              <div id="noCookie">
+                <p data-l10n-id="pad.noCookie">Cookie could not be found. Please allow cookies in your browser!</p>
+              </div>
+              
+              <p data-l10n-id="pad.loading" id="loading">Loading...</p>
+              
+              <noscript><strong>Sorry, you have to enable Javascript in order to use this.</strong></noscript>
+            </div>
+        </div>
+
+        <div id="settings" class="popup">
+            <h1 data-l10n-id="pad.settings.padSettings"></h1>
+            <div class="column">
+                
+                <h2 data-l10n-id="pad.settings.myView"></h2>
+                <p>
+                    <input type="checkbox" id="options-stickychat" onClick="chat.stickToScreen();">
+                    <label for="options-stickychat" data-l10n-id="pad.settings.stickychat"></label>
+                </p>
+                <p>
+                    <input type="checkbox" id="options-chatandusers" onClick="chat.chatAndUsers();">
+                    <label for="options-chatandusers" data-l10n-id="pad.settings.chatandusers"></label>
+                </p>
+                <p>
+                    <input type="checkbox" id="options-colorscheck">
+                    <label for="options-colorscheck" data-l10n-id="pad.settings.colorcheck"></label>
+                </p>
+                <p>
+                    <input type="checkbox" id="options-linenoscheck" checked>
+                    <label for="options-linenoscheck" data-l10n-id="pad.settings.linenocheck"></label>
+                </p>
+                <p>
+                    <input type="checkbox" id="options-rtlcheck">
+                    <label for="options-rtlcheck" data-l10n-id="pad.settings.rtlcheck"></label>
+                </p>
+                <p>
+    <input type="checkbox" id="options-pageview" checked></input> 
+    <label for="options-pageview">Page View</label>
+</p>
+<p>
+    <input type="checkbox" id="options-author-hover" checked></input> 
+    <label for="options-author-hover">Show Author on Hover</label>
+</p>
+
+
+                <table>
+                    
+                    <tr>
+                        <td>
+                            <label for="viewfontmenu" data-l10n-id="pad.settings.fontType">Font type:</label>
+                        </td>
+                        <td>
+                            <select id="viewfontmenu">
+                                <option value="normal" data-l10n-id="pad.settings.fontType.normal"></option>
+                                <option value="monospace" data-l10n-id="pad.settings.fontType.monospaced"></option>
+                                <option value="opendyslexic" data-l10n-id="pad.settings.fontType.opendyslexic"></option>
+                                <option value="comicsans" data-l10n-id="pad.settings.fontType.comicsans"></option>
+                                <option value="georgia" data-l10n-id="pad.settings.fontType.georgia"></option>
+                                <option value="impact" data-l10n-id="pad.settings.fontType.impact"></option>
+                                <option value="lucida" data-l10n-id="pad.settings.fontType.lucida"></option>
+                                <option value="lucidasans" data-l10n-id="pad.settings.fontType.lucidasans"></option>
+                                <option value="palatino" data-l10n-id="pad.settings.fontType.palatino"></option>
+                                <option value="tahoma" data-l10n-id="pad.settings.fontType.tahoma"></option>
+                                <option value="timesnewroman" data-l10n-id="pad.settings.fontType.timesnewroman"></option>
+                                <option value="trebuchet" data-l10n-id="pad.settings.fontType.trebuchet"></option>
+                                <option value="verdana" data-l10n-id="pad.settings.fontType.verdana"></option>
+                                <option value="symbol" data-l10n-id="pad.settings.fontType.symbol"></option>
+                                <option value="webdings" data-l10n-id="pad.settings.fontType.webdings"></option>
+                                <option value="wingdings" data-l10n-id="pad.settings.fontType.wingdings"></option>
+                                <option value="sansserif" data-l10n-id="pad.settings.fontType.sansserif"></option>
+                                <option value="serif" data-l10n-id="pad.settings.fontType.serif"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="languagemenu" data-l10n-id="pad.settings.language">Language:</label>
+                        </td>
+                        <td>
+                            <select id="languagemenu">
+                                
+                                <option value="af">Afrikaans</option>
+                                
+                                <option value="ar">العربية</option>
+                                
+                                <option value="ast">asturianu</option>
+                                
+                                <option value="az">azərbaycanca</option>
+                                
+                                <option value="azb">تورکجه</option>
+                                
+                                <option value="bcc">بلوچی مکرانی</option>
+                                
+                                <option value="be-tarask">беларуская (тарашкевіца)‎</option>
+                                
+                                <option value="bg">български</option>
+                                
+                                <option value="bn">বাংলা</option>
+                                
+                                <option value="br">brezhoneg</option>
+                                
+                                <option value="bs">bosanski</option>
+                                
+                                <option value="ca">català</option>
+                                
+                                <option value="cs">česky</option>
+                                
+                                <option value="da">dansk</option>
+                                
+                                <option value="de">Deutsch</option>
+                                
+                                <option value="diq">Zazaki</option>
+                                
+                                <option value="dsb">dolnoserbski</option>
+                                
+                                <option value="el">Ελληνικά</option>
+                                
+                                <option value="en-gb">British English</option>
+                                
+                                <option value="en">English</option>
+                                
+                                <option value="eo">Esperanto</option>
+                                
+                                <option value="es">español</option>
+                                
+                                <option value="et">eesti</option>
+                                
+                                <option value="eu">euskara</option>
+                                
+                                <option value="fa">فارسی</option>
+                                
+                                <option value="fi">suomi</option>
+                                
+                                <option value="fo">føroyskt</option>
+                                
+                                <option value="fr">français</option>
+                                
+                                <option value="fy">Frysk</option>
+                                
+                                <option value="gl">galego</option>
+                                
+                                <option value="gu">ગુજરાતી</option>
+                                
+                                <option value="he">עברית</option>
+                                
+                                <option value="hi">हिन्दी</option>
+                                
+                                <option value="hr">hrvatski</option>
+                                
+                                <option value="hsb">hornjoserbsce</option>
+                                
+                                <option value="hu">magyar</option>
+                                
+                                <option value="hy">Հայերեն</option>
+                                
+                                <option value="ia">interlingua</option>
+                                
+                                <option value="is">íslenska</option>
+                                
+                                <option value="it">italiano</option>
+                                
+                                <option value="ja">日本語</option>
+                                
+                                <option value="kab">Taqbaylit</option>
+                                
+                                <option value="km">ភាសាខ្មែរ</option>
+                                
+                                <option value="ko">한국어</option>
+                                
+                                <option value="krc">къарачай-малкъар</option>
+                                
+                                <option value="ksh">Ripoarisch</option>
+                                
+                                <option value="ku-latn">Kurdî (latînî)‎</option>
+                                
+                                <option value="lb">Lëtzebuergesch</option>
+                                
+                                <option value="lt">lietuvių</option>
+                                
+                                <option value="lv">latviešu</option>
+                                
+                                <option value="map-bms">Basa Banyumasan</option>
+                                
+                                <option value="mg">Malagasy</option>
+                                
+                                <option value="mk">македонски</option>
+                                
+                                <option value="ml">മലയാളം</option>
+                                
+                                <option value="mn">монгол</option>
+                                
+                                <option value="mr">मराठी</option>
+                                
+                                <option value="ms">Bahasa Melayu</option>
+                                
+                                <option value="nah">Nāhuatl</option>
+                                
+                                <option value="nap">Nnapulitano</option>
+                                
+                                <option value="nb">norsk (bokmål)‎</option>
+                                
+                                <option value="nds">Plattdüütsch</option>
+                                
+                                <option value="ne">नेपाली</option>
+                                
+                                <option value="nl">Nederlands</option>
+                                
+                                <option value="nn">norsk (nynorsk)‎</option>
+                                
+                                <option value="oc">occitan</option>
+                                
+                                <option value="os">Ирон</option>
+                                
+                                <option value="pa">ਪੰਜਾਬੀ</option>
+                                
+                                <option value="pl">polski</option>
+                                
+                                <option value="ps">پښتو</option>
+                                
+                                <option value="pt-br">português do Brasil</option>
+                                
+                                <option value="pt">português</option>
+                                
+                                <option value="qqq">Message documentation</option>
+                                
+                                <option value="ro">română</option>
+                                
+                                <option value="ru">русский</option>
+                                
+                                <option value="sco">Scots</option>
+                                
+                                <option value="sd">سنڌي</option>
+                                
+                                <option value="shn">လိၵ်ႈတႆး</option>
+                                
+                                <option value="sk">slovenčina</option>
+                                
+                                <option value="sl">slovenščina</option>
+                                
+                                <option value="sq">shqip</option>
+                                
+                                <option value="sr-ec">српски (ћирилица)‎</option>
+                                
+                                <option value="sv">svenska</option>
+                                
+                                <option value="ta">தமிழ்</option>
+                                
+                                <option value="tcy">ತುಳು</option>
+                                
+                                <option value="te">తెలుగు</option>
+                                
+                                <option value="th">ไทย</option>
+                                
+                                <option value="tr">Türkçe</option>
+                                
+                                <option value="uk">українська</option>
+                                
+                                <option value="vi">Tiếng Việt</option>
+                                
+                                <option value="zh-hans">中文（简体）‎</option>
+                                
+                                <option value="zh-hant">中文（繁體）‎</option>
+                                
+                            </select>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
+            <div class="column">
+                
+                <h2 data-l10n-id="pad.settings.globalView"></h2>
+                
+            </div>
+        </div>
+
+        <div id="import_export" class="popup">
+            <h1 data-l10n-id="pad.importExport.import_export"></h1>
+            <div class="column acl-write">
+                
+                <h2 data-l10n-id="pad.importExport.import"></h2>
+                <div class="importmessage" id="importmessageabiword" data-l10n-id="pad.importExport.abiword.innerHTML"></div><br>
+                <form id="importform" method="post" action="" target="importiframe" enctype="multipart/form-data">
+                    <div class="importformdiv" id="importformfilediv">
+                        <input type="file" name="file" size="10" id="importfileinput">
+                        <div class="importmessage" id="importmessagefail"></div>
+                    </div>
+                    <div id="import"></div>
+                    <div class="importmessage" id="importmessagesuccess" data-l10n-id="pad.importExport.importSuccessful"></div>
+                    <div class="importformdiv" id="importformsubmitdiv">
+                        <span class="nowrap">
+                            <input type="submit" name="submit" value="Import Now" disabled="disabled" id="importsubmitinput">
+                            <div alt="" id="importstatusball" class="loadingAnimation" align="top"></div>
+                        </span>
+                    </div>
+                </form>
+                
+            </div>
+            <div class="column" id="exportColumn">
+                <h2 data-l10n-id="pad.importExport.export"></h2>
+                
+                <a id="exportetherpada" target="_blank" class="exportlink"><div class="exporttype" id="exportetherpad" data-l10n-id="pad.importExport.exportetherpad"></div></a>
+                <a id="exporthtmla" target="_blank" class="exportlink"><div class="exporttype" id="exporthtml" data-l10n-id="pad.importExport.exporthtml"></div></a>
+                <a id="exportplaina" target="_blank" class="exportlink"><div class="exporttype" id="exportplain" data-l10n-id="pad.importExport.exportplain"></div></a>
+                <a id="exportworda" target="_blank" class="exportlink"><div class="exporttype" id="exportword" data-l10n-id="pad.importExport.exportword"></div></a>
+                <a id="exportpdfa" target="_blank" class="exportlink"><div class="exporttype" id="exportpdf" data-l10n-id="pad.importExport.exportpdf"></div></a>
+                <a id="exportopena" target="_blank" class="exportlink"><div class="exporttype" id="exportopen" data-l10n-id="pad.importExport.exportopen"></div></a>
+                
+            </div>
+        </div>
+
+        <div id="connectivity" class="popup">
+            
+                <div class="connected visible">
+                  <h2 data-l10n-id="pad.modals.connected"></h2>
+                </div>
+                <div class="reconnecting">
+                  <h1 data-l10n-id="pad.modals.reconnecting"></h1>
+                  <p class='loadingAnimation'></p>
+                </div>
+                <div class="userdup">
+                  <h1 data-l10n-id="pad.modals.userdup"></h1>
+                  <h2 data-l10n-id="pad.modals.userdup.explanation"></h2>
+                  <p data-l10n-id="pad.modals.userdup.advice"></p>
+                  <button id="forcereconnect" data-l10n-id="pad.modals.forcereconnect"></button>
+                </div>
+                <div class="unauth">
+                  <h1 data-l10n-id="pad.modals.unauth"></h1>
+                  <p data-l10n-id="pad.modals.unauth.explanation"></p>
+                  <button id="forcereconnect" data-l10n-id="pad.modals.forcereconnect"></button>
+                </div>
+                <div class="looping">
+                  <h1 data-l10n-id="pad.modals.disconnected"></h1>
+                  <h2 data-l10n-id="pad.modals.looping.explanation"></h2>
+                  <p data-l10n-id="pad.modals.looping.cause"></p>
+                </div>
+                <div class="initsocketfail">
+                  <h1 data-l10n-id="pad.modals.initsocketfail"></h1>
+                  <h2 data-l10n-id="pad.modals.initsocketfail.explanation"></h2>
+                  <p data-l10n-id="pad.modals.initsocketfail.cause"></p>
+                </div>
+                <div class="slowcommit">
+                  <h1 data-l10n-id="pad.modals.disconnected"></h1>
+                  <h2 data-l10n-id="pad.modals.slowcommit.explanation"></h2>
+                  <p data-l10n-id="pad.modals.slowcommit.cause"></p>
+                  <button id="forcereconnect" data-l10n-id="pad.modals.forcereconnect"></button>
+                </div>
+                <div class="badChangeset">
+                  <h1 data-l10n-id="pad.modals.disconnected"></h1>
+                  <h2 data-l10n-id="pad.modals.badChangeset.explanation"></h2>
+                  <p data-l10n-id="pad.modals.badChangeset.cause"></p>
+                  <button id="forcereconnect" data-l10n-id="pad.modals.forcereconnect"></button>
+                </div>
+                <div class="corruptPad">
+                  <h1 data-l10n-id="pad.modals.disconnected"></h1>
+                  <h2 data-l10n-id="pad.modals.corruptPad.explanation"></h2>
+                  <p data-l10n-id="pad.modals.corruptPad.cause"></p>
+                </div>
+                <div class="deleted">
+                  <h1 data-l10n-id="pad.modals.deleted"></h1>
+                  <p data-l10n-id="pad.modals.deleted.explanation"></p>
+                </div>
+                <div class="disconnected">
+                  
+                  <h1 data-l10n-id="pad.modals.disconnected"></h1>
+                  <h2 data-l10n-id="pad.modals.disconnected.explanation"></h2>
+                  <p data-l10n-id="pad.modals.disconnected.cause"></p>
+                  <button id="forcereconnect" data-l10n-id="pad.modals.forcereconnect"></button>
+                  
+                </div>
+                <form id="reconnectform" method="post" action="/ep/pad/reconnect" accept-charset="UTF-8" style="display: none;">
+                    <input type="hidden" class="padId" name="padId">
+                    <input type="hidden" class="diagnosticInfo" name="diagnosticInfo">
+                    <input type="hidden" class="missedChanges" name="missedChanges">
+                </form>
+            
+        </div>
+
+        <div id="embed" class="popup">
+            
+            <div id="embedreadonly" class="right acl-write">
+                <input type="checkbox" id="readonlyinput">
+                <label for="readonlyinput" data-l10n-id="pad.share.readonly"></label>
+            </div>
+            <h1 data-l10n-id="pad.share"></h1>
+            <div id="linkcode">
+                <h2 data-l10n-id="pad.share.link"></h2>
+                <input id="linkinput" type="text" value="" onclick="this.select()">
+            </div>
+            <br>
+            <div id="embedcode">
+                <h2 data-l10n-id="pad.share.emebdcode"></h2>
+                <input id="embedinput" type="text" value="" onclick="this.select()">
+            </div>
+            
+        </div>
+
+        <div id="chaticon" onclick="chat.show();return false;" title="Chat (Alt C)">
+            <span id="chatlabel" data-l10n-id="pad.chat"></span>
+            <span class="buttonicon buttonicon-chat"></span>
+            <span id="chatcounter">0</span>
+        </div>
+
+        <div id="chatbox">
+            <div id="titlebar"><span id ="titlelabel" data-l10n-id="pad.chat"></span>
+              <a id="titlecross" onClick="chat.hide();return false;">-&nbsp;</a>
+              <a id="titlesticky" onClick="chat.stickToScreen(true);$('#options-stickychat').prop('checked', true);return false;" title="Stick chat to screen">█&nbsp;&nbsp;</a>
+            </div>
+            <div id="chattext" class="authorColors" aria-live="polite" aria-relevant="additions removals text" role="log" aria-atomic="false">
+                <div alt="loading.." id="chatloadmessagesball" class="chatloadmessages loadingAnimation" align="top"></div>
+                <button id="chatloadmessagesbutton" class="chatloadmessages" data-l10n-id="pad.chat.loadmessages"></button>
+            </div>
+            <div id="chatinputbox">
+                <form>
+                    <input id="chatinput" type="text" maxlength="999">
+                </form>
+            </div>
+        </div>
+
+        <div id="focusprotector">&nbsp;</div>
+
+        
+
+<style>
+#donate {
+  position:absolute;bottom:0;background:#fff;font-size:22px;width:100%;
+  z-index:999;text-align:center;
+  padding:15px 0; /* 5px 0 */
+  border-top:1px solid #ccc;
+}
+
+#donate span {
+  position: absolute;
+  right: 20px;
+  font-size: 18px;
+  color: #aaa;
+  cursor: pointer;
+}
+</style>
+<!--
+<div id="donate">
+This service is free to use. However, if you appreciate Etherpad.net, please consider <a href="https://www.paypal.me/0ip">donating</a>.
+<span onClick="alert('Even a tiny amount helps');var link = document.getElementById('donate');link.style.visibility = 'hidden';">✕</span>
+<p>Current progress: <img style="border: 1px solid #ccc" width="200" height="16" src="https://factor.cc/progress/bar.php"</p>
+</div>
+-->
+<!--
+<div id="donate">
+With your help, etherpad.net has been funded yet again! Thanks again to all donors!
+<span onClick="var link = document.getElementById('donate');link.style.visibility = 'hidden';">✕</span>
+</div>
+-->
+    
+        <script type="text/javascript">
+            // @license magnet:?xt=urn:btih:8e4f440f4c65981c5bf93c76d35135ba5064d8b7&dn=apache-2.0.txt
+            (function() {
+              // Display errors on page load to the user
+              // (Gets overridden by padutils.setupGlobalExceptionHandler)
+              var originalHandler = window.onerror;
+              window.onerror = function(msg, url, line) {
+                var box   = document.getElementById('editorloadingbox');
+                box.innerHTML = '<p><b>An error occurred while loading the pad</b></p>'
+                              + '<p><b>'+msg+'</b> '
+                              + '<small>in '+ url +' (line '+ line +')</small></p>';
+                // call original error handler
+                if(typeof(originalHandler) == 'function') originalHandler.call(null, arguments);
+              };
+            })();
+            // @license-end
+        </script>
+
+        <script type="text/javascript" src="../static/js/require-kernel.js"></script>
+        <script type="text/javascript" src="../socket.io/socket.io.js"></script>
+
+        <!-- Include base packages manually (this help with debugging) -->
+        <script type="text/javascript" src="../javascripts/lib/ep_etherpad-lite/static/js/pad.js?callback=require.define"></script>
+        <script type="text/javascript" src="../javascripts/lib/ep_etherpad-lite/static/js/ace2_common.js?callback=require.define"></script>
+
+        
+        <script type="text/javascript" src="../static/custom/pad.js"></script>
+        
+
+        <!-- Bootstrap page -->
+        <script type="text/javascript">
+            // @license magnet:?xt=urn:btih:8e4f440f4c65981c5bf93c76d35135ba5064d8b7&dn=apache-2.0.txt
+            var clientVars = {};
+            (function () {
+              var pathComponents = location.pathname.split('/');
+
+              // Strip 'p' and the padname from the pathname and set as baseURL
+              var baseURL = pathComponents.slice(0,pathComponents.length-2).join('/') + '/';
+
+              require.setRootURI(baseURL + "javascripts/src");
+              require.setLibraryURI(baseURL + "javascripts/lib");
+              require.setGlobalKeyPath("require");
+
+              $ = jQuery = require('ep_etherpad-lite/static/js/rjquery').jQuery; // Expose jQuery #HACK
+              browser = require('ep_etherpad-lite/static/js/browser');
+
+              var plugins = require('ep_etherpad-lite/static/js/pluginfw/client_plugins');
+              var hooks = require('ep_etherpad-lite/static/js/pluginfw/hooks');
+
+              plugins.baseURL = baseURL;
+              plugins.update(function () {
+                hooks.plugins = plugins;
+
+                // Call documentReady hook
+                $(function() {
+                  hooks.aCallAll('documentReady');
+                });
+
+                var pad = require('ep_etherpad-lite/static/js/pad');
+                pad.baseURL = baseURL;
+                pad.init();
+              });
+
+              /* TODO: These globals shouldn't exist. */
+              pad = require('ep_etherpad-lite/static/js/pad').pad;
+              chat = require('ep_etherpad-lite/static/js/chat').chat;
+              padeditbar = require('ep_etherpad-lite/static/js/pad_editbar').padeditbar;
+              padimpexp = require('ep_etherpad-lite/static/js/pad_impexp').padimpexp;
+            }());
+            // @license-end
+        </script>
+        <div style="display:none"><a href="/javascript" data-jslicense="1">JavaScript license information</a></div>
+        
 </html>
