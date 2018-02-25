@@ -2,6 +2,9 @@
  * SCREEN.H -ALWAYS IN PLAY- COMPONENT
  */
 
+//INCLUDES???
+//#include <SDL2/SDL>
+
 //SCREEN DIMESIONS
 #define HEIGHT 420 
 #define WIDTH 480
@@ -12,7 +15,7 @@
  *@params y int. Top Vertical position.
  *@params *obj struct object. Pointer to an object.
  */
-void plotTexture(int x, int y, struct object *obj);
+void plotTexture(int x, int y, struct object *obj,SDL_Plotter plotter); //do I need to include SDL lib in order to have it as a parameter here??
 
 /**
  *Plots useful information to the player. We'll use console and printfs for 
