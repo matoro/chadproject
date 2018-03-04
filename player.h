@@ -45,7 +45,7 @@ bool hasAmmo(PlayerObj* player){
 	return false;
 }
 
-void plotPlayer(PlayerObj player,SDL_Plotter plot){
+void plotPlayer(PlayerObj player,SDL_Plotter* plot){
 	 
 	plotObject(&(player.obj),plot);
 }

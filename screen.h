@@ -15,7 +15,7 @@
  *@params *obj struct object. Pointer to an object.
  *@params plotter SLD_Plotter. Graphics.
  */
-void plotObject(struct object *obj,SDL_Plotter plotter); 
+void plotObject(struct object *obj,SDL_Plotter* plotter); 
 
 /**
  *Plots useful information to the player. We'll use console and printfs for 

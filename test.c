@@ -25,7 +25,7 @@ int main(){
 	plotter.clear();
 
 	//plot player box
-	plotPlayer(jugador,plotter);
+	plotPlayer(jugador,&plotter);
 
 
 	//GAME LOOP VARs
@@ -55,7 +55,7 @@ int main(){
 		//update player new  position
 		setPosition(&(jugador.obj),playerposx,playerposy,playerdir); 
 		//plot new position
-		plotPlayer(jugador,plotter);
+		plotPlayer(jugador,&plotter);
 		plotter.update(); //neccessary?
 	}
 
