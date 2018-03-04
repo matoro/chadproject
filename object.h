@@ -88,9 +88,9 @@ void plotObject(struct object *obj,SDL_Plotter plotter){
 	int* pos  = getPosition(obj);
 	int* clr  = getTexture(obj);
 
-	for(int i=0; i<*(size);i++){
+	for(int i=0; i<*(size+0);i++){
 		for(int j=0;j<*(size+1);j++){
-			plotter.plotPixel(i+*pos,j+*(pos+1)
+			plotter.plotPixel(i+*(pos+0),j+*(pos+1)
 				,*(clr),*(clr+1),*(clr+2));
 		}
 	}

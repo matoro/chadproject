@@ -30,7 +30,7 @@ int main(){
 
 	//GAME LOOP VARs
 	char letter = '\0'; //whatever
-	int* playerpos = getPosition(&jugador.obj);	//object.h function
+	int* playerpos = getPosition(&(jugador.obj));	//object.h function
 	int playerposx = *(playerpos); 
 	int playerposy = *(playerpos+1);
 	int playerdir  = *(playerpos+2);
@@ -38,6 +38,7 @@ int main(){
 	while(letter != 'q')
 	{
     		letter = plotter.getKey();
+
 		if (letter == 'w'){
 			playerposy+=1;
 		}
