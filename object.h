@@ -75,8 +75,8 @@ void setPosition(struct object *obj,int i, int j,int dir){
 int* getPosition(struct object *obj){
 	
 	static int pos[3];
-	pos[0] = obj->posObj.y;
-	pos[1] = obj->posObj.x;
+	pos[0] = obj->posObj.x;
+	pos[1] = obj->posObj.y;
 	pos[2] = obj->posObj.direction;
 
 	return pos;

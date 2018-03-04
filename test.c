@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdbool.h>
 
 int main(){
 
@@ -29,39 +30,48 @@ int main(){
 
 
 	//GAME LOOP VARs
-	char letter = '\0'; //whatever
 	int* playerpos = getPosition(&(jugador.obj));	//object.h function
 	int playerposx = *(playerpos); 
 	int playerposy = *(playerpos+1);
 	int playerdir  = *(playerpos+2);
 
-	while(letter != 'q')
+	char letter = '\0';
+	while(letter != 'Q')
 	{
-    		letter = plotter.getKey();
-
-		if (letter == 'w'){
-			playerposy+=1;
+		if (letter == 'W'){
+			playerposy-=1;//It was += at first but it went down!
 		}
-		if (letter == 's'){
-			playerposy-=1;
+		if (letter == 'S'){
+			playerposy+=1; //It was  -= at first but it went up!
 		}
-		if (letter == 'a'){
+		if (letter == 'A'){
 			playerposx-=1;
 		}
-		if (letter == 'd'){
+		if (letter == 'D'){
 			playerposx+=1;
 		}
 		
 		//update player new  position
 		setPosition(&(jugador.obj),playerposx,playerposy,playerdir); 
 		//plot new position
+		plotter.clear();
 		plotPlayer(jugador,&plotter);
-		plotter.update(); //neccessary?
+		plotter.update(); //neccessary? YES!
+		
+		bool keyhit = plotter.kbhit();
+		if (keyhit){
+			letter = plotter.getKey();
+		}else{
+			letter = '\0';
+		//keeps the box from moving all the time in the last dir.
+		}
 	}
+
+	
 
 	char final_msg[] = "See you soon!";
 	plotText(final_msg);
-	SDL_Quit();
+	plotter.setQuit(true);
 
 	return 0;
 }
