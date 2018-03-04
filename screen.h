@@ -2,24 +2,24 @@
  * SCREEN.H -ALWAYS IN PLAY- COMPONENT
  */
 
-//INCLUDES???
-//#include <SDL2/SDL>
+//INCLUDES
+#include "SDL_Plotter.h"
+#include "object.h"
 
-//SCREEN DIMESIONS
-#define HEIGHT 420 
-#define WIDTH 480
+//CONSTANTS
+#define HEIGHT 600	//screen 
+#define WIDTH 600	//dimensions
 
 /**
- *Plots texture of object to the screen starting at given x and y coordinates.
- *@params X int. Left Horizontal position.
- *@params y int. Top Vertical position.
+ *Plots object to the screen.
  *@params *obj struct object. Pointer to an object.
+ *@params plotter SLD_Plotter. Graphics.
  */
-void plotTexture(int x, int y, struct object *obj,SDL_Plotter plotter); //do I need to include SDL lib in order to have it as a parameter here??
+void plotObject(struct object *obj,SDL_Plotter plotter); 
 
 /**
  *Plots useful information to the player. We'll use console and printfs for 
  *starters to later implement ingame window texts.
  *@params msg char[]. The string containing the message.
  */
-void plotText(char[] msg);
+void plotText(char msg[]);
