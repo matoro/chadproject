@@ -31,7 +31,7 @@ struct object{
 };
 
 
-void setTexture(struct* object obj,int r, int g, int b){
+void setTexture(struct object *obj,int r, int g, int b){
 	
 	obj->textureObj.red   = r;
 	obj->textureObj.green = g;
@@ -39,9 +39,9 @@ void setTexture(struct* object obj,int r, int g, int b){
 }
 
 
-int[] getTexture(struct* object obj){
+int* getTexture(struct object *obj){
 
-	int clr[3];
+	static int clr[3];
 	clr[0] = obj->textureObj.red;
 	clr[1] = obj->textureObj.green;
 	clr[2] = obj->textureObj.blue;
@@ -50,31 +50,31 @@ int[] getTexture(struct* object obj){
 }
 
 
-void setSize(struct* object  obj,int height, int width){
+void setSize(struct object *obj,int height, int width){
 	
 	obj->sizeObj.alto   = height;
 	obj->sizeObj.ancho  = width;
 }
 
-int[] getSize(struct* object obj){
+int* getSize(struct object *obj){
 
-	int dim[2];
+	static int dim[2];
 	dim[0] = obj->sizeObj.ancho;
 	dim[1] = obj->sizeObj.alto;
 	
 	return dim;
 }
 
-void setPosition(struct* object obj,int i, int j,int dir){
+void setPosition(struct object *obj,int i, int j,int dir){
 
 	obj->posObj.x  = i;
 	obj->posObj.y  = j;
 	obj->posObj.direction = dir;
 }
 
-int[] getPosition(struct* object obj,int j, int i,int dir){
+int* getPosition(struct object *obj){
 	
-	int pos[3];
+	static int pos[3];
 	pos[0] = obj->posObj.y;
 	pos[1] = obj->posObj.x;
 	pos[2] = obj->posObj.direction;
@@ -82,16 +82,16 @@ int[] getPosition(struct* object obj,int j, int i,int dir){
 	return pos;
 }
 
-void plotObject(struct* object obj,SDL_Plotter plotter){
+void plotObject(struct object *obj,SDL_Plotter plotter){
 	
-	int size[2] = getSize(obj);
-	int pos[3]  = getPosition(obj);
-	int clr[3]  = getTexture(obj);
+	int* size = getSize(obj);
+	int* pos  = getPosition(obj);
+	int* clr  = getTexture(obj);
 
-	for(int i=0; i<size[0];i++){
-		for(int j=0;j<size[1];j++){
-			plotter.plotPixel(i+pos[0],j+pos[1]
-				,clr[0],clr[1],clr[2]);
+	for(int i=0; i<*(size);i++){
+		for(int j=0;j<*(size+1);j++){
+			plotter.plotPixel(i+*pos,j+*(pos+1)
+				,*(clr),*(clr+1),*(clr+2));
 		}
 	}
 }

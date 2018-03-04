@@ -3,7 +3,7 @@
  */
 
 #include "object.h"
-#include "screen.h"//Do I need to include this if object already includes screen?
+//#include "screen.h"//Do I need to include this if object already includes screen?
 #include <stdbool.h>
 
 typedef struct PlayerObj{ //Do I need a structTag?
@@ -45,9 +45,9 @@ bool hasAmmo(PlayerObj* player){
 	return false;
 }
 
-void plotPlayer(PlayerObj,SDL_Plotter plot){
-	
-	plotObject(&PlayerObj.obj,plot);
+void plotPlayer(PlayerObj player,SDL_Plotter plot){
+	 
+	plotObject(&(player.obj),plot);
 }
 
 

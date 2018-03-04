@@ -4,7 +4,7 @@
 
 //INCLUDES
 #include "SDL_Plotter.h"
-#include "object.h"
+//#include "object.h"
 
 //CONSTANTS
 #define HEIGHT 600	//screen 
