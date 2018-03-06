@@ -87,6 +87,8 @@ void plotObject(struct object *obj,SDL_Plotter* plotter){
 	int* size = getSize(obj);
 	int* pos  = getPosition(obj);
 	int* clr  = getTexture(obj);
+	int adjustedx;
+	int adjustedy;
 
 	for(int i=0; i<*(size+0);i++){
 		for(int j=0;j<*(size+1);j++){
