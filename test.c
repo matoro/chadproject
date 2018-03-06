@@ -45,10 +45,18 @@ int main(){
 			playerposy+=1; //It was  -= at first but it went up!
 		}
 		if (letter == 'A'){
-			playerposx-=1;
+			if(playerdir > 0){
+				playerdir-=1;
+			}else{
+				playerdir=359;
+			}
 		}
 		if (letter == 'D'){
-			playerposx+=1;
+			if(playerdir < 359){
+				playerdir+=1;
+			}else{
+				playerdir=0;	
+			}
 		}
 		
 		//update player new  position
