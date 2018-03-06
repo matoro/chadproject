@@ -87,8 +87,10 @@ void plotObject(struct object *obj,SDL_Plotter* plotter){
 	int* size = getSize(obj);
 	int* pos  = getPosition(obj);
 	int* clr  = getTexture(obj);
-	int adjustedx;
-	int adjustedy;
+	int adjustedx_f;
+	int adjustedx_c;
+	int adjustedy_f;
+	int adjustedy_c;
 
 	for(int i=0; i<*(size+0);i++){
 		for(int j=0;j<*(size+1);j++){
@@ -97,10 +99,18 @@ void plotObject(struct object *obj,SDL_Plotter* plotter){
 			degree besides 0. In the future we should probably make multiple textures for each object facing different directions then use an 
 			if/else loop or something, but I want to work on getting the bullet firing working, so this will have to do for now.
 			*/
-			adjustedx = (((i - ((*size)/2)))*(cos((*(pos+2))*(M_PI/180)))-((j - ((*(size+1))/2)))*(sin((*(pos+2))*(M_PI/180))) + (*size)/2); // adjusts x for rotation. 
-			adjustedy = (((i - ((*(size+1))/2)))*(sin((*(pos+2))*(M_PI/180)))+((j - ((*size)/2)))*(cos((*(pos+2))*(M_PI/180))) + (*(size+1))/2); // adjusts y for rotation
-			plotter->plotPixel(adjustedx+*(pos+0),adjustedy+*(pos+1)
+			adjustedx_f = (int) floor((((i-((*size)/2.0)))*(cos((*(pos+2))*(M_PI/180.0)))-((j-((*(size+1))/2.0)))*(sin((*(pos+2))*(M_PI/180.0)))+(*size)/2.0));
+			adjustedx_c = (int)  ceil((((i-((*size)/2.0)))*(cos((*(pos+2))*(M_PI/180.0)))-((j-((*(size+1))/2.0)))*(sin((*(pos+2))*(M_PI/180.0)))+(*size)/2.0)); 
+			adjustedy_f = (int) floor((((i-((*(size+1))/2.0)))*(sin((*(pos+2))*(M_PI/180.0)))+((j-((*size)/2.0)))*(cos((*(pos+2))*(M_PI/180.0)))+(*(size+1))/2.0));
+			adjustedy_c = (int) ceil((((i-((*(size+1))/2.0)))*(sin((*(pos+2))*(M_PI/180.0)))+((j-((*size)/2.0)))*(cos((*(pos+2))*(M_PI/180.0)))+(*(size+1))/2.0));
+			
+
+			plotter->plotPixel(adjustedx_f+*(pos+0),adjustedy_f+*(pos+1)
 				,*(clr),*(clr+1),*(clr+2));
+
+			plotter->plotPixel(adjustedx_c+*(pos+0),adjustedy_c+*(pos+1)
+				,*(clr),*(clr+1),*(clr+2));
+
 		}
 	}
 }
