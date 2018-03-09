@@ -105,10 +105,10 @@ void plotObject(struct object *obj,SDL_Plotter* plotter){
 			adjustedy_c = (int) ceil((((i-((*(size+1))/2.0)))*(sin((*(pos+2))*(M_PI/180.0)))+((j-((*size)/2.0)))*(cos((*(pos+2))*(M_PI/180.0)))+(*(size+1))/2.0));
 			
 
-			plotter->plotPixel(adjustedx_f+*(pos+0),adjustedy_f+*(pos+1)
+			plotter->plotPixel(adjustedx_c+*(pos+0),adjustedy_f+*(pos+1)
 				,*(clr),*(clr+1),*(clr+2));
 
-			plotter->plotPixel(adjustedx_c+*(pos+0),adjustedy_c+*(pos+1)
+			plotter->plotPixel(adjustedx_f+*(pos+0),adjustedy_c+*(pos+1)
 				,*(clr),*(clr+1),*(clr+2));
 
 		}
