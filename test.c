@@ -19,7 +19,7 @@ int main(){
 	PlayerObj jugador, *jugador_ptr;	//Typedef in player.h
 
 	//DEFINITON
-	jugador = createPlayer(16,16,WIDTH/2,HEIGHT/2,1);//16X16@MIDDLE OF SCREEN
+	jugador = createPlayer(16,16,WIDTH/2,HEIGHT/2,0);//16X16@MIDDLE OF SCREEN
 	jugador_ptr = &jugador;
 
 	//clear screen
@@ -38,33 +38,26 @@ int main(){
 	char letter = '\0';
 	while(letter != 'Q')
 	{
-		if (letter == 'W'){
-			playerposy-=1;//It was += at first but it went down!
+	
+		int* updatePos = changePosition(&(jugador.obj),'A',1);
+
+		playerposx += *(updatePos+0);
+		playerposy += *(updatePos+1);
+		playerdir  += *(updatePos+2);
+		if (playerdir > 359){
+			playerdir = 0;
+		}		
+		if (playerdir < 0){
+			playerdir = 359;
 		}
-		if (letter == 'S'){
-			playerposy+=1; //It was  -= at first but it went up!
-		}
-		if (letter == 'A'){
-			if(playerdir > 0){
-				playerdir-=1;
-			}else{
-				playerdir=359;
-			}
-		}
-		if (letter == 'D'){
-			if(playerdir < 359){
-				playerdir+=1;
-			}else{
-				playerdir=0;	
-			}
-		}
-		
+
 		//update player new  position
 		setPosition(&(jugador.obj),playerposx,playerposy,playerdir); 
 		//plot new position
 		plotter.clear();
 		plotPlayer(jugador,&plotter);
 		plotter.update(); //neccessary? YES!
+		
 		
 		bool keyhit = plotter.kbhit();
 		if (keyhit){
@@ -73,6 +66,7 @@ int main(){
 			letter = '\0';
 		//keeps the box from moving all the time in the last dir.
 		}
+		
 	}
 
 	

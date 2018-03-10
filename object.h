@@ -82,6 +82,38 @@ int* getPosition(struct object *obj){
 	return pos;
 }
 
+int* changePosition(struct object *obj,char movement, int rate){
+
+	int* pos  = getPosition(obj);
+	int deltaX;
+	int deltaY;
+	int deltaDir = 0;
+	switch (movement){
+		case 'W':
+			deltaX = (int) rate*sin(*(pos+2)*(M_PI/180.0));
+			deltaY = (int) rate*cos(*(pos+2)*(M_PI/180.0));
+			break;
+		case 'S':
+			deltaX = (int) -rate*sin(*(pos+2)*(M_PI/180.0));
+			deltaY = (int) -rate*cos(*(pos+2)*(M_PI/180.0));
+			break;
+		case 'A':
+			deltaDir = -rate;
+			break;
+		case 'D':
+			deltaDir = rate;
+			break;
+		default:
+			deltaX = 0;
+			deltaY = 0;
+			deltaDir = 0;
+			break;
+	}
+
+	static int response[3] = {deltaX,deltaY,deltaDir};
+	return response;
+}
+
 void plotObject(struct object *obj,SDL_Plotter* plotter){
 	
 	int* size = getSize(obj);
@@ -94,30 +126,25 @@ void plotObject(struct object *obj,SDL_Plotter* plotter){
 
 	for(int i=0; i<*(size+0);i++){
 		for(int j=0;j<*(size+1);j++){
-						/*
-			This probably isn't the best way to implement rotation but its the first thing that came to my mind. It looks kind of weird at any
-			degree besides 0. In the future we should probably make multiple textures for each object facing different directions then use an 
-			if/else loop or something, but I want to work on getting the bullet firing working, so this will have to do for now.
-			*/
+		
+			//Adjusted Coordenates.
 			adjustedx_f = (int) floor((((i-((*size)/2.0)))*(cos((*(pos+2))*(M_PI/180.0)))-((j-((*(size+1))/2.0)))*(sin((*(pos+2))*(M_PI/180.0)))+(*size)/2.0));
 			adjustedx_c = (int)  ceil((((i-((*size)/2.0)))*(cos((*(pos+2))*(M_PI/180.0)))-((j-((*(size+1))/2.0)))*(sin((*(pos+2))*(M_PI/180.0)))+(*size)/2.0)); 
 			adjustedy_f = (int) floor((((i-((*(size+1))/2.0)))*(sin((*(pos+2))*(M_PI/180.0)))+((j-((*size)/2.0)))*(cos((*(pos+2))*(M_PI/180.0)))+(*(size+1))/2.0));
 			adjustedy_c = (int) ceil((((i-((*(size+1))/2.0)))*(sin((*(pos+2))*(M_PI/180.0)))+((j-((*size)/2.0)))*(cos((*(pos+2))*(M_PI/180.0)))+(*(size+1))/2.0));
-			
+
+			//Plotting Coordenates.			
 			plotter->plotPixel(adjustedx_c+*(pos+0),adjustedy_c+*(pos+1)
 				,*(clr),*(clr+1),*(clr+2));
 
 			plotter->plotPixel(adjustedx_f+*(pos+0),adjustedy_f+*(pos+1)
 				,*(clr),*(clr+1),*(clr+2));
 
-			
 			plotter->plotPixel(adjustedx_c+*(pos+0),adjustedy_f+*(pos+1)
 				,*(clr),*(clr+1),*(clr+2));
 
 			plotter->plotPixel(adjustedx_f+*(pos+0),adjustedy_c+*(pos+1)
 				,*(clr),*(clr+1),*(clr+2));
-
 		}
 	}
 }
-
