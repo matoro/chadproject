@@ -39,16 +39,16 @@ int main(){
 	while(letter != 'Q')
 	{
 	
-		int* updatePos = changePosition(&(jugador.obj),'A',1);
+		int* updatePos = changePosition(&(jugador.obj),letter,1);
 
 		playerposx += *(updatePos+0);
 		playerposy += *(updatePos+1);
 		playerdir  += *(updatePos+2);
 		if (playerdir > 359){
-			playerdir = 0;
+			playerdir = playerdir%360;
 		}		
 		if (playerdir < 0){
-			playerdir = 359;
+			playerdir = (playerdir+360);
 		}
 
 		//update player new  position

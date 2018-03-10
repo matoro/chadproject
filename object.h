@@ -90,12 +90,12 @@ int* changePosition(struct object *obj,char movement, int rate){
 	int deltaDir = 0;
 	switch (movement){
 		case 'W':
-			deltaX = (int) rate*sin(*(pos+2)*(M_PI/180.0));
-			deltaY = (int) rate*cos(*(pos+2)*(M_PI/180.0));
-			break;
-		case 'S':
 			deltaX = (int) -rate*sin(*(pos+2)*(M_PI/180.0));
 			deltaY = (int) -rate*cos(*(pos+2)*(M_PI/180.0));
+			break;
+		case 'S':
+			deltaX = (int) rate*sin(*(pos+2)*(M_PI/180.0));
+			deltaY = (int) rate*cos(*(pos+2)*(M_PI/180.0));
 			break;
 		case 'A':
 			deltaDir = -rate;
