@@ -38,12 +38,17 @@ int main(){
 	char letter = '\0';
 	while(letter != 'Q')
 	{
-	
-		int* updatePos = changePosition(&(jugador.obj),letter,1);
+		playerpos = getPosition(&(jugador.obj));
+		playerposx = *(playerpos); 
+		playerposy = *(playerpos+1);
+		playerdir  = *(playerpos+2);
+
+		int* updatePos = changePosition(&(jugador.obj),letter,10);
 
 		playerposx += *(updatePos+0);
 		playerposy += *(updatePos+1);
 		playerdir  += *(updatePos+2);
+		
 		if (playerdir > 359){
 			playerdir = playerdir%360;
 		}		
@@ -58,10 +63,17 @@ int main(){
 		plotPlayer(jugador,&plotter);
 		plotter.update(); //neccessary? YES!
 		
+
+		fprintf(stdout,"PLAYER DIR: %d",playerdir);
 		
 		bool keyhit = plotter.kbhit();
 		if (keyhit){
 			letter = plotter.getKey();
+			fprintf(stdout,"PLAYER DIR: %d",playerdir);
+			fprintf(stdout,"PLAYER x: %d",playerposx);
+			fprintf(stdout,"PLAYER DIR: %d",playerposy);
+
+			
 		}else{
 			letter = '\0';
 		//keeps the box from moving all the time in the last dir.

@@ -1,25 +1,34 @@
 /*
  * SCREEN.H -ALWAYS IN PLAY- COMPONENT
+ * @author leba39, mortonman.
  */
 
-//INCLUDES
+//I N C L U D E s
 #include "SDL_Plotter.h"
-//#include "object.h"
+#include "object.h"
 
-//CONSTANTS
+//C O N S T A N T s
 #define HEIGHT 600	//screen 
 #define WIDTH 600	//dimensions
 
-/**
- *Plots object to the screen.
- *@params *obj struct object. Pointer to an object.
- *@params plotter SLD_Plotter. Graphics.
- */
-void plotObject(struct object *obj,SDL_Plotter* plotter); 
+//F U N C T I O N s
 
-/**
- *Plots useful information to the player. We'll use console and printfs for 
- *starters to later implement ingame window texts.
+
+
+/**	FUNCTION: plotObject
+ *PURPOSE: Plots object to the screen given an object and a SDL_Plotter.
+ *PRECONDITION: The object is not null. The plotter is already initialized.
+ *POSTCONDITION: The object is drawn taking into account current pos and dir.
+ *@params struct object *obj	 The object in question.
+ * 	  SLD_Plotter *plotter	 Active SDL plotter.
+ */void plotObject(struct object *obj,SDL_Plotter* plotter); 
+
+
+
+/**	FUNCTION: plotText
+ *PURPOSE: Prints useful information to the end-user. We'll use console and 
+ *	   printfs for starters to later implement ingame window texts.
  *@params msg char[]. The string containing the message.
- */
-void plotText(char msg[]);
+ *PRECONDITION:	A valid pointer to a char array.
+ *POSTCONDITION: Prints given string to stdout.
+ */void plotText(char msg[]);
