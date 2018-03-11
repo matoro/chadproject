@@ -1,18 +1,13 @@
 /*
- *PLAYER.H FILE: CONSTAINS BASIC INFO AND FUNCTIONS ABOUT THE PLAYERs OBJ.
+ * PLAYER.C FILE: INFO AND FUNCTIONS ABOUT THE PLAYERs OBJ.
+ * CODE IMPLEMENTATION
+ * @author leba39, mortonman.
  */
 
 #include "object.h"
-//#include "screen.h"//Do I need to include this if object already includes screen?
+#include "SDL_Plotter.h"
 #include <stdbool.h>
 
-typedef struct PlayerObj{ //Do I need a structTag?
-
-	struct object obj;
-	int health = 100;
-	int ammo   = 100;
-	//...	
-}PlayerObj;
 
 void setHealth(PlayerObj* player,int hp){
 	
