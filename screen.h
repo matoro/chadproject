@@ -2,6 +2,8 @@
  * SCREEN.H -ALWAYS IN PLAY- COMPONENT
  * @author leba39, mortonman.
  */
+#ifndef SCREEN_H_INCLUDED
+#define SCREEN_H_INCLUDED
 
 //I N C L U D E s
 #include "SDL_Plotter.h"
@@ -32,3 +34,5 @@
  *PRECONDITION:	A valid pointer to a char array.
  *POSTCONDITION: Prints given string to stdout.
  */void plotText(char msg[]);
+
+#endif

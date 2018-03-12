@@ -2,6 +2,8 @@
  * PLAYER.C FILE: INFO AND FUNCTIONS ABOUT THE PLAYERs OBJ.
  * @author leba39, mortonman.
  */
+#ifndef PLAYER_H_INCLUDED
+#define PLAYER_H_INCLUDED
 
 #include <stdbool.h>
 #include "object.h"
@@ -84,3 +86,4 @@ typedef struct PlayerObj{
  *@return PlayerObj	A player with the given size and postion variables. 
  */PlayerObj createPlayer(struct size dim, struct position pos);
 
+#endif

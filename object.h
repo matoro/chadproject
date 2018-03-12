@@ -2,6 +2,8 @@
  * OBJECT.H FILE: BASIC STRUCT DATA COMMON FOR ALL OBJECTS.
  * @author leba39, mortonman.
  */
+#ifndef OBJECT_H_INCLUDED
+#define OBJECT_H_INCLUDED
 
 // S T R U C T s
 
@@ -136,3 +138,5 @@ struct object{
  *        int rate          	The rate at which to change movement speed
  *@return struct position       Data block containing adjusted position values.
  */struct position changePosition(struct object *obj,char movement, int rate);
+
+#endif
