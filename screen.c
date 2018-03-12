@@ -3,6 +3,7 @@
  * CODE IMPLEMENTATION
  * @author leba39, mortonman.
  */
+#include "screen.h"
 
 void plotObject(struct object *obj,SDL_Plotter* plotter){
 	

@@ -3,24 +3,25 @@
  *GAME TESTING
  */
 
-//#include "screen.h"
-#include "player.h"
-//#include "object.h"
-//#include "SDL_Plotter.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include <math.h>	//include math inside object/screen?
 #include <stdbool.h>
+
+#include "player.h" 	//Already contains object,SDL and stdbool
+#include "screen.h"	//Contains SDL and plotting functions
 
 int main(){
 
 	//VARs DECLARATION
 	SDL_Plotter plotter(HEIGHT,WIDTH); 	//CONSTANTS DEFINED IN screen.h
-	PlayerObj jugador, *jugador_ptr;	//Typedef in player.h
+	PlayerObj jugador;			//Typedef in player.h
+	struct position playerPos = {WIDTH/2,HEIGHT/2,0};
+	struct size playerDim	  = {16,16};	
 
 	//DEFINITON
-	jugador = createPlayer(16,16,WIDTH/2,HEIGHT/2,0);//16X16@MIDDLE OF SCREEN
-	jugador_ptr = &jugador;
+	jugador = createPlayer(playerDim,playerPos);//16X16@MIDDLE OF SCREEN
 
 	//clear screen
 	plotter.clear();
@@ -30,67 +31,52 @@ int main(){
 
 
 	//GAME LOOP VARs
-	int* playerpos = getPosition(&(jugador.obj));	//object.h function
-	int playerposx = *(playerpos); 
-	int playerposy = *(playerpos+1);
-	int playerdir  = *(playerpos+2);
+	playerPos	  = getPosition(&(jugador.obj));	//object.h function
 
 	char letter = '\0';
 	while(letter != 'Q')
 	{
-		playerpos = getPosition(&(jugador.obj));
-		playerposx = *(playerpos); 
-		playerposy = *(playerpos+1);
-		playerdir  = *(playerpos+2);
 
-		int* updatePos = changePosition(&(jugador.obj),letter,10);
+		struct position updatedPos = changePosition(&(jugador.obj),letter,1);
 
-		playerposx += *(updatePos+0);
-		playerposy += *(updatePos+1);
-		playerdir  += *(updatePos+2);
+		playerPos.x 	    += updatedPos.x;
+		playerPos.y 	    += updatedPos.y;
+		playerPos.direction += updatedPos.direction;
 		
-		if (playerdir > 359){
-			playerdir = playerdir%360;
+
+		//we mend directions to keep them in range
+		if (playerPos.direction > 359){
+			playerPos.direction = playerPos.direction%360;
 		}		
-		if (playerdir < 0){
-			playerdir = (playerdir+360);
+		if (playerPos.direction < 0){
+			playerPos.direction = (playerPos.direction+360);
 		}
 
 		//update player new  position
-		setPosition(&(jugador.obj),playerposx,playerposy,playerdir); 
+		setPosition(&(jugador.obj),playerPos); 
 		//plot new position
 		plotter.clear();
 		plotPlayer(jugador,&plotter);
 		plotter.update(); //neccessary? YES!
-		
 
-		fprintf(stdout,"PLAYER DIR: %d",playerdir);
 		
 		bool keyhit = plotter.kbhit();
 		if (keyhit){
 			letter = plotter.getKey();
-			fprintf(stdout,"PLAYER DIR: %d",playerdir);
-			fprintf(stdout,"PLAYER x: %d",playerposx);
-			fprintf(stdout,"PLAYER DIR: %d",playerposy);
-
-			
+			//Debug traces
+			fprintf(stdout,"PLAYER DIR: %d",playerPos.direction);
+			fprintf(stdout,"PLAYER x: %d",playerPos.x);
+			fprintf(stdout,"PLAYER y: %d",playerPos.y);
 		}else{
 			letter = '\0';
-		//keeps the box from moving all the time in the last dir.
+			//keeps the box from moving all the time in the last dir.
 		}
-		
 	}
 
 	
-
 	char final_msg[] = "See you soon!";
-	plotText(final_msg);
+	plotText(final_msg);	//screen.h function
 	plotter.setQuit(true);
 
 	return 0;
 }
-
-void plotText(char* msg){
-	fprintf(stdin,"%s",msg);
-}
-

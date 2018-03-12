@@ -3,6 +3,7 @@
  * CODE IMPLEMENTATION
  * @author leba39, mortonman.
  */
+#include "object.h"
 
 void setTexture(struct object *obj,struct texture clr){
 	

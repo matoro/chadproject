@@ -4,10 +4,9 @@
  * @author leba39, mortonman.
  */
 
+#include <stdbool.h>
 #include "object.h"
 #include "SDL_Plotter.h"
-#include <stdbool.h>
-
 
 void setHealth(PlayerObj* player,int hp){
 	
@@ -46,13 +45,13 @@ void plotPlayer(PlayerObj player,SDL_Plotter* plot){
 }
 
 
-PlayerObj createPlayer(int h, int w, int j, int i, int dir){
+PlayerObj createPlayer(struct size dim, struct position pos){
 	
 	PlayerObj a;
 
-	setTexture(&a.obj,255,99,71); 	//TOMATO RED
-	setSize(&a.obj,h,w);		//DIMENSION
-	setPosition(&a.obj,j,i,dir);	//POSITION
+	setTexture(&a.obj,255,99,71); 			//TOMATO RED
+	setSize(&a.obj,dim.alto,dim.ancho);		//DIMENSION
+	setPosition(&a.obj,pos.x,pos.y,pos.direction);	//POSITION
 
 	return a;
 }

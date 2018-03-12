@@ -134,5 +134,5 @@ struct object{
  *@params struct object *obj	The object in question
  *        char movement		The directional key input by the user
  *        int rate          	The rate at which to change movement speed
- *@return struct size           Data block containing adjusted position values.
- */struct size changePosition(struct object *obj,char movement, int rate);
+ *@return struct position       Data block containing adjusted position values.
+ */struct position changePosition(struct object *obj,char movement, int rate);
