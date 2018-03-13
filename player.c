@@ -49,10 +49,12 @@ void plotPlayer(PlayerObj player,SDL_Plotter* plot){
 PlayerObj createPlayer(struct size dim, struct position pos){
 	
 	PlayerObj a;
-
-	setTexture(&a.obj,255,99,71); 			//TOMATO RED
-	setSize(&a.obj,dim.alto,dim.ancho);		//DIMENSION
-	setPosition(&a.obj,pos.x,pos.y,pos.direction);	//POSITION
+	struct texture playertexture; // TOMATO RED
+	playertexture.green = 99; 
+	playertexture.blue = 71;
+	setTexture(&a.obj, playertexture);
+	setSize(&a.obj,dim);		//DIMENSION
+	setPosition(&a.obj,pos);	//POSITION
 
 	return a;
 }

@@ -67,13 +67,13 @@ struct position changePosition(struct object *obj,char movement, int rate){
 	int deltaDir;
 	switch (movement){
 		case 'W':
-			deltaX = (int) round(-rate*sin(pos.direction*M_PI/180.0));
+			deltaX = (int) round(rate*sin(pos.direction*M_PI/180.0));
 			deltaY = (int) round(-rate*cos(pos.direction*M_PI/180.0));
 			deltaDir = 0;
 			fprintf(stdout,"You pressed W: %d %d\n",deltaX,deltaY);
 			break;
 		case 'S':
-			deltaX = (int) round(rate*sin(pos.direction*M_PI/180.0));
+			deltaX = (int) round(-rate*sin(pos.direction*M_PI/180.0));
 			deltaY = (int) round(rate*cos(pos.direction*M_PI/180.0));
 			deltaDir = 0;
 			fprintf(stdout,"You pressed S: %d %d\n",deltaX,deltaY);

@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include "object.h"
+#include "screen.h"
 #include "SDL_Plotter.h"
 
 //S T R U C T s

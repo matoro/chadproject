@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -lSDL2 -lSDL2_mixer
+CXXFLAGS = -lSDL2 -lSDL2_mixer -std=c++11
 
 all: object.o player.o screen.o
 	$(CXX) object.o player.o screen.o test.c -o game $(CXXFLAGS)

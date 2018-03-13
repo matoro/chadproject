@@ -16,8 +16,8 @@ void plotObject(struct object *obj,SDL_Plotter* plotter){
 	int adjustedy_f;
 	int adjustedy_c;
 
-	for(int i=0; i<*(size+0);i++){
-		for(int j=0;j<*(size+1);j++){
+	for(int i=0; i<(dim.alto+0);i++){
+		for(int j=0;j<(dim.ancho+1);j++){
 		
 			//Adjusted Coordenates.
 			adjustedx_f = (int) floor((i-dim.alto/2.0)*(cos(pos.direction*M_PI/180.0))-(j-dim.ancho/2.0)*(sin(pos.direction*M_PI/180.0))+dim.alto/2.0);
@@ -36,5 +36,5 @@ void plotObject(struct object *obj,SDL_Plotter* plotter){
 
 void plotText(char msg[]){
 	
-	puts(msg,stdout);
+	puts(msg);
 }

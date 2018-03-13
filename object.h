@@ -5,6 +5,9 @@
 #ifndef OBJECT_H_INCLUDED
 #define OBJECT_H_INCLUDED
 
+#include <math.h>
+#include <stdio.h>
+
 // S T R U C T s
 
 
@@ -32,8 +35,8 @@ struct texture{
  */
 struct size{	
 	
-	int alto = 0;
-	int ancho = 0;
+	int alto;
+	int ancho;
 };
 
 
