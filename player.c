@@ -4,10 +4,7 @@
  * @author leba39, mortonman.
  */
 
-#include <stdbool.h>
 #include "player.h"
-#include "object.h"
-#include "SDL_Plotter.h"
 
 void setHealth(PlayerObj* player,int hp){
 	
