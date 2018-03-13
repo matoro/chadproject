@@ -6,46 +6,46 @@
 
 #include "player.h"
 
-void setHealth(PlayerObj* player,int hp){
+void setHealth(struct PlayerObj* player,int hp){
 	
 	player->health = hp;
 }
 
-int getHealth(PlayerObj* player){
+int getHealth(struct PlayerObj* player){
 
 	return player->health; 
 }
 
-void setAmmo(PlayerObj* player,int munition){
+void setAmmo(struct PlayerObj* player,int munition){
 	
 	player->health = munition;
 }
 
-int getAmmo(PlayerObj* player){
+int getAmmo(struct PlayerObj* player){
 
 	return player->ammo; 
 }
 
-bool isAlive(PlayerObj* player){
+bool isAlive(struct PlayerObj* player){
 	
 	if ((player->health)>0)	return true;
 	return false;
 }
 
-bool hasAmmo(PlayerObj* player){
+bool hasAmmo(struct PlayerObj* player){
 	if ((player->ammo)>0) return true;
 	return false;
 }
 
-void plotPlayer(PlayerObj player,SDL_Plotter* plot){
+void plotPlayer(struct PlayerObj player,SDL_Plotter* plot){
 	 
 	plotObject(&(player.obj),plot);
 }
 
 
-PlayerObj createPlayer(struct size dim, struct position pos){
+struct PlayerObj createPlayer(struct size dim, struct position pos){
 	
-	PlayerObj a;
+	struct PlayerObj a;
 	struct texture playertexture; // TOMATO RED
 	playertexture.green = 99; 
 	playertexture.blue = 71;

@@ -16,7 +16,7 @@ int main(){
 
 	//VARs DECLARATION
 	SDL_Plotter plotter(HEIGHT,WIDTH); 	//CONSTANTS DEFINED IN screen.h
-	PlayerObj jugador;			//Typedef in player.h
+	struct PlayerObj jugador;			//Typedef in player.h
 	struct position playerPos = {WIDTH/2,HEIGHT/2,0};
 	struct size playerDim	  = {16,16};	
 
