@@ -74,7 +74,7 @@ struct PlayerObj{
 
 /**	FUNCTION: plotPlayer
  *PURPOSE: Plots a player object on the screen.
- *PRECONDITION: Valid non null PlayerObj* with valid object variables and a valid non null SDL_Plotter*.
+ *PRECONDITION: Valid non null PlayerObj with valid object variables and a valid non null SDL_Plotter*.
  *@params PlayerObj* player	The player that is being plotted.
  *	  SDL_Plotter* plot	The plotter onto which the player object is being plotted.
  */void plotPlayer(struct PlayerObj player,SDL_Plotter* plot);

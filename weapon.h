@@ -1,5 +1,5 @@
 /*
- * WEAPON.H -VISIBELE IN PLAY- COMPONENT
+ * WEAPON.H -VISIBLE- COMPONENT
  * @author leba39, mortonmann.
  */
 #ifndef WEAPON_H_INCLUDED
@@ -11,9 +11,10 @@
  */
 enum weapon{
 
-	gun 		= 20;
-	shotgun 	= 40;
-	machinegun 	= 60;
-	rifle 		= 80;
+	NONE 		= 0,
+	GUN 		= 20,
+	SHOTGUN 	= 40,
+	MACHINEGUN 	= 60,
+	RIFLE 		= 80,
 };
 #endif
