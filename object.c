@@ -90,6 +90,17 @@ struct position changePosition(struct object *obj,char movement, int rate){
 			deltaDir = rate;
 			fprintf(stdout,"You pressed D: %d\n",deltaDir);
 			break;
+		case 'Q':
+			//Same as going forward in (dir-90)º
+			deltaX = (int) round(rate*sin((pos.direction-90)*M_PI/180.0));
+			deltaY = (int) round(-rate*cos((pos.direction-90)*M_PI/180.0));
+			deltaDir = 0;
+			break;
+		case 'E':
+			deltaX = (int) round(rate*sin((pos.direction+90)*M_PI/180.0));
+			deltaY = (int) round(-rate*cos((pos.direction+90)*M_PI/180.0));
+			deltaDir = 0;
+			break;
 		default:
 			deltaX = 0;
 			deltaY = 0;

@@ -34,7 +34,7 @@ int main(){
 	playerPos	  = getPosition(&(jugador.obj));	//object.h function
 
 	char letter = '\0';
-	while(letter != 'Q')
+	while(letter != '0')
 	{
 
 		struct position updatedPos = changePosition(&(jugador.obj),letter,6);
