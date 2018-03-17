@@ -9,6 +9,8 @@
 #include "object.h"
 #include "screen.h"
 #include "SDL_Plotter.h"
+#include "ammo.h"
+#include "weapon.h"
 
 //S T R U C T s
 
@@ -23,6 +25,8 @@ struct PlayerObj{
 	struct object obj;
 	int health = 100;
 	int ammo   = 100;
+	enum weapon player_weapon  = NONE;
+	enum ammunition ammo_type  = NORMAL;
 	//...	
 };
 

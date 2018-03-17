@@ -13,8 +13,8 @@ enum weapon{
 
 	NONE 		= 0,
 	GUN 		= 20,
-	SHOTGUN 	= 40,
-	MACHINEGUN 	= 60,
-	RIFLE 		= 80,
+	SHOTGUN 	= 30,
+	MACHINEGUN 	= 40,
+	RIFLE 		= 50,
 };
 #endif
