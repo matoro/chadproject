@@ -37,7 +37,7 @@ int main(){
 	while(letter != 'Q')
 	{
 
-		struct position updatedPos = changePosition(&(jugador.obj),letter,3);
+		struct position updatedPos = changePosition(&(jugador.obj),letter,6);
 
 		playerPos.x 	    += updatedPos.x;
 		playerPos.y 	    += updatedPos.y;
