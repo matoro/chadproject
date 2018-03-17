@@ -30,6 +30,7 @@ struct EnemyObj{
 	int fov     = 60;
 	bool active = false;
 	bool sight  = false;
+	//enums for type of weapon and ammo go here. Dont forget the includes as well when this component merges into 'testing'
 	//...	
 };
 
