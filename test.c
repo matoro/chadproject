@@ -73,7 +73,7 @@ int main(){
 		}
 	}
 
-	
+	free(jugador.obj.textureObj);
 	char final_msg[] = "See you soon!";
 	plotText(final_msg);	//screen.h function
 	plotter.setQuit(true);

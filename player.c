@@ -45,13 +45,39 @@ void plotPlayer(struct PlayerObj player,SDL_Plotter* plot){
 
 struct PlayerObj createPlayer(struct size dim, struct position pos){
 	
-	struct PlayerObj a;
-	struct texture playertexture; // TOMATO RED
-	playertexture.green = 99; 
-	playertexture.blue = 71;
-	setTexture(&a.obj, playertexture);
+	struct PlayerObj a;	
 	setSize(&a.obj,dim);		//DIMENSION
 	setPosition(&a.obj,pos);	//POSITION
+	
+	struct texture tomatoRed;
+	tomatoRed.red   = 250;
+	tomatoRed.green = 99;
+	tomatoRed.blue  = 71;
+
+	struct texture darkBlack; // TOMATO RED
+	darkBlack.red   = 5;
+	darkBlack.green = 5; 
+	darkBlack.blue  = 5;
+
+	int totalPixel = dim.alto * dim.ancho;
+	a.obj.textureObj = (struct texture*)malloc(sizeof(struct texture)*totalPixel); 	
+
+	//HALF RED (FRONT) AND HALF BLACK (BACK)
+
+	int count = 0;
+	for(int i = 0;i<dim.ancho;i++){
+		for(int j = 0;j<dim.alto;j++){
+			/* OTHER CONFIGURATIONS
+			 * Two colored stripes, condition:
+  			 * (j<=(dim.alto/2)-1)?
+			 * Red-Black chess squares, condition:
+			 * (count%2==0)?
+			 * ... We should find other patterns to style our objects.
+			 */	
+			setTexture(&a.obj,(count<=(totalPixel/2)-1) ? tomatoRed:darkBlack,count);
+			count++;
+		}
+	}
 
 	return a;
 }
