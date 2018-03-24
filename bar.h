@@ -5,7 +5,13 @@
 #ifndef BAR_H_
 #define BAR_H_
 
-#include "player.h"
+#include "player.h"	//already includes screen and sdl_plotter?
+#include "screen.h"
+#include "SDL_Plotter.h"
+
+//CONSTANTS
+const int MAX_HEALTH = 100;
+const int MAX_AMMO   =  50;
 
 /*
 *Enum:bartype 	the player statistic represented by the bar: health or ammo.
@@ -38,7 +44,7 @@ struct BarObj{
  *	  
  *@return struct BarObj		        A bar created based on the data in the player object and the position provided.
  */
-struct BarObj createBar(struct PlayerObj *player, enum bartype type, struct position pos);
+struct BarObj createBar(struct PlayerObj* player, enum bartype type, struct position pos);
 
 /*	FUNCTION: updateBar
  *PURPOSE: Updates the currentvalue of health and ammo bars.
@@ -47,7 +53,7 @@ struct BarObj createBar(struct PlayerObj *player, enum bartype type, struct posi
  *@params int newvalue			The value that the bar's currentvalue variable is set to.
  	  struct bar *currentbar	The bar that is currently being updated.
  */
-void setCurrentValue(struct BarObj *currentbar, int newvalue);
+void setCurrentValue(struct BarObj* currentbar, int newvalue);
 
 /*	FUNCTION: plotBar
  *PURPOSE: Plots a bar on the screen.
@@ -56,6 +62,6 @@ void setCurrentValue(struct BarObj *currentbar, int newvalue);
  * 
  *@params struct BarObj *bar		The bar that is to be plotted.
  */
-void plotBar(struct BarObj *bar);
+void plotBar(struct BarObj* bar,SDL_Plotter* plot);
 
 #endif
