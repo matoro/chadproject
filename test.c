@@ -34,10 +34,10 @@ int main(){
 	playerPos	  = getPosition(&(jugador.obj));	//object.h function
 
 	char letter = '\0';
-	while(letter != 'Q')
+	while(letter != '0')
 	{
 
-		struct position updatedPos = changePosition(&(jugador.obj),letter,3);
+		struct position updatedPos = changePosition(&(jugador.obj),letter,6);
 
 		playerPos.x 	    += updatedPos.x;
 		playerPos.y 	    += updatedPos.y;
@@ -73,7 +73,7 @@ int main(){
 		}
 	}
 
-	
+	free(jugador.obj.textureObj);
 	char final_msg[] = "See you soon!";
 	plotText(final_msg);	//screen.h function
 	plotter.setQuit(true);
