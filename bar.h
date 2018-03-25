@@ -17,8 +17,8 @@ const int MAX_AMMO   =  50;
 *Enum:bartype 	the player statistic represented by the bar: health or ammo.
 */
 enum bartype{
-	health;
-	ammo;
+	health,
+	ammo
 };
 
 /*
