@@ -35,7 +35,7 @@ void setBehaviour(struct EnemyObj* enemy, bool mode,bool seesPlayer){
 	
 	enemy->active = mode;
 	enemy->sight  = seesPlayer;
-	if (active)	enemy->sight = true;	//if he's chasing he sure sees him.
+	if (enemy->active)	enemy->sight = true;	//if he's chasing he sure sees him.
 }
 
 bool isActive(struct EnemyObj* enemy){
@@ -64,23 +64,23 @@ bool hasAmmo(struct EnemyObj* enemy){
 	return false;
 }
 
-void plotPlayer(struct EnemyObj enemy,SDL_Plotter* plot){
+void plotEnemy(struct EnemyObj enemy,SDL_Plotter* plot){
 	 
 	plotObject(&(enemy.obj),plot);
 }
 
 
-struct EnemyObj createPlayer(struct size dim, struct position pos){
+struct EnemyObj createEnemy(struct size dim, struct position pos){
 	
 	struct EnemyObj e;
 	struct texture enemytexture; 	//BLACK
 	
-	enemy.texture.red  = 0
+	enemytexture.red  = 0;
 	enemytexture.green = 0; 
 	enemytexture.blue  = 0;
-	setTexture(&a.obj, enemytexture);
-	setSize(&a.obj,dim);		//DIMENSION
-	setPosition(&a.obj,pos);	//POSITION
+	setTexture(&e.obj, enemytexture);
+	setSize(&e.obj,dim);		//DIMENSION
+	setPosition(&e.obj,pos);	//POSITION
 
 	return e;
 }
