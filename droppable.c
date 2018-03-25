@@ -31,7 +31,7 @@ struct Droppable createDrop(struct size dropSize,struct position dropPos, union 
 			dropClr.blue  = 64;
 			break;
 		default:
-			return NULL;
+			return d;
 	}
 	setTexture(&d.dropObj,dropClr);
 	

@@ -25,7 +25,7 @@ struct PlayerObj{
 	struct object obj;
 	int health = 100;
 	int ammo   = 100;
-	enum weapon player_weapon  = NONE;
+	enum weapon player_weapon  = NO_WEAPON;
 	enum ammunition ammo_type  = NORMAL;
 	//...	
 };

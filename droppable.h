@@ -10,6 +10,10 @@
 #include "object.h"
 #include "weapon.h"
 #include "potion.h"
+#include "ammo.h"
+#include "SDL_Plotter.h"
+#include "screen.h"
+
 
 //U N I O N
 
@@ -20,9 +24,9 @@
  */
 union dropType{
 	
-	enum weapon drop_weapon   = NONE;	//Defaults to NONE
-	enum potion drop_potion   = NONE;
-	enum ammunition drop_ammo = NONE;
+	enum weapon drop_weapon;	//Defaults to NONE
+	enum potion drop_potion;
+	enum ammunition drop_ammo;
 };
 
 //S T R U C T
