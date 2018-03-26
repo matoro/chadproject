@@ -17,8 +17,8 @@ const int MAX_AMMO   =  50;
 *Enum:bartype 	the player statistic represented by the bar: health or ammo.
 */
 enum bartype{
-	health,
-	ammo
+	HEALTH,
+	AMMO
 };
 
 /*
@@ -44,7 +44,7 @@ struct BarObj{
  *	  
  *@return struct BarObj		        A bar created based on the data in the player object and the position provided.
  */
-struct BarObj createBar(struct PlayerObj* player, enum bartype type, struct position pos);
+struct BarObj createBar(struct PlayerObj* player, enum bartype b_type, struct position pos);
 
 /*	FUNCTION: updateBar
  *PURPOSE: Updates the currentvalue of health and ammo bars.

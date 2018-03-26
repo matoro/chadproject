@@ -1,11 +1,11 @@
 //IMPLEMENTATION
 #include "bar.h"
 
-struct BarObj createBar(struct PlayerObj* player, enum bartype type, struct position pos){
+struct BarObj createBar(struct PlayerObj* player, enum bartype b_type, struct position pos){
 
 	//VARs
 	struct BarObj newBar;
-	enum bartype discriminator = health;
+	enum bartype discriminator = HEALTH;
 	struct size barSize = {100,20}; //CHANGE. DIM RELATIVE TO SCREEN DIM
 	struct texture greenHealth;
 	struct texture brownAmmo;
@@ -18,8 +18,9 @@ struct BarObj createBar(struct PlayerObj* player, enum bartype type, struct posi
 	brownAmmo.green = 145;
 	brownAmmo.blue  = 5;
 
-	newBar.bartype  = type;
-	newBar.max	= (type == discriminator) ? MAX_HEALTH : MAX_AMMO;
+	newBar.type         = b_type;
+	newBar.max	    = (b_type == discriminator) ? MAX_HEALTH : MAX_AMMO;
+	newBar.currentvalue = player->health;
 	setPosition(&newBar.obj,pos);
 	setSize(&newBar.obj,barSize);
 
@@ -27,7 +28,7 @@ struct BarObj createBar(struct PlayerObj* player, enum bartype type, struct posi
 	newBar.obj.textureObj = (struct texture*)malloc(sizeof(struct texture)*totalPixel);
 
 	//APPLY COLOR ACCORDINGLY
-	for(int i = 0;i<totalPixel;i++)	setTexture(&newBar.obj,(type == discrimator) ? greenHealth : brownAmmo,i);
+	for(int i = 0;i<totalPixel;i++)	setTexture(&newBar.obj,(b_type == discriminator) ? greenHealth : brownAmmo,i);
 
 	return newBar;
 }
@@ -42,12 +43,12 @@ void plotBar(struct BarObj* bar,SDL_Plotter* plot){
 	//VARs
 	struct texture redHealth;
 	struct texture blackAmmo;
-	enum bartype discriminator = health;
-	enum bartype type = bar->bartype;
+	enum bartype discriminator = HEALTH;
+	enum bartype type = bar->type;
 
 	int pixelsToDraw;
 	int totalPixel;
-	int deltaChange;
+	double deltaChange;
 
 
 	redHealth.red   = 255;
@@ -60,11 +61,12 @@ void plotBar(struct BarObj* bar,SDL_Plotter* plot){
 
 	//UPDATE TEXTURE STRUCTS [] BEFORE PLOTTING AGAING.
 
-	deltaChange  = (bar->currentvalue)/(bar->max);	
-	totalPixel   = (bar->obj.size.alto)*(bar->obj.size.ancho); //dots or ->?
+	deltaChange  = (double)(bar->currentvalue)/(bar->max);	
+	totalPixel   = (bar->obj.sizeObj.alto)*(bar->obj.sizeObj.ancho); //dots or ->?
 	pixelsToDraw = round(deltaChange*totalPixel);
 
-	for(int i = 1;i <= pixelsToDraw;i++)	setTexture(&(bar->obj),(type == discrimator) ? redHealth : blackAmmo,totalPixel-i);
+
+	for(int i = totalPixel-1;i >= pixelsToDraw;i--)	setTexture(&(bar->obj),(type == discriminator) ? redHealth : blackAmmo,i);
 
 	
 	plotObject(&(bar->obj),plot);	//If this doesn't work avoid using bar pointer.
