@@ -67,7 +67,9 @@ int main(){
 
 		//update player new  position, health bar.
 		setPosition(&(jugador.obj),playerPos); 
-		setCurrentValue(&healthBar,jugador.health);
+		setCurrentValue(&healthBar,jugador.health);			
+		//We should call only plotBar when we set a new current value. its not efficient to plot the same thing over and over.
+
 		//plot new position, health bar.
 		//NOTE: plot first the base layer of our visible components 
 		//and on top of those the ones who would overlap them.
@@ -95,8 +97,10 @@ int main(){
 			//keeps the box from moving all the time in the last dir.
 		}
 	}
-
+	//free all visible components dyn allocated struct texture[]
 	free(jugador.obj.textureObj);
+	//TODO free bar's
+
 	char final_msg[] = "See you soon!";
 	plotText(final_msg);	//screen.h function
 	plotter.setQuit(true);
