@@ -8,9 +8,9 @@
  * Enum ammo. Their value reflects their multiplier on dmg.
  */
 enum ammunition{
-	NO_AMMO,
-	NORMAL,
-	INCENDIARY,
-	EXPLOSIVE
+	NONE		= 0,
+	NORMAL  	= 1,
+	INCENDIARY 	= 2,
+	EXPLOSIVE 	= 3
 };
 #endif

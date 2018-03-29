@@ -61,7 +61,16 @@ struct Droppable{
  *	  struct position dropPos	The position of the droppable.
  *	  char box			Letter indicating if its 'A'mmo, 'W'eapon or 'P'otion. 
  *@return struct Droppable		The struct Droppable configurated. Null otherwise.         
- */struct Droppable createDrop(struct size dropSize,struct position dropPos,char box);
+ */struct Droppable createDrop(struct position dropPos,char box);
+
+/**
+ *	FUNCTION: setCurrentType
+ *PURPOSE: Sets the correct member of the union data. Could also be use to
+ *	   set the value of the enum.
+ *PRECONDITION: Droppable already initialized, char[] containing at least
+ *		one letter, 'P','W' or 'A'.
+ *POSTCONDITION: union dropType will be set to the correct enum constant.
+ */void setCurrentType(struct Droppable* drop,char newType[]);
 
 /**	FUNCTION: plotDrop
  *PURPOSE: Plots a droppable object to the screen.

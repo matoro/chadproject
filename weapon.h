@@ -10,10 +10,10 @@
  * Their value reflects their damage.
  */
 enum weapon{
-	NO_WEAPON,
-	PISTOL,
-	SHOTGUN,
-	MACHINEGUN,
-	RIFLE
+	NONE 		= 0,
+	PISTOL 		= 10,
+	SHOTGUN 	= 20,
+	MACHINEGUN 	= 30,
+	RIFLE 		= 40
 };
 #endif
