@@ -63,7 +63,7 @@ struct position {
  */
 struct object{
 
-	struct texture 	textureObj;
+	struct texture*	textureObj;
 	struct size 	sizeObj;
 	struct position posObj;
 };
@@ -78,7 +78,7 @@ struct object{
  *POSTCONDITION: Whole object gets a new RGB color.
  *@params struct object *obj	The object in question.
  *	  struct texture 	Data block containing RGB values.
- */void setTexture(struct object *obj,struct texture clr);
+ */void setTexture(struct object *obj,struct texture clr,int index);
 
 
 
@@ -87,7 +87,7 @@ struct object{
  *PRECONDITION: Valid non null struct object*.
  *@params struct object *obj	The object in question.
  *@return struct texture	Data block containing RGB values.
- */struct texture getTexture(struct object *obj);
+ */struct texture getTexture(struct object *obj,int index);
 
 
 
