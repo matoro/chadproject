@@ -5,6 +5,7 @@
 #ifndef PLAYER_H_INCLUDED
 #define PLAYER_H_INCLUDED
 
+#include <stdlib.h>
 #include <stdbool.h>
 #include "object.h"
 #include "screen.h"

@@ -5,20 +5,20 @@
  */
 #include "object.h"
 
-void setTexture(struct object *obj,struct texture clr){
+void setTexture(struct object *obj,struct texture clr,int index){
 	
-	obj->textureObj.red   = clr.red;
-	obj->textureObj.green = clr.green;
-	obj->textureObj.blue  = clr.blue;
+	obj->textureObj[index].red   = clr.red;
+	obj->textureObj[index].green = clr.green;
+	obj->textureObj[index].blue  = clr.blue;
 }
 
-struct texture getTexture(struct object *obj){
+struct texture getTexture(struct object *obj,int index){
 
 	struct texture clr;
 
-	clr.red   = obj->textureObj.red;
-	clr.green = obj->textureObj.green;
-	clr.blue  = obj->textureObj.blue;
+	clr.red   = obj->textureObj[index].red;
+	clr.green = obj->textureObj[index].green;
+	clr.blue  = obj->textureObj[index].blue;
 
 	return clr;
 }
