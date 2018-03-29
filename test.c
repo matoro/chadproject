@@ -12,6 +12,7 @@
 #include "player.h" 	//Already contains object,SDL and stdbool
 #include "screen.h"	//Contains SDL and plotting functions
 #include "bar.h"
+#include "enemy.h"
 
 int main(){
 
@@ -19,14 +20,20 @@ int main(){
 	SDL_Plotter plotter(HEIGHT,WIDTH); 	//CONSTANTS DEFINED IN screen.h
 	struct PlayerObj jugador;			
 	struct BarObj healthBar;
+	struct EnemyObj enemigo;
+
 	struct position playerPos    = {WIDTH/2,HEIGHT/2,0};
-	struct size playerDim	     = {16,16};	
+	struct position enemyPos     = {WIDTH/4,HEIGHT/2,90};
+
+
+	struct size playerDim	     = {16,16};	//same for enemies	
 	struct position healthBarPos = {WIDTH/4,HEIGHT/4,0};
 	enum bartype health          = HEALTH;
 
 
 	//DEFINITON
 	jugador   = createPlayer(playerDim,playerPos);//16X16@MIDDLE OF SCREEN
+	enemigo   = createEnemy(playerDim,enemyPos);
 	healthBar = createBar(&jugador,health,healthBarPos);
 
 	//clear screen
@@ -34,6 +41,7 @@ int main(){
 
 	//plot player box
 	plotPlayer(jugador,&plotter);
+	plotEnemy(enemigo,&plotter);
 	plotBar(&healthBar,&plotter);
 
 	//GAME LOOP VARs
@@ -82,6 +90,7 @@ int main(){
 
 		plotter.clear();
 		plotPlayer(jugador,&plotter);
+		plotEnemy(enemigo,&plotter);
 		plotBar(&healthBar,&plotter);
 		plotter.update(); //neccessary? YES!
 		
@@ -99,7 +108,12 @@ int main(){
 	}
 	//free all visible components dyn allocated struct texture[]
 	free(jugador.obj.textureObj);
-	//TODO free bar's
+	//TODO free bar's and enemy struct textures.
+	free(enemigo.obj.textureObj);
+	free(healthBar.obj.textureObj);
+
+	//first valgrind runs outputs >2kb leaks. 120,000 allocs and 110000ish frees. Is this our thing or SDLs?
+
 
 	char final_msg[] = "See you soon!";
 	plotText(final_msg);	//screen.h function
