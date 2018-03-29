@@ -35,12 +35,14 @@ union dropType{
  *PURPOSE: Holds all neccessary data for a  droppable object.
  *@data	struct object dropObj	Object struct for this component, containing size,
  *				position and texture.
+ *	char currentType	Current type of enum being used.
  *	union dropType type	Union holding a valid enum weapon or potion value.
  *	bool taken		Boolean state to represent that it has been already taken
  *				by the player and therefore shouldn't have effect/be plotted.
  */
 struct Droppable{
 
+	char currentType;
 	struct object dropObj;
 	union dropType type;
 	bool taken = false;
@@ -57,10 +59,9 @@ struct Droppable{
  *		 for potions. Returns null if not called properly.
  *@params struct size dropSize		The size of the droppable.
  *	  struct position dropPos	The position of the droppable.
- *	  union dropType tipo		A union type holding an enum weapon or potion value.
  *	  char box			Letter indicating if its 'A'mmo, 'W'eapon or 'P'otion. 
  *@return struct Droppable		The struct Droppable configurated. Null otherwise.         
- */struct Droppable createDrop(struct size dropSize,struct position dropPos, union dropType tipo,char box);
+ */struct Droppable createDrop(struct size dropSize,struct position dropPos,char box);
 
 /**	FUNCTION: plotDrop
  *PURPOSE: Plots a droppable object to the screen.

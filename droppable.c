@@ -6,13 +6,13 @@
 
 //F U N C T I O N s
 
-struct Droppable createDrop(struct size dropSize,struct position dropPos, union dropType tipo,char box){
+struct Droppable createDrop(struct size dropSize,struct position dropPos,char box){
 
 	struct Droppable d;
 
-	d.type = tipo;
 	setSize(&d.dropObj,dropSize);
 	setPosition(&d.dropObj,dropPos);
+
 	struct texture dropClr;
 	switch (box){
 		case 'P': //GREEN
