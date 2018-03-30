@@ -20,7 +20,7 @@ struct BarObj createBar(struct PlayerObj* player, enum bartype b_type, struct po
 
 	newBar.type         = b_type;
 	newBar.max	    = (b_type == discriminator) ? MAX_HEALTH : MAX_AMMO;
-	newBar.currentvalue = player->health;
+	newBar.currentvalue = (b_type == discriminator) ? player->health : player->ammo;
 	setPosition(&newBar.obj,pos);
 	setSize(&newBar.obj,barSize);
 

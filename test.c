@@ -13,39 +13,79 @@
 #include "screen.h"	//Contains SDL and plotting functions
 #include "bar.h"
 #include "enemy.h"
+#include "droppable.h"
 
 int main(){
 
 	//VARs DECLARATION
 	SDL_Plotter plotter(HEIGHT,WIDTH); 	//CONSTANTS DEFINED IN screen.h
+
 	struct PlayerObj jugador;			
-	struct BarObj healthBar;
-	struct EnemyObj enemigo;
+	struct BarObj    healthBar;
+	struct BarObj    ammoBar;
+	struct EnemyObj  enemigo;
+	struct EnemyObj  enemigo1;
+	struct EnemyObj  enemigo2;
+	struct Droppable simplePotion;
+	struct Droppable pistolWeapon;
+	struct Droppable normalAmmo;
 
 	struct position playerPos    = {WIDTH/2,HEIGHT/2,0};
 	struct position enemyPos     = {WIDTH/4,HEIGHT/2,90};
+	struct position enemyPos1    = {WIDTH/2,HEIGHT/4,180};
+	struct position enemyPos2    = {3*WIDTH/4,HEIGHT/2,270};
+	struct size playerDim	     = {16,16};	//same for enemies
+	
 
-
-	struct size playerDim	     = {16,16};	//same for enemies	
-	struct position healthBarPos = {WIDTH/4,HEIGHT/4,0};
+	struct position healthBarPos = {WIDTH/6,7*HEIGHT/8,0};
+	struct position ammoBarPos   = {3*WIDTH/4,7*HEIGHT/8,0};
 	enum bartype health          = HEALTH;
+	enum bartype ammo 	     = AMMO;
+
+	struct position dropPosP     = {WIDTH/8,HEIGHT/8,0};
+	struct position dropPosW     = {7*WIDTH/8,HEIGHT/8,0};
+	struct position dropPosA     = {WIDTH/2,HEIGHT/8,0};
+		
+		//AUXILIARY
+	char dropType_1[2] = {'P','S'}; 	//POTION-SIMPLE
+	char dropType_2[2] = {'W','P'};		//WEAPON-PISTOL
+	char dropType_3[2] = {'A','N'};		//AMMO-NORMAL
 
 
 	//DEFINITON
-	jugador   = createPlayer(playerDim,playerPos);//16X16@MIDDLE OF SCREEN
+	jugador	  = createPlayer(playerDim,playerPos);//16X16@MIDDLE OF SCREEN
 	enemigo   = createEnemy(playerDim,enemyPos);
+	enemigo1  = createEnemy(playerDim,enemyPos1);
+	enemigo2  = createEnemy(playerDim,enemyPos2);
 	healthBar = createBar(&jugador,health,healthBarPos);
+	ammoBar   = createBar(&jugador,ammo,ammoBarPos);
+	
+	simplePotion = createDrop(dropPosP);	//taken==false by default
+	pistolWeapon = createDrop(dropPosW);
+	normalAmmo   = createDrop(dropPosA);
+		//FURTHER SETTINGS
+	setCurrentType(&simplePotion,dropType_1);
+	setCurrentType(&pistolWeapon,dropType_2);
+	setCurrentType(&normalAmmo,dropType_3);
 
-	//clear screen
+
+	//CLEAR SCREEN
 	plotter.clear();
-
-	//plot player box
+	//PLOTS
 	plotPlayer(jugador,&plotter);
 	plotEnemy(enemigo,&plotter);
+	plotEnemy(enemigo1,&plotter);
+	plotEnemy(enemigo2,&plotter);
+
 	plotBar(&healthBar,&plotter);
+	plotBar(&ammoBar,&plotter);
+
+	plotDrop(&simplePotion,&plotter);
+	plotDrop(&pistolWeapon,&plotter);
+	plotDrop(&normalAmmo,&plotter);
 
 	//GAME LOOP VARs
-	playerPos	  = getPosition(&(jugador.obj));	//object.h function
+	playerPos = getPosition(&(jugador.obj));	//object.h function
 
 	char letter = '\0';
 	while(letter != '0')
@@ -71,11 +111,16 @@ int main(){
 			jugador.health -= 5;
 			fprintf(stdout,"PLAYER HEALTH: %d",jugador.health);
 		}
-
+	
+		if (letter=='G'){
+			jugador.ammo -= 5;
+			fprintf(stdout,"PLAYER AMMO: %d",jugador.ammo);
+		}
 
 		//update player new  position, health bar.
 		setPosition(&(jugador.obj),playerPos); 
-		setCurrentValue(&healthBar,jugador.health);			
+		setCurrentValue(&healthBar,jugador.health);
+		setCurrentValue(&ammoBar,jugador.ammo);			
 		//We should call only plotBar when we set a new current value. its not efficient to plot the same thing over and over.
 
 		//plot new position, health bar.
@@ -91,7 +136,13 @@ int main(){
 		plotter.clear();
 		plotPlayer(jugador,&plotter);
 		plotEnemy(enemigo,&plotter);
+		plotEnemy(enemigo1,&plotter);
+		plotEnemy(enemigo2,&plotter);
 		plotBar(&healthBar,&plotter);
+		plotBar(&ammoBar,&plotter);
+		plotDrop(&simplePotion,&plotter);
+		plotDrop(&pistolWeapon,&plotter);
+		plotDrop(&normalAmmo,&plotter);
 		plotter.update(); //neccessary? YES!
 		
 		bool keyhit = plotter.kbhit();

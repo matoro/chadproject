@@ -9,8 +9,8 @@
  * Enum potion. Their value reflects their health points content.
  */
 enum potion{
-	NONE	= 0,
-	SIMPLE	= 20,
-	FULL 	= 100
+	NO_POTION = 0,
+	SIMPLE	  = 20,
+	FULL 	  = 100
 };
 #endif

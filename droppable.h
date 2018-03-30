@@ -59,9 +59,8 @@ struct Droppable{
  *		 for potions. Returns null if not called properly.
  *@params struct size dropSize		The size of the droppable.
  *	  struct position dropPos	The position of the droppable.
- *	  char box			Letter indicating if its 'A'mmo, 'W'eapon or 'P'otion. 
  *@return struct Droppable		The struct Droppable configurated. Null otherwise.         
- */struct Droppable createDrop(struct position dropPos,char box);
+ */struct Droppable createDrop(struct position dropPos);
 
 /**
  *	FUNCTION: setCurrentType
@@ -76,7 +75,7 @@ struct Droppable{
  *PURPOSE: Plots a droppable object to the screen.
  *PRECONDITION: Configurated Droppable and active non null SDL_Plotter.
  *POSTCONDITION: Droppable is plotted. Color depends on its type.
- *@params struct Droppable drop		The droppable object.
+ *@params struct Droppable* drop	The pointer to the droppable object.
  *	  SDL_Plotter* plot		The current plotter onto which the object will be drawn.
- */void plotDrop(struct Droppable drop,SDL_Plotter* plot);
+ */void plotDrop(struct Droppable* drop,SDL_Plotter* plot);
 #endif
