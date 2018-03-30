@@ -159,9 +159,14 @@ int main(){
 	}
 	//free all visible components dyn allocated struct texture[]
 	free(jugador.obj.textureObj);
-	//TODO free bar's and enemy struct textures.
 	free(enemigo.obj.textureObj);
+	free(enemigo1.obj.textureObj);
+	free(enemigo2.obj.textureObj);
 	free(healthBar.obj.textureObj);
+	free(ammoBar.obj.textureObj);
+	free(simplePotion.dropObj.textureObj);
+	free(pistolWeapon.dropObj.textureObj);
+	free(normalAmmo.dropObj.textureObj);
 
 	//first valgrind runs outputs >2kb leaks. 120,000 allocs and 110000ish frees. Is this our thing or SDLs?
 
