@@ -2,14 +2,13 @@ CXX = g++
 CXXFLAGS = -lSDL2 -lSDL2_mixer -std=c++11
 
 SONAME 	= game
-SRC	= test.c		\
-	  graphic/screen.c	\
-	  object/object.c	\
-	  object/player.c	\
-	  object/enemy.c	\
-	  object/bar.c		\
-	  object/droppable.c
-
+SRC	= src/test.c		\
+	  src/graphic/screen.c	\
+	  src/object/object.c	\
+	  src/object/player.c	\
+	  src/object/enemy.c	\
+	  src/object/bar.c	\
+	  src/object/droppable.c
 
 #individual objects
 OBJS	= $(SRC:.c=.o)
