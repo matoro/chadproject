@@ -43,11 +43,11 @@ void plotPlayer(struct PlayerObj player,SDL_Plotter* plot){
 }
 
 
-struct PlayerObj createPlayer(struct size dim, struct position pos){
+struct PlayerObj createPlayer(struct size dim, struct position* pos){
 	
 	struct PlayerObj a;	
 	setSize(&a.obj,dim);		//DIMENSION
-	setPosition(&a.obj,&pos);	//POSITION
+	setPosition(&a.obj,pos);	//POSITION
 	
 	struct texture skinColor;
 	skinColor.red   = 255;

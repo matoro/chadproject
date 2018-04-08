@@ -58,9 +58,9 @@ struct Droppable{
  *		 will be set upon the type of droppable. Brown-ish for guns and green-ish 
  *		 for potions. Returns null if not called properly.
  *@params struct size dropSize		The size of the droppable.
- *	  struct position dropPos	The position of the droppable.
+ *	  struct position* dropPos	The position of the droppable. Struct position pointer.
  *@return struct Droppable		The struct Droppable configurated. Null otherwise.         
- */struct Droppable createDrop(struct position dropPos);
+ */struct Droppable createDrop(struct position* dropPos);
 
 /**
  *	FUNCTION: setCurrentType

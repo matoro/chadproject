@@ -88,8 +88,8 @@ struct PlayerObj{
  *PURPOSE: Plots a player object on the screen.
  *PRECONDITION: valid ints, j and i must be within screen limits, dir must be between 0 and 359.
  *@params struct size		The height and width of a player object.
- *	  struct position	The position values of the player object.
+ *	  struct position*	The position values of the player object. Struct position pointer.
  *@return PlayerObj	A player with the given size and postion variables. 
- */struct PlayerObj createPlayer(struct size dim, struct position pos);
+ */struct PlayerObj createPlayer(struct size dim, struct position* pos);
 
 #endif

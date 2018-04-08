@@ -6,7 +6,7 @@
 
 //F U N C T I O N s
 
-struct Droppable createDrop(struct position dropPos){
+struct Droppable createDrop(struct position* dropPos){
 
 	//VARs
 	struct Droppable d;
@@ -18,7 +18,7 @@ struct Droppable createDrop(struct position dropPos){
 	d.currentType = 0;
         d.dropObj.textureObj = (struct texture*)malloc(sizeof(struct texture)*totalPixel);
 	setSize(&d.dropObj,dropSize);
-	setPosition(&d.dropObj,&dropPos);
+	setPosition(&d.dropObj,dropPos);
 	
 	return d;	
 }

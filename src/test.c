@@ -53,16 +53,16 @@ int main(){
 
 
 	//DEFINITON
-	jugador	  = createPlayer(playerDim,playerPos);//16X16@MIDDLE OF SCREEN
-	enemigo   = createEnemy(playerDim,enemyPos);
-	enemigo1  = createEnemy(playerDim,enemyPos1);
-	enemigo2  = createEnemy(playerDim,enemyPos2);
-	healthBar = createBar(&jugador,health,healthBarPos);
-	ammoBar   = createBar(&jugador,ammo,ammoBarPos);
+	jugador	  = createPlayer(playerDim,&playerPos);//16X16@MIDDLE OF SCREEN
+	enemigo   = createEnemy(playerDim,&enemyPos);
+	enemigo1  = createEnemy(playerDim,&enemyPos1);
+	enemigo2  = createEnemy(playerDim,&enemyPos2);
+	healthBar = createBar(&jugador,health,&healthBarPos);
+	ammoBar   = createBar(&jugador,ammo,&ammoBarPos);
 	
-	simplePotion = createDrop(dropPosP);	//taken==false by default
-	pistolWeapon = createDrop(dropPosW);
-	normalAmmo   = createDrop(dropPosA);
+	simplePotion = createDrop(&dropPosP);	//taken==false by default
+	pistolWeapon = createDrop(&dropPosW);
+	normalAmmo   = createDrop(&dropPosA);
 		//FURTHER SETTINGS
 	setCurrentType(&simplePotion,dropType_1);
 	setCurrentType(&pistolWeapon,dropType_2);

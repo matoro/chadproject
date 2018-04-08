@@ -129,8 +129,8 @@ struct EnemyObj{
  *PURPOSE: Plots an enemy object on the screen.
  *PRECONDITION: valid ints, j and i must be within screen limits, dir must be between 0 and 359.
  *@params struct size		The height and width of an enemy object.
- *	  struct position	The position values of the enemy object.
+ *	  struct position*	The position values of the enemy object. Struct position pointer.
  *@return EnemyObj	A enemy with the given size and postion variables. 
- */struct EnemyObj createEnemy(struct size dim, struct position pos);
+ */struct EnemyObj createEnemy(struct size dim, struct position* pos);
 
 #endif
