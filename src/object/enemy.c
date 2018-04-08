@@ -74,7 +74,7 @@ struct EnemyObj createEnemy(struct size dim, struct position pos){
 	
 	struct EnemyObj e;
 	setSize(&e.obj,dim);            //DIMENSION
-        setPosition(&e.obj,pos);        //POSITION
+        setPosition(&e.obj,&pos);        //POSITION
 
         struct texture skinColor;
         skinColor.red   = 255;

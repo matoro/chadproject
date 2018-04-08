@@ -39,11 +39,15 @@ struct size getSize(struct object *obj){
 	return dim;
 }
 
-void setPosition(struct object *obj,struct position pos){
+void setPosition(struct object *obj,struct position* pos){
 
-	obj->posObj.x  = pos.x;
-	obj->posObj.y  = pos.y;
-	obj->posObj.direction = pos.direction;
+	
+	if (pos->direction > 359)	pos->direction %= 360;
+	if (pos->direction < 0)		pos->direction += 360;
+	
+	obj->posObj.x  = pos->x;
+	obj->posObj.y  = pos->y;
+	obj->posObj.direction = pos->direction;
 }
 
 struct position getPosition(struct object *obj){

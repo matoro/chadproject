@@ -115,8 +115,8 @@ struct object{
  *PRECONDITION: Non null struct object* and valid texture values.
  *POSTCONDITION: Whole object gets a new size.
  *@params struct object *obj	The object in question.
- *	  struct position pos	Data block containing position values.
- */void setPosition(struct object *obj,struct position pos);
+ *	  struct position pos	Data block pointer containing position values.
+ */void setPosition(struct object *obj,struct position* pos);
 
 
 

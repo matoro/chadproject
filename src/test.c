@@ -97,15 +97,15 @@ int main(){
 		playerPos.y 	    += updatedPos.y;
 		playerPos.direction += updatedPos.direction;
 		
-
-		//we mend directions to keep them in range. Move to player.c
+		/*
+		//we mend directions to keep them in range. Move to object.c
 		if (playerPos.direction > 359){
 			playerPos.direction = playerPos.direction%360;
 		}		
 		if (playerPos.direction < 0){
 			playerPos.direction = (playerPos.direction+360);
 		}
-
+		*/
 		//simple test for bar.
 		if (letter=='H'){
 			jugador.health -= 5;
@@ -118,7 +118,7 @@ int main(){
 		}
 
 		//update player new  position, health bar.
-		setPosition(&(jugador.obj),playerPos); 
+		setPosition(&(jugador.obj),&playerPos); 
 		setCurrentValue(&healthBar,jugador.health);
 		setCurrentValue(&ammoBar,jugador.ammo);			
 		//We should call only plotBar when we set a new current value. its not efficient to plot the same thing over and over.
@@ -149,9 +149,9 @@ int main(){
 		if (keyhit){
 			letter = plotter.getKey();
 			//Debug traces
-			fprintf(stdout,"PLAYER DIR: %d",playerPos.direction);
-			fprintf(stdout,"PLAYER x: %d",playerPos.x);
-			fprintf(stdout,"PLAYER y: %d",playerPos.y);
+			fprintf(stdout,"PLAYER DIR: %d\n",playerPos.direction);
+			fprintf(stdout,"PLAYER x: %d\n",playerPos.x);
+			fprintf(stdout,"PLAYER y: %d\n",playerPos.y);
 		}else{
 			letter = '\0';
 			//keeps the box from moving all the time in the last dir.
