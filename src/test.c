@@ -13,6 +13,8 @@
 #include "object/enemy.h"
 #include "object/bar.h"
 #include "object/droppable.h"
+#include "object/bullet.h"
+#include "graphic/visiblecomponents.h"
 #include "graphic/screen.h"	//Contains SDL and plotting functions
 
 int main(){
@@ -21,8 +23,10 @@ int main(){
 	SDL_Plotter plotter(HEIGHT,WIDTH); 	//CONSTANTS DEFINED IN screen.h
 
 	struct PlayerObj jugador;			
-	struct BarObj    healthBar;
-	struct BarObj    ammoBar;
+	struct BarObj    *bars = NULL;
+	int number_of_bars = 0;
+	struct BulletObj *bullets = NULL;
+	int number_of_bullets = 0;
 	struct EnemyObj  enemigo;
 	struct EnemyObj  enemigo1;
 	struct EnemyObj  enemigo2;
@@ -57,8 +61,10 @@ int main(){
 	enemigo   = createEnemy(playerDim,&enemyPos);
 	enemigo1  = createEnemy(playerDim,&enemyPos1);
 	enemigo2  = createEnemy(playerDim,&enemyPos2);
-	healthBar = createBar(&jugador,health,&healthBarPos);
-	ammoBar   = createBar(&jugador,ammo,&ammoBarPos);
+	createBar(&bars, &number_of_bars, &jugador,health,healthBarPos);
+	createBar(&bars, &number_of_bars, &jugador,ammo, ammoBarPos);
+	createBullet(&(jugador.obj), &bullets, &number_of_bullets);
+	createBullet(&(jugador.obj), &bullets, &number_of_bullets);
 	
 	simplePotion = createDrop(&dropPosP);	//taken==false by default
 	pistolWeapon = createDrop(&dropPosW);
@@ -72,13 +78,10 @@ int main(){
 	//CLEAR SCREEN
 	plotter.clear();
 	//PLOTS
-	plotPlayer(jugador,&plotter);
 	plotEnemy(enemigo,&plotter);
 	plotEnemy(enemigo1,&plotter);
 	plotEnemy(enemigo2,&plotter);
-
-	plotBar(&healthBar,&plotter);
-	plotBar(&ammoBar,&plotter);
+	plotVisibleComponents(&plotter, jugador, bars, number_of_bars, bullets, number_of_bullets);
 
 	plotDrop(&simplePotion,&plotter);
 	plotDrop(&pistolWeapon,&plotter);
@@ -88,6 +91,7 @@ int main(){
 	playerPos = getPosition(&(jugador.obj));	//object.h function
 
 	char letter = '\0';
+
 	while(letter != '0')
 	{
 
@@ -116,11 +120,15 @@ int main(){
 			jugador.ammo -= 5;
 			fprintf(stdout,"PLAYER AMMO: %d",jugador.ammo);
 		}
+		//testing shooting
+		if (letter==' '){
+			createBullet(&(jugador.obj), &bullets, &number_of_bullets);
+		}
 
 		//update player new  position, health bar.
 		setPosition(&(jugador.obj),&playerPos); 
-		setCurrentValue(&healthBar,jugador.health);
-		setCurrentValue(&ammoBar,jugador.ammo);			
+		setCurrentValue(bars,jugador.health);			
+		setCurrentValue((bars+1),jugador.ammo);			
 		//We should call only plotBar when we set a new current value. its not efficient to plot the same thing over and over.
 
 		//plot new position, health bar.
@@ -134,15 +142,17 @@ int main(){
 		//TODO: Implement checking and clean code!
 
 		plotter.clear();
-		plotPlayer(jugador,&plotter);
 		plotEnemy(enemigo,&plotter);
 		plotEnemy(enemigo1,&plotter);
 		plotEnemy(enemigo2,&plotter);
-		plotBar(&healthBar,&plotter);
-		plotBar(&ammoBar,&plotter);
+		plotVisibleComponents(&plotter, jugador, bars, number_of_bars, bullets, number_of_bullets);
 		plotDrop(&simplePotion,&plotter);
 		plotDrop(&pistolWeapon,&plotter);
 		plotDrop(&normalAmmo,&plotter);
+
+		//updates the position of all bullets
+		updateBulletPos(&bullets,&number_of_bullets);
+
 		plotter.update(); //neccessary? YES!
 		
 		bool keyhit = plotter.kbhit();
@@ -156,14 +166,15 @@ int main(){
 			letter = '\0';
 			//keeps the box from moving all the time in the last dir.
 		}
+
 	}
 	//free all visible components dyn allocated struct texture[]
 	free(jugador.obj.textureObj);
 	free(enemigo.obj.textureObj);
 	free(enemigo1.obj.textureObj);
 	free(enemigo2.obj.textureObj);
-	free(healthBar.obj.textureObj);
-	free(ammoBar.obj.textureObj);
+	for(int i = 0; i < number_of_bars; i ++) free((bars+i)->obj.textureObj);
+	free(bars);
 	free(simplePotion.dropObj.textureObj);
 	free(pistolWeapon.dropObj.textureObj);
 	free(normalAmmo.dropObj.textureObj);

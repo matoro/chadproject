@@ -1,7 +1,7 @@
 //IMPLEMENTATION
 #include "bar.h"
 
-struct BarObj createBar(struct PlayerObj* player, enum bartype b_type, struct position* pos){
+void createBar(struct BarObj **bars, int *number_of_bars, struct PlayerObj* player, enum bartype b_type, struct position pos){
 
 	//VARs
 	struct BarObj newBar;
@@ -20,8 +20,8 @@ struct BarObj createBar(struct PlayerObj* player, enum bartype b_type, struct po
 
 	newBar.type         = b_type;
 	newBar.max	    = (b_type == discriminator) ? MAX_HEALTH : MAX_AMMO;
-	newBar.currentvalue = (b_type == discriminator) ? player->health : player->ammo;
-	setPosition(&newBar.obj,pos);
+	newBar.currentvalue = player->health;
+	setPosition(&newBar.obj, &pos);
 	setSize(&newBar.obj,barSize);
 
 	int totalPixel = barSize.alto * barSize.ancho;
@@ -30,7 +30,28 @@ struct BarObj createBar(struct PlayerObj* player, enum bartype b_type, struct po
 	//APPLY COLOR ACCORDINGLY
 	for(int i = 0;i<totalPixel;i++)	setTexture(&newBar.obj,(b_type == discriminator) ? greenHealth : brownAmmo,i);
 
-	return newBar;
+	//Allocate memory for new bar
+	if(!(*bars)){
+		if(!(*bars = (struct BarObj*)malloc(sizeof(struct BarObj)))) printf("Memory allocation failed.");
+	}else if(!(*bars = (struct BarObj*)realloc(*bars, sizeof(struct BarObj)*(*number_of_bars+1)))){
+		printf("Memory reallocation failed.");		
+	}
+
+	*(*bars+*number_of_bars) = newBar;
+	(*number_of_bars)++;
+}
+
+void deleteBar(struct BarObj **bars, int *number_of_bars, int bar_number){
+	for(int i = bar_number; i < (*number_of_bars-1); i++){
+		*(*bars+i) = *(*bars+i+1);
+		*((*bars+i)->obj.textureObj) = *((*bars+i+1)->obj.textureObj); //texture can't be reassigned like the rest of the object variables because it is a pointer.
+	}
+	free((*bars+bar_number)->obj.textureObj);
+	if(!(*bars = (struct BarObj*)realloc(*bars, sizeof(struct BarObj)*(*number_of_bars-1)))){
+		printf("Memory reallocation failed.");
+	}
+	(*number_of_bars)--;
+	if(*number_of_bars == 0) *bars = NULL;
 }
 
 void setCurrentValue(struct BarObj* currentbar,int newvalue){

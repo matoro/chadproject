@@ -41,10 +41,20 @@ struct BarObj{
  *PRECONDITION: A player struct with positive health and ammo integers, a valid bartype(Health or Ammo)
  *@params struct PlayerObj *player	The player from which the health or ammo value is taken.
  *        enum bartype type		The type of bar being created: Health or Ammo.
- *	  struct position *pos		A struct position pointer.
+ *	  
  *@return struct BarObj		        A bar created based on the data in the player object and the position provided.
  */
-struct BarObj createBar(struct PlayerObj* player, enum bartype b_type, struct position* pos);
+void createBar(struct BarObj ** bars, int *number_of_bars, struct PlayerObj* player, enum bartype b_type, struct position pos);
+
+/*	FUNCTION:deleteBar
+PURPOSE: Deletes a bar from the array of bars.
+PRECONDITION: A pointer to a valid array of bars with at least 1 member, the number of a bar that exists within the array.
+POSTCONDITION: The specified bar is removed. All bars after that bar are moved back one space in the array.
+@params struct BarObj **bars	A pointer to a pointer to the first BarObj.
+	int *number_of_bars	A pointer the the number of bars.
+	int bar_number		The position in the array of the bar to be deleted, starts at 0.
+*/
+void deleteBar(struct BarObj ** bars, int *number_of_bars, int bar_number);
 
 /*	FUNCTION: updateBar
  *PURPOSE: Updates the currentvalue of health and ammo bars.
