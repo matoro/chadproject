@@ -63,8 +63,6 @@ int main(){
 	enemigo2  = createEnemy(playerDim,&enemyPos2);
 	createBar(&bars, &number_of_bars, &jugador,health,healthBarPos);
 	createBar(&bars, &number_of_bars, &jugador,ammo, ammoBarPos);
-	createBullet(&(jugador.obj), &bullets, &number_of_bullets);
-	createBullet(&(jugador.obj), &bullets, &number_of_bullets);
 	
 	simplePotion = createDrop(&dropPosP);	//taken==false by default
 	pistolWeapon = createDrop(&dropPosW);
