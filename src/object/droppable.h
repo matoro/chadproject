@@ -60,7 +60,7 @@ struct Droppable{
  *@params struct size dropSize		The size of the droppable.
  *	  struct position* dropPos	The position of the droppable. Struct position pointer.
  *@return struct Droppable		The struct Droppable configurated. Null otherwise.         
- */struct Droppable createDrop(struct position* dropPos);
+ */void createDrop(struct Droppable **droppables, int *number_of_droppables,struct position* dropPos);
 
 /**
  *	FUNCTION: setCurrentType

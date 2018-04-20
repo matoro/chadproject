@@ -8,6 +8,10 @@
 #include "../object/player.h"
 #include "../object/bar.h"
 #include "../object/bullet.h"
+#include "../object/enemy.h"
+#include "../object/droppable.h"
+#include "../object/player.h"
+
 #include "../graphic/SDL_Plotter.h"
 
 /**	FUNCTION: setSize
@@ -20,6 +24,6 @@
  * 	  int number_of_bars		The number of bar objects that exist.
  *			ADD MORE FOR EACH OBJECT TYPE
  */
-void plotVisibleComponents(SDL_Plotter *plot, struct PlayerObj player, struct BarObj *bars, int number_of_bars, struct BulletObj *bullets, int number_of_bullets);
+void plotVisibleComponents(SDL_Plotter *plot, struct PlayerObj player, struct BarObj *bars, int number_of_bars, struct BulletObj *bullets, int number_of_bullets, struct EnemyObj *enemies, int number_of_enemies, struct Droppable * droppables, int number_of_droppables);
 
 #endif

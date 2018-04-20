@@ -131,6 +131,6 @@ struct EnemyObj{
  *@params struct size		The height and width of an enemy object.
  *	  struct position*	The position values of the enemy object. Struct position pointer.
  *@return EnemyObj	A enemy with the given size and postion variables. 
- */struct EnemyObj createEnemy(struct size dim, struct position* pos);
+ */void createEnemy(struct EnemyObj ** enemies, int *number_of_enemies, struct size dim, struct position* pos);
 
 #endif

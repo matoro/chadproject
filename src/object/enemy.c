@@ -69,8 +69,7 @@ void plotEnemy(struct EnemyObj enemy,SDL_Plotter* plot){
 	plotObject(&(enemy.obj),plot);
 }
 
-
-struct EnemyObj createEnemy(struct size dim, struct position* pos){
+void createEnemy(struct EnemyObj ** enemies, int *number_of_enemies,struct size dim, struct position* pos){
 	
 	struct EnemyObj e;
 	setSize(&e.obj,dim);            //DIMENSION
@@ -109,5 +108,12 @@ struct EnemyObj createEnemy(struct size dim, struct position* pos){
                 }
         }
 	
-	return e;
+	if(!*enemies){
+		if(!(*enemies = (struct EnemyObj*)malloc(sizeof(struct EnemyObj)))) printf("Memory allocation failed.");
+	}else if(!(*enemies = (struct EnemyObj*)realloc(*enemies, sizeof(struct EnemyObj)*(*number_of_enemies+1)))){
+		printf("Memory reallocation failed.");		
+	}
+
+	*(*enemies+*number_of_enemies) = e;
+	(*number_of_enemies)++;
 }

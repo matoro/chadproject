@@ -6,7 +6,7 @@
 
 //F U N C T I O N s
 
-struct Droppable createDrop(struct position* dropPos){
+void createDrop(struct Droppable **droppables, int *number_of_droppables, struct position* dropPos){
 
 	//VARs
 	struct Droppable d;
@@ -20,7 +20,16 @@ struct Droppable createDrop(struct position* dropPos){
 	setSize(&d.dropObj,dropSize);
 	setPosition(&d.dropObj,dropPos);
 	
-	return d;	
+	
+	if(!*droppables){
+		if(!(*droppables = (struct Droppable*)malloc(sizeof(struct Droppable)))) printf("Memory allocation failed.");
+	}else if(!(*droppables = (struct Droppable*)realloc(*droppables, sizeof(struct Droppable)*(*number_of_droppables+1)))){
+		printf("Memory reallocation failed.");		
+	}
+
+	*(*droppables+*number_of_droppables) = d;
+	(*number_of_droppables)++;
+		
 }
 
 void setCurrentType(struct Droppable* drop,char newType[]){

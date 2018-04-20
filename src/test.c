@@ -9,11 +9,6 @@
 #include <math.h>	//include math inside object/screen?
 #include <stdbool.h>
 
-#include "object/player.h" 	//Already contains object,SDL and stdbool
-#include "object/enemy.h"
-#include "object/bar.h"
-#include "object/droppable.h"
-#include "object/bullet.h"
 #include "graphic/visiblecomponents.h"
 #include "graphic/screen.h"	//Contains SDL and plotting functions
 
@@ -27,12 +22,10 @@ int main(){
 	int number_of_bars = 0;
 	struct BulletObj *bullets = NULL;
 	int number_of_bullets = 0;
-	struct EnemyObj  enemigo;
-	struct EnemyObj  enemigo1;
-	struct EnemyObj  enemigo2;
-	struct Droppable simplePotion;
-	struct Droppable pistolWeapon;
-	struct Droppable normalAmmo;
+	struct EnemyObj  *enemies = NULL;
+	int number_of_enemies = 0;
+	struct Droppable *droppables = NULL;
+	int number_of_droppables = 0;
 
 	struct position playerPos    = {WIDTH/2,HEIGHT/2,0};
 	struct position enemyPos     = {WIDTH/4,HEIGHT/2,90};
@@ -50,7 +43,7 @@ int main(){
 	struct position dropPosW     = {7*WIDTH/8,HEIGHT/8,0};
 	struct position dropPosA     = {WIDTH/2,HEIGHT/8,0};
 		
-		//AUXILIARY
+	//AUXILIARY
 	char dropType_1[2] = {'P','S'}; 	//POTION-SIMPLE
 	char dropType_2[2] = {'W','P'};		//WEAPON-PISTOL
 	char dropType_3[2] = {'A','N'};		//AMMO-NORMAL
@@ -58,32 +51,24 @@ int main(){
 
 	//DEFINITON
 	jugador	  = createPlayer(playerDim,&playerPos);//16X16@MIDDLE OF SCREEN
-	enemigo   = createEnemy(playerDim,&enemyPos);
-	enemigo1  = createEnemy(playerDim,&enemyPos1);
-	enemigo2  = createEnemy(playerDim,&enemyPos2);
+	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos);
+	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos1);
+	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos2);
 	createBar(&bars, &number_of_bars, &jugador,health,healthBarPos);
 	createBar(&bars, &number_of_bars, &jugador,ammo, ammoBarPos);
-	
-	simplePotion = createDrop(&dropPosP);	//taken==false by default
-	pistolWeapon = createDrop(&dropPosW);
-	normalAmmo   = createDrop(&dropPosA);
+	createDrop(&droppables, &number_of_droppables,&dropPosP);	//taken==false by default
+	createDrop(&droppables, &number_of_droppables,&dropPosW);
+	createDrop(&droppables, &number_of_droppables,&dropPosA);
 		//FURTHER SETTINGS
-	setCurrentType(&simplePotion,dropType_1);
-	setCurrentType(&pistolWeapon,dropType_2);
-	setCurrentType(&normalAmmo,dropType_3);
+	setCurrentType(droppables,dropType_1);
+	setCurrentType((droppables+1),dropType_2);
+	setCurrentType((droppables+2),dropType_3);
 
 
 	//CLEAR SCREEN
 	plotter.clear();
 	//PLOTS
-	plotEnemy(enemigo,&plotter);
-	plotEnemy(enemigo1,&plotter);
-	plotEnemy(enemigo2,&plotter);
-	plotVisibleComponents(&plotter, jugador, bars, number_of_bars, bullets, number_of_bullets);
-
-	plotDrop(&simplePotion,&plotter);
-	plotDrop(&pistolWeapon,&plotter);
-	plotDrop(&normalAmmo,&plotter);
+	plotVisibleComponents(&plotter, jugador, bars, number_of_bars, bullets, number_of_bullets, enemies, number_of_enemies, droppables, number_of_droppables);
 
 	//GAME LOOP VARs
 	playerPos = getPosition(&(jugador.obj));	//object.h function
@@ -127,26 +112,11 @@ int main(){
 		setPosition(&(jugador.obj),&playerPos); 
 		setCurrentValue(bars,jugador.health);			
 		setCurrentValue((bars+1),jugador.ammo);			
-		//We should call only plotBar when we set a new current value. its not efficient to plot the same thing over and over.
-
-		//plot new position, health bar.
-		//NOTE: plot first the base layer of our visible components 
-		//and on top of those the ones who would overlap them.
-		//In this case, the player gets overlapped by the healthBar.
-		//Also, when players health goes below 0, something strange
-		//happens as the player texture goes blue and eventually
-		//hits a SEG FAULT. 
 
 		//TODO: Implement checking and clean code!
 
 		plotter.clear();
-		plotEnemy(enemigo,&plotter);
-		plotEnemy(enemigo1,&plotter);
-		plotEnemy(enemigo2,&plotter);
-		plotVisibleComponents(&plotter, jugador, bars, number_of_bars, bullets, number_of_bullets);
-		plotDrop(&simplePotion,&plotter);
-		plotDrop(&pistolWeapon,&plotter);
-		plotDrop(&normalAmmo,&plotter);
+		plotVisibleComponents(&plotter, jugador, bars, number_of_bars, bullets, number_of_bullets, enemies, number_of_enemies, droppables, number_of_droppables);
 
 		//updates the position of all bullets
 		updateBulletPos(&bullets,&number_of_bullets);
@@ -168,17 +138,14 @@ int main(){
 	}
 	//free all visible components dyn allocated struct texture[]
 	free(jugador.obj.textureObj);
-	free(enemigo.obj.textureObj);
-	free(enemigo1.obj.textureObj);
-	free(enemigo2.obj.textureObj);
+	//free object textures
 	for(int i = 0; i < number_of_bars; i ++) free((bars+i)->obj.textureObj);
+	for(int i = 0; i < number_of_enemies; i ++) free((enemies+i)->obj.textureObj);
+	for(int i = 0; i < number_of_droppables; i ++) free((droppables+i)->dropObj.textureObj);
+	//free objects
 	free(bars);
-	free(simplePotion.dropObj.textureObj);
-	free(pistolWeapon.dropObj.textureObj);
-	free(normalAmmo.dropObj.textureObj);
-
-	//first valgrind runs outputs >2kb leaks. 120,000 allocs and 110000ish frees. Is this our thing or SDLs?
-
+	free(enemies);
+	free(droppables);
 
 	char final_msg[] = "See you soon!";
 	plotText(final_msg);	//screen.h function
