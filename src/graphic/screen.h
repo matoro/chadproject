@@ -6,8 +6,10 @@
 #define SCREEN_H_INCLUDED
 
 //I N C L U D E s
+#include <string.h>
 #include "SDL_Plotter.h"
 #include "../object/object.h"
+#include "../utils/charset.h"
 
 //C O N S T A N T s
 #define HEIGHT 600	//screen 
@@ -33,6 +35,6 @@
  *@params msg char[]. The string containing the message.
  *PRECONDITION:	A valid pointer to a char array.
  *POSTCONDITION: Prints given string to stdout.
- */void plotText(char msg[]);
+ */void plotText(char msg[],struct position initialPos,struct texture fontColor,int fontSize,char thinness,SDL_Plotter* plotter);
 
 #endif

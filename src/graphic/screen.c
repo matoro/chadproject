@@ -39,7 +39,49 @@ void plotObject(struct object *obj,SDL_Plotter* plotter){
 	}
 } 
 
-void plotText(char msg[]){
+void plotText(char msg[],struct position initialPos,struct texture fontColor,int fontSize,char thinness,SDL_Plotter* plotter){
 	
-	puts(msg);
+    if(!msg)    return;
+    
+    //VARs
+    int msgLength;
+    int initX;
+    int initY;
+    struct sprite nextSprite;
+
+    //DEFINITION
+    msgLength = strlen(msg);
+    initX = initialPos.x;
+    initY = initialPos.y;
+    thinness = (thinness>=fontSize) ? 0 : thinness;
+
+
+    for(int k=0;k<msgLength;k++){
+        nextSprite = getSprite(msg[k]);
+        if(nextSprite.caracter[0][0]!=-1){   //if we could find appropiate sprite
+            //plot letter
+            for(int i=0;i<SPRITE_DIM;i++){
+                for(int j=0;j<SPRITE_DIM;j++){
+                    if(nextSprite.caracter[i][j]==1){
+                        //x-i&y-j doesn't correspond each other
+                        int col = i*fontSize;
+                        int row = j*fontSize;
+
+                        for(int scale_col=0;scale_col<fontSize;scale_col++){
+                            for(int scale_row=0;scale_row<fontSize;scale_row++){
+                                if((fontSize-scale_row)>thinness&&(fontSize-scale_col)>thinness){
+                                    plotter->plotPixel(initX+(row+scale_row),initY+(col+scale_col),fontColor.red,fontColor.green,fontColor.blue);
+                                }
+                            }
+                        }
+                    }                
+                }
+            }
+        }else{
+            fprintf(stderr,"Couldnt find sprite for: %c\n",msg[k]);
+        }
+        //update position.
+        initX += SPRITE_DIM*fontSize;
+        if((initX+SPRITE_DIM*fontSize)>WIDTH)     return;     //we return if the message is too long and we don't have WIDTH left for the next letter.
+    }
 }
