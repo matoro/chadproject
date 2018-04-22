@@ -37,7 +37,7 @@ int main(){
 	struct position healthBarPos = {WIDTH/6,7*HEIGHT/8,0};
 	struct position ammoBarPos   = {3*WIDTH/4,7*HEIGHT/8,0};
 	enum bartype health          = HEALTH;
-	enum bartype ammo 	     = AMMO;
+	enum bartype ammo 	         = AMMO;
 
 	struct position dropPosP     = {WIDTH/8,HEIGHT/8,0};
 	struct position dropPosW     = {7*WIDTH/8,HEIGHT/8,0};
@@ -47,6 +47,22 @@ int main(){
 	char dropType_1[2] = {'P','S'}; 	//POTION-SIMPLE
 	char dropType_2[2] = {'W','P'};		//WEAPON-PISTOL
 	char dropType_3[2] = {'A','N'};		//AMMO-NORMAL
+
+	char test_msg[]              = "+-1234567890";
+    char test_string[]           = "matoro, mortonman and leba! How are you doing?";
+    int fontSize                 = 4;
+    char thinSize                = 1;
+    struct position textPos      = {WIDTH/2,7*HEIGHT/8,0};
+    struct texture fontColor; 
+    fontColor.red   = 10;
+    fontColor.green = 40;
+    fontColor.blue  = 215;
+    
+    struct position stringPos   = {WIDTH/4,3*HEIGHT/8};
+    struct texture colorString;
+    colorString.red   = 105;
+    colorString.green = 0;
+    colorString.blue  = 110;
 
 
 	//DEFINITON
@@ -121,6 +137,10 @@ int main(){
 		//updates the position of all bullets
 		updateBulletPos(&bullets,&number_of_bullets);
 
+        //plotText test
+    	plotText(test_msg,textPos,fontColor,fontSize,thinSize,&plotter);     //screen.h function
+        plotText(test_string,stringPos,colorString,2,0,&plotter);        
+
 		plotter.update(); //neccessary? YES!
 		
 		bool keyhit = plotter.kbhit();
@@ -147,8 +167,6 @@ int main(){
 	free(enemies);
 	free(droppables);
 
-	char final_msg[] = "See you soon!";
-	plotText(final_msg);	//screen.h function
 	plotter.setQuit(true);
 
 	return 0;
