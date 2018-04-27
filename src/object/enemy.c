@@ -117,3 +117,20 @@ void createEnemy(struct EnemyObj ** enemies, int *number_of_enemies,struct size 
 	*(*enemies+*number_of_enemies) = e;
 	(*number_of_enemies)++;
 }
+
+void deleteEnemy(struct EnemyObj ** enemies, int *number_of_enemies, int enemy_number){
+	if(enemy_number > *number_of_enemies) return; // If the enemy to be deleted does not exist
+	(*number_of_enemies)--;
+	for(int i = enemy_number; i < (*number_of_enemies); i++){
+		*(*enemies+i) = *(*enemies+i+1);
+		*((*enemies+i)->obj.textureObj) = *((*enemies+i+1)->obj.textureObj); //texture can't be reassigned like the rest of the object variables because it is a pointer.
+	}
+	if(*number_of_enemies > 0){
+		if(!(*enemies = (struct EnemyObj*)realloc(*enemies, sizeof(struct EnemyObj)*(*number_of_enemies)))){
+			printf("Memory reallocation failed.");
+		}
+	}else{
+		free(*enemies);
+		*enemies = NULL;
+	}
+}

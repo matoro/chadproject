@@ -39,10 +39,12 @@ struct BarObj{
 /*	FUNCTION: createBar
  *PURPOSE: Creates health and ammo bar structs with based on the variables in a player struct.
  *PRECONDITION: A player struct with positive health and ammo integers, a valid bartype(Health or Ammo)
- *@params struct PlayerObj *player	The player from which the health or ammo value is taken.
+ *POSTCONDITION: A new bar object is added to the bar object array.
+ *@params struct BarObj ** 		A pointer to the array of bar objects.
+ *	  int * number_of_bars		A pointer to the number of bars.
+ * 	  struct PlayerObj *player	The player from which the health or ammo value is taken.
  *        enum bartype type		The type of bar being created: Health or Ammo.
  *	  
- *@return struct BarObj		        A bar created based on the data in the player object and the position provided.
  */
 void createBar(struct BarObj ** bars, int *number_of_bars, struct PlayerObj* player, enum bartype b_type, struct position pos);
 

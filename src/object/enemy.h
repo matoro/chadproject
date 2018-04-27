@@ -128,9 +128,21 @@ struct EnemyObj{
 /**	FUNCTION: createPlayer
  *PURPOSE: Plots an enemy object on the screen.
  *PRECONDITION: valid ints, j and i must be within screen limits, dir must be between 0 and 359.
- *@params struct size		The height and width of an enemy object.
+ *POSTCONDITION: a new enemy is added to the enemy array.
+ *@params struct EnemyObj**	A pointer to the enemy object array.
+ *	  int * number_of_enemies	A pointer to the number of enemies.
+ *        struct size		The height and width of an enemy object.
  *	  struct position*	The position values of the enemy object. Struct position pointer.
- *@return EnemyObj	A enemy with the given size and postion variables. 
  */void createEnemy(struct EnemyObj ** enemies, int *number_of_enemies, struct size dim, struct position* pos);
+
+/*	FUNCTION:deleteEnemy
+PURPOSE: Deletes a enemy from the array of enemies.
+PRECONDITION: A pointer to a valid array of enemies with at least 1 member, the number of a enemies that exists within the array.
+POSTCONDITION: The specified enemies is removed. All enemies after that enemies are moved back one space in the array.
+@params struct EnemyObj **enemies	A pointer to a pointer to the first EnemyObj.
+	int *number_of_enemies		A pointer the the number of enemies.
+	int enemy_number		The position in the array of the enemy to be deleted, starts at 0.
+*/
+void deleteEnemy(struct EnemyObj ** enemies, int *number_of_enemies, int enemy_number);
 
 #endif

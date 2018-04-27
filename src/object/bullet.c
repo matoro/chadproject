@@ -10,8 +10,15 @@ void createBullet(struct object *shooter, struct BulletObj **bullets, int *numbe
 	bulletBlack.red   = 0;
 	bulletBlack.green = 0;
 	bulletBlack.blue  = 0;
-
+	
 	setPosition(&newBullet.obj, &(shooter->posObj));
+	// changes the position so that the bullet doesn't start inside the player
+	struct position updatedPos = changePosition(&(newBullet.obj), 'W', 10);
+	newBullet.obj.posObj.x += updatedPos.x;
+	newBullet.obj.posObj.y += updatedPos.y;
+	updatedPos = changePosition(&(newBullet.obj), 'D', 10);
+	newBullet.obj.posObj.x += updatedPos.x;
+	newBullet.obj.posObj.y += updatedPos.y;
 	setSize(&newBullet.obj,bulletSize);
 
 	int totalPixel = bulletSize.alto * bulletSize.ancho;

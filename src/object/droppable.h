@@ -57,10 +57,21 @@ struct Droppable{
  *POSTCONDITION: Droppable is created, ready to be plotted and taken by the player. Texture
  *		 will be set upon the type of droppable. Brown-ish for guns and green-ish 
  *		 for potions. Returns null if not called properly.
- *@params struct size dropSize		The size of the droppable.
+ *@params struct Droppable **droppables A pointer to the array of droppable objects.
+ *	  int * number_of_droppables	A pointer to the number of droppables.
+ *	  struct size dropSize		The size of the droppable.
  *	  struct position* dropPos	The position of the droppable. Struct position pointer.
- *@return struct Droppable		The struct Droppable configurated. Null otherwise.         
  */void createDrop(struct Droppable **droppables, int *number_of_droppables,struct position* dropPos);
+
+/*	FUNCTION:deleteDrop
+PURPOSE: Deletes a droppable  from the array of droppables.
+PRECONDITION: A pointer to a valid array of droppables with at least 1 member, the number of a droppables that exists within the array.
+POSTCONDITION: The specified droppable is removed. All droppables after that droppable are moved back one space in the array.
+@params struct Droppable **droppables	A pointer to a pointer to the first Droppable.
+	int *number_of_droppables		A pointer the the number of droppables.
+	int drop_number			The position in the array of the droppable to be deleted, starts at 0.
+*/
+void deleteDroppable(struct Droppable **droppables, int *number_of_droppables, int drop_number);
 
 /**
  *	FUNCTION: setCurrentType

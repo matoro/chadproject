@@ -32,6 +32,23 @@ void createDrop(struct Droppable **droppables, int *number_of_droppables, struct
 		
 }
 
+void deleteDroppable(struct Droppable **droppables, int *number_of_droppables, int drop_number){
+	if(drop_number > *number_of_droppables) return; // If the droppable to be deleted does not exist
+	(*number_of_droppables)--;
+	for(int i = drop_number; i < (*number_of_droppables); i++){
+		*(*droppables+i) = *(*droppables+i+1);
+		*((*droppables+i)->dropObj.textureObj) = *((*droppables+i+1)->dropObj.textureObj); //texture can't be reassigned like the rest of the object variables because it is a pointer.
+	}
+	if(*number_of_droppables > 0){
+		if(!(*droppables = (struct Droppable*)realloc(*droppables, sizeof(struct Droppable)*(*number_of_droppables)))){
+			printf("Memory reallocation failed.");
+		}
+	}else{
+		free(*droppables);
+		*droppables = NULL;
+	}
+}
+
 void setCurrentType(struct Droppable* drop,char newType[]){
 
 	char tipo = newType[0];
