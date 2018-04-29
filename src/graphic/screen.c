@@ -41,7 +41,7 @@ void plotObject(struct object *obj,SDL_Plotter* plotter){
 
 void plotText(char msg[],struct position initialPos,struct texture fontColor,int fontSize,char thinness,SDL_Plotter* plotter){
 	
-    if(!msg)    return;
+    if(!msg||fontSize<=0)    return;
     
     //VARs
     int msgLength;

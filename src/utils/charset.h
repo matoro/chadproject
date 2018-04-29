@@ -10,15 +10,28 @@
 #define SPRITE_DIM 4
 
 //F U N C T I O N s
-struct sprite getSprite(char letra);
+/*      FUNCTION: getSprite
+ *PURPOSE: Given a 'char' checks the entire charset dictionary searching for the appropiate sprite, and returns it. 
+ *PRECONDITION: There is none. If the input is NULL, invalid or out of bounds of the charset, we return a sprite
+ *              holding a -1 in its [0][0] position as a flag. 
+ *POSTCONDITION: A struct sprite holding the appropiate character representation is returned.
+ *@params   char letra              The letter looking for its sprite.
+ *
+ */struct sprite getSprite(char letra);
 
 //C O N S T A N T s  &  S T R U C T s  
-//ENCAPSULATE
+
+/*      STRUCT: sprite
+ *PURPOSE:      It helps us ENCAPSULATE the bool[][] to pass it around between function calls.
+ *VARIABLES:    
+ *  bool caracter[SPRITEDIM][SPRITEDIM]     1&0 Form/shape representation of a character.
+ */
 struct sprite{
     bool caracter[SPRITE_DIM][SPRITE_DIM];
 };
-/*  Character SPRITES.
- *  charSet dictionary: "abcdefghijklmnopqrstuvwxyz0123SPRITE_DIM56789,.;+-!? ";
+
+/*  CHARACTER SPRITES.
+ *  charSet current dictionary: "abcdefghijklmnopqrstuvwxyz0123SPRITE_DIM56789,.;+-!? ";
  */
 const bool letra_a[SPRITE_DIM][SPRITE_DIM]={
     {0,1,0,0},
