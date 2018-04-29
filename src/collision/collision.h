@@ -40,8 +40,10 @@
  *                  otherwise.
  *@params           struct PlayerObj* player    Pointer to the player.
  *                  struct EnemyObj* enemy      Pointer to the enemy.
- *                  char movement               Char representing desired player movement. 
- */void player_enemy_collision(struct PlayerObj* player, struct EnemyObj* enemy,char movement);
+ *                  char movement               Char representing desired player movement.
+ *                  int rate                    Rate of movement.
+ *@return           bool                        True if there is collision 
+ */bool player_enemy_collision(struct PlayerObj* player, struct EnemyObj* enemy,char movement,int rate);
 
 //... rest of collision functions ...
 

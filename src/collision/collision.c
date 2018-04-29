@@ -15,7 +15,7 @@ int mapObject(struct object* obj, struct size* objMap){
 
     objPos  = getPosition(obj);
     objDim  = getSize(obj);
-    nPoints = (objDim.alto+objDim.ancho)*2;     //floor&ceil border coordenates
+    nPoints = (objDim.alto+objDim.ancho)*2;     //floor&ceil border coordenates aka perimeter.
 
     //ALLOC
     if(objMap){
@@ -87,7 +87,7 @@ bool checkOverlap(struct object* firstObj,struct object* secondObj){
     return collision;
 }
 
-void player_enemy_collision(struct PlayerObj* player, struct EnemyObj* enemy, char movement){
+bool player_enemy_collision(struct PlayerObj* player, struct EnemyObj* enemy, char movement, int rate){
     //Function should be called only when the user wants to move the player.
 
     if(!player||!enemy)     return;
@@ -100,14 +100,18 @@ void player_enemy_collision(struct PlayerObj* player, struct EnemyObj* enemy, ch
     enemyPos  = getPosition(&(player->obj));
 
     //GET FUTURE POSITION AND SET IT AS CURRENT IN PLAYER.
-    newPos = changePosition(&(player->obj),movement,6);
+    newPos = changePosition(&(player->obj),movement,rate);
     newPos.x         += playerPos.x;
     newPos.y         += playerPos.y;
     newPos.direction += playerPos.direction;
     setPosition(&(player->obj),newPos);
     
-    //IF THIS NEWPOS OVERLAPS|COLLIDES WITH ENEMY; SET OLD POSITION (NEGATING THEREFORE THE MOVEMENT)
-    if(checkOverlap(&(player->obj),&(enemy->obj)))  setPosition(&(player->obj),playerPos);
-        
-    return;
+    //CHECK IF NEWPOS OVERLAPS|COLLIDES WITH ENEMY AND SET OLD POSITION BACK IN THE PLAYER.
+    if(checkOverlap(&(player->obj),&(enemy->obj))){
+        setPosition(&(player->obj),playerPos);
+        return true;
+    }else{
+        setPosition(&(player->obj),playerPos);
+        return false;
+    }
 }

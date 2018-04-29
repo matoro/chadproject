@@ -93,22 +93,24 @@ int main(){
 
 	while(letter != '0')
 	{
-
-		struct position updatedPos = changePosition(&(jugador.obj),letter,6);
-
-		playerPos.x 	    += updatedPos.x;
-		playerPos.y 	    += updatedPos.y;
-		playerPos.direction += updatedPos.direction;
-		
-		/*
-		//we mend directions to keep them in range. Move to object.c
-		if (playerPos.direction > 359){
-			playerPos.direction = playerPos.direction%360;
-		}		
-		if (playerPos.direction < 0){
-			playerPos.direction = (playerPos.direction+360);
+        
+        //TODO: Try collision logic implementation. player_enemy_collision()
+        bool playerEnemyCol = false;
+        for(int i = 0; i < number_of_enemies; i ++){
+            if(player_enemy_collision(&jugador,(enemies+i),letter,6)){
+                playerEnemyCol = true;
+                break;
+            }
+        }
+        if(!playerEnemyCol){ //if there is no collision we can update safely.
+            struct position updatedPos = changePosition(&(jugador.obj),letter,6);
+		    playerPos.x 	    += updatedPos.x;
+		    playerPos.y 	    += updatedPos.y;
+		    playerPos.direction += updatedPos.direction;
 		}
-		*/
+
+
+
 		//simple test for bar.
 		if (letter=='H'){
 			jugador.health -= 5;
