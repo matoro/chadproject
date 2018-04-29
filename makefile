@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -lSDL2 -lSDL2_mixer -std=c++11
+CXXFLAGS = -g -lSDL2 -lSDL2_mixer -std=c++11
 
 SONAME 	= game
 SRC	= src/test.c		                \

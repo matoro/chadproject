@@ -22,7 +22,7 @@
  *@params           struct object* obj          Pointer to an object.
  *                  struct size* objMap         Pointer to a struct size.
  *@return           int                         Lenght of objMap  
- */int mapObject(struct object* obj, struct size* objMap);
+ */int mapObject(struct object* obj, struct size** objMap);
 
 /*      FUNCTION: checkOverlap
  *PURPOSE:          checks if two object maps have some points in common;if so, returns true.

@@ -4,9 +4,9 @@
  */
 #include "collision.h"
 
-int mapObject(struct object* obj, struct size* objMap){
+int mapObject(struct object* obj, struct size** objMap){
 
-    if(!obj)    return;
+    if(!obj)    return -1;
 
     //VARs
     int nPoints,index;
@@ -18,12 +18,11 @@ int mapObject(struct object* obj, struct size* objMap){
     nPoints = (objDim.alto+objDim.ancho)*2;     //floor&ceil border coordenates aka perimeter.
 
     //ALLOC
-    if(objMap){
-        free(objMap);
-        objMap = NULL;
-    }else{
-        objMap = (struct size*)malloc(sizeof(struct size)*nPoints);
+    if(*objMap != NULL){
+        free(*objMap);      //we clean it
+        *objMap = NULL;
     }
+    *objMap = (struct size*)malloc(sizeof(struct size)*nPoints);
 
     //FILL MAP
     index = 0;    
@@ -38,11 +37,10 @@ int mapObject(struct object* obj, struct size* objMap){
         y_f = (int) floor((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
         y_c = (int)  ceil((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
     
-        objMap[index].ancho     = x_f;
-        objMap[index].alto      = y_f;
-        objMap[++index].ancho   = x_c;
-        objMap[index].alto      = y_c;
-        index++;
+        objMap[index]->ancho     = x_f + objPos.x;
+        objMap[index]->alto      = y_f + objPos.y;
+        objMap[++index]->ancho   = x_c + objPos.x;
+        objMap[index++]->alto    = y_c + objPos.y;
     }
 
     //VERTICAL BORDERS
@@ -55,11 +53,10 @@ int mapObject(struct object* obj, struct size* objMap){
         y_f = (int) floor((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
         y_c = (int)  ceil((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
 
-        objMap[index].ancho     = x_f;
-        objMap[index].alto      = y_f;
-        objMap[++index].ancho   = x_c;
-        objMap[index].alto      = y_c;
-        index++;
+        objMap[index]->ancho     = x_f + objPos.x;
+        objMap[index]->alto      = y_f + objPos.y;
+        objMap[++index]->ancho   = x_c + objPos.x;
+        objMap[index++]->alto    = y_c + objPos.y;
     }
 
     return nPoints; //should be equal to index       
@@ -67,7 +64,7 @@ int mapObject(struct object* obj, struct size* objMap){
 
 bool checkOverlap(struct object* firstObj,struct object* secondObj){
 
-    if(!firstObj||!secondObj)   return;
+    if(!firstObj||!secondObj)   return false;
 
     //VARs
     bool collision = false;
@@ -75,9 +72,14 @@ bool checkOverlap(struct object* firstObj,struct object* secondObj){
     struct size* firstMap  = NULL;
     struct size* secondMap = NULL;
 
-    firstMapLength  = mapObject(firstObj,firstMap); 
-    secondMapLength = mapObject(secondObj,secondMap);
+    firstMapLength  = mapObject(firstObj,&firstMap); 
+    secondMapLength = mapObject(secondObj,&secondMap);
     
+    if (firstMapLength == -1 || secondMapLength == -1){
+        fprintf(stderr,"Error mapping objects at checkOverlap()\n");
+        return false;
+    }
+
     for(int i=0;i<firstMapLength;i++){
         for(int j=0;j<secondMapLength;j++){
             if((firstMap[i].ancho == secondMap[j].ancho) && (firstMap[i].alto == secondMap[j].alto)){
@@ -97,7 +99,7 @@ bool checkOverlap(struct object* firstObj,struct object* secondObj){
 bool player_enemy_collision(struct PlayerObj* player, struct EnemyObj* enemy, char movement, int rate){
     //Function should be called only when the user wants to move the player.
 
-    if(!player||!enemy)     return;
+    if(!player||!enemy)     return false;
 
     //VARs
     struct position playerPos, newPos, enemyPos;
@@ -111,14 +113,14 @@ bool player_enemy_collision(struct PlayerObj* player, struct EnemyObj* enemy, ch
     newPos.x         += playerPos.x;
     newPos.y         += playerPos.y;
     newPos.direction += playerPos.direction;
-    setPosition(&(player->obj),newPos);
+    setPosition(&(player->obj),&newPos);
     
     //CHECK IF NEWPOS OVERLAPS|COLLIDES WITH ENEMY AND SET OLD POSITION BACK IN THE PLAYER.
     if(checkOverlap(&(player->obj),&(enemy->obj))){
-        setPosition(&(player->obj),playerPos);
+        setPosition(&(player->obj),&playerPos);
         return true;
     }else{
-        setPosition(&(player->obj),playerPos);
+        setPosition(&(player->obj),&playerPos);
         return false;
     }
 }

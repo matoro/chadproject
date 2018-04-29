@@ -11,6 +11,7 @@
 
 #include "graphic/visiblecomponents.h"
 #include "graphic/screen.h"	//Contains SDL and plotting functions
+#include "collision/collision.h"
 
 int main(){
 
@@ -106,8 +107,9 @@ int main(){
 			createBullet(&(jugador.obj), &bullets, &number_of_bullets);
 		}else{
         //TODO: Try collision logic implementation. player_enemy_collision()
+        
             bool playerEnemyCol = false;
-            for(int i = 0; i < number_of_enemies; i ++){
+            for(int i=0;i<number_of_enemies;i++){
                 if(player_enemy_collision(&jugador,(enemies+i),letter,6)){
                     playerEnemyCol = true;
                     break;
@@ -119,6 +121,7 @@ int main(){
 		        playerPos.y 	    += updatedPos.y;
 		        playerPos.direction += updatedPos.direction;
 		    }
+        
         }
 
 		//update player new  position, health bar.
