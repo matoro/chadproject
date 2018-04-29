@@ -7,6 +7,7 @@
 
 //I N C L U D E s
 #include <string.h>
+#include <math.h>
 #include "SDL_Plotter.h"
 #include "../object/object.h"
 #include "../utils/charset.h"

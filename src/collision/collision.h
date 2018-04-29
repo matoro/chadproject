@@ -7,6 +7,8 @@
 
 //I N C L U D E s
 #include <stdbool.h>
+#include <stdlib.h>
+#include <math.h>
 
 #include "../object/player.h"
 #include "../object/enemy.h"
