@@ -41,7 +41,8 @@ int mapObject(struct object* obj, struct size* objMap){
         objMap[index].ancho     = x_f;
         objMap[index].alto      = y_f;
         objMap[++index].ancho   = x_c;
-        objMap[index++].alto    = y_c;
+        objMap[index].alto      = y_c;
+        index++;
     }
 
     //VERTICAL BORDERS
@@ -58,6 +59,7 @@ int mapObject(struct object* obj, struct size* objMap){
         objMap[index].alto      = y_f;
         objMap[++index].ancho   = x_c;
         objMap[index].alto      = y_c;
+        index++;
     }
 
     return nPoints; //should be equal to index       
@@ -84,6 +86,11 @@ bool checkOverlap(struct object* firstObj,struct object* secondObj){
             }
         }
     }
+    free(firstMap);
+    free(secondMap);
+    firstMap  = NULL;
+    secondMap = NULL;
+    
     return collision;
 }
 
