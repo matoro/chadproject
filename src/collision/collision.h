@@ -26,10 +26,10 @@
  *PURPOSE:          checks if two object maps have some points in common;if so, returns true.
  *PRECONDITION:     valid object pointers.
  *POSTCONDITION:    Returns false if obj_1 and obj_2 are NOT colliding.
- *@params           struct object* obj_1        Pointer to the first object.
- *                  struct object* obj_2        Pointer to the second object.
+ *@params           struct object* firstObj     Pointer to the first object.
+ *                  struct object* secondObj    Pointer to the second object.
  *@return           bool                        True if they collide.
- */bool checkOverlap(struct object* obj_1,struct object* objMap_2);
+ */bool checkOverlap(struct object* firstObj,struct object* secondObj);
 
 /*      FUNCTION: enemy_player_collision  
  *PURPOSE:          Handle if the next movement of a player collides with an enemy; if so, don't update player position.
