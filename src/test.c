@@ -104,9 +104,64 @@ int main(){
 			fprintf(stdout,"PLAYER AMMO: %d",jugador.ammo);
 		}else if (letter==' '){
 		//testing shooting
-			createBullet(&(jugador.obj), &bullets, &number_of_bullets);
+			if(hasAmmo(&jugador)){
+                createBullet(&(jugador.obj), &bullets, &number_of_bullets);
+                jugador.ammo--; //could also use setAmmo/getAmmo
+            }
 		}else{
-        //TODO: Try collision logic implementation. player_enemy_collision()
+
+/*
+            //TODO: Try collision logic for droppables. player_droppable_collision()
+            if(number_of_droppables>0){
+                  
+                for(int i=0;i<number_of_droppables;i++){
+                    if(player_droppable_collision(&jugador,(droppables+i),letter,6)){
+                        
+                        switch((droppable+i)->currentType){
+                            case 'A':
+                                int ammo = getAmmo(&jugador);
+                                jugador.ammo_type = (droppable+i)->type.drop_ammo;  //change type of ammo accordingly
+                                setAmmo(&jugador,(ammo+20>50) ? 50 : ammo+20);      //add ammo. NOTE: starting/full Ammo is 50.                          
+                                break;
+
+                            case 'P':
+                                int health = getHealth(&jugador);
+                                if((droppable+i)->type.drop_potion == SIMPLE){
+                                    setHealth(&jugador, (health+20>100) ? 100 : health+20);
+                                }else{
+                                    setHealth(&jugador,100);                        //max health
+                                }
+                                break;
+                        
+                            case 'W':
+                                jugador.player_weapon = (droppable+i)->type.drop_weapon;
+                                break;
+
+                            default:
+                                break;
+                        }                            
+                    }
+                    break;
+                }
+                for(int i=0;i<number_of_droppables;i++){
+                    //cleaning and freeing droppables that have been taken.
+                    if(droppable[i]->taken){
+                        struct position removedPos = {0,0,0};
+                        struct size removedSize    =  {0,0};                        
+
+                        droppable[i]->dropObj.posObj  = removedPos;
+                        droppable[i]->dropObj.sizeObj = removedSize;
+                    
+                        free(droppable[i]->dropObj.textureObj);
+                        deleteDroppable(&droppables,number_of_droppables,i);
+                    }
+                    break;
+                }
+                
+            }
+*/
+
+            //TODO: Try collision logic implementation. player_enemy_collision()
         
             bool playerEnemyCol = false;
             for(int i=0;i<number_of_enemies;i++){
@@ -115,7 +170,7 @@ int main(){
                     break;
                 }
             }
-            if(!playerEnemyCol){ //if there is no collision we can update safely.
+            if(!playerEnemyCol){ //if there is no collision we can update player position safely.
                 struct position updatedPos = changePosition(&(jugador.obj),letter,6);
 		        playerPos.x 	    += updatedPos.x;
 		        playerPos.y 	    += updatedPos.y;
@@ -123,8 +178,8 @@ int main(){
 		    }
         
         }
-
-		//update player new  position, health bar.
+    
+		//update player new  position, health and ammo bar.
 		setPosition(&(jugador.obj),&playerPos); 
 		setCurrentValue(bars,jugador.health);			
 		setCurrentValue((bars+1),jugador.ammo);			

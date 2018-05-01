@@ -18,7 +18,7 @@ int getHealth(struct PlayerObj* player){
 
 void setAmmo(struct PlayerObj* player,int munition){
 	
-	player->health = munition;
+	player->ammo = munition;
 }
 
 int getAmmo(struct PlayerObj* player){

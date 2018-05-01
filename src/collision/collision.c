@@ -131,11 +131,10 @@ bool player_enemy_collision(struct PlayerObj* player, struct EnemyObj* enemy, ch
     if(!player||!enemy)     return false;
 
     //VARs
-    struct position playerPos, newPos, enemyPos;
+    struct position playerPos, newPos;
 
-    //FETCH POSITIONS
+    //FETCH POSITION
     playerPos = getPosition(&(player->obj));
-    enemyPos  = getPosition(&(player->obj));
 
     //GET FUTURE POSITION AND SET IT AS CURRENT IN PLAYER.
     newPos = changePosition(&(player->obj),movement,rate);
@@ -144,7 +143,7 @@ bool player_enemy_collision(struct PlayerObj* player, struct EnemyObj* enemy, ch
     newPos.direction += playerPos.direction;
     setPosition(&(player->obj),&newPos);
     
-    //CHECK IF NEWPOS OVERLAPS|COLLIDES WITH ENEMY AND SET OLD POSITION BACK IN THE PLAYER.
+    //CHECK IF NEW-FUTURE POS OVERLAPS|COLLIDES WITH ENEMY AND SET OLD POSITION BACK IN THE PLAYER.
     if(checkOverlap(&(player->obj),&(enemy->obj))){
         setPosition(&(player->obj),&playerPos);
         return true;
@@ -152,4 +151,34 @@ bool player_enemy_collision(struct PlayerObj* player, struct EnemyObj* enemy, ch
         setPosition(&(player->obj),&playerPos);
         return false;
     }
+}
+
+bool player_droppable_collision(struct PlayerObj* player, struct Droppable* drop, char movement, int rate){
+    //Function should be called only when there are droppables on the game and when the player is moving.
+
+    if(!player||!drop)     return false;
+
+    //VARs
+    struct position playerPos, newPos;
+
+    //FETCH POSITIONS
+    playerPos = getPosition(&(player->obj));
+
+    //GET FUTURE POSITION AND SET IT AS CURRENT IN PLAYER.
+    newPos = changePosition(&(player->obj),movement,rate);
+    newPos.x         += playerPos.x;
+    newPos.y         += playerPos.y;
+    newPos.direction += playerPos.direction;
+    setPosition(&(player->obj),&newPos);
+    
+    //CHECK IF NEWPOS OVERLAPS|COLLIDES WITH DROP AND SET OLD POSITION BACK IN THE PLAYER.
+    if(checkOverlap(&(player->obj),&(drop->dropObj))){
+        setPosition(&(player->obj),&playerPos);
+        drop->taken = true;
+        return true;
+    }else{
+        setPosition(&(player->obj),&playerPos);
+        return false;
+    }
+
 }

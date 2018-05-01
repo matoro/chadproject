@@ -12,6 +12,7 @@
 
 #include "../object/player.h"
 #include "../object/enemy.h"
+#include "../object/droppable.h"
 
 //F U N C T I O N s
 
@@ -33,10 +34,10 @@
  *@return           bool                        True if they collide.
  */bool checkOverlap(struct object* firstObj,struct object* secondObj);
 
-/*      FUNCTION: enemy_player_collision  
+/*      FUNCTION: player_enemy_collision  
  *PURPOSE:          Handle if the next movement of a player collides with an enemy; if so, don't update player position.
  *PRECONDITION:     Valid player and enemy pointers.
- *POSTCONDITION:    Player gets its position updated in corcondance to the next user movement but it stays the same
+ *POSTCONDITION:    Player gets gets permission to update its position in corcondance to the next user movement but it stays the same
  *                  otherwise.
  *@params           struct PlayerObj* player    Pointer to the player.
  *                  struct EnemyObj* enemy      Pointer to the enemy.
@@ -44,6 +45,17 @@
  *                  int rate                    Rate of movement.
  *@return           bool                        True if there is collision 
  */bool player_enemy_collision(struct PlayerObj* player, struct EnemyObj* enemy,char movement,int rate);
+
+/*      FUNCTION: player_droppable_collision  
+ *PURPOSE:          Handle if the next movement of a player collides with a droppable; if so, change droppable taken boolean to 'true'.
+ *PRECONDITION:     Valid player and droppable pointers.
+ *POSTCONDITION:    Droppable gets 'taken'.
+ *@params           struct PlayerObj* player    Pointer to the player.
+ *                  struct Droppable* drop      Pointer to the droppable.
+ *                  char movement               Char representing next player movement.
+ *                  int rate                    Rate of movement.
+ *@return           bool                        True if there is collision 
+ */bool player_droppable_collision(struct PlayerObj* player, struct Droppable* drop,char movement,int rate);
 
 //... rest of collision functions ...
 
