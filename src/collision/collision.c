@@ -15,7 +15,7 @@ int mapObject(struct object* obj, struct size** objMap){
 
     objPos  = getPosition(obj);
     objDim  = getSize(obj);
-    nPoints = (objDim.alto+objDim.ancho)*2;     //floor&ceil border coordenates aka perimeter.
+    nPoints = (2*(objDim.alto+objDim.ancho))*2;     //floor&ceil border coordenates aka perimeter.
 
     //ALLOC
     if(*objMap != NULL){
@@ -43,10 +43,39 @@ int mapObject(struct object* obj, struct size** objMap){
         (*objMap)[index++].alto    = y_c + objPos.y;
     }
 
+    for(int i=0;i<objDim.alto;i++){
+        int x_f,x_c,y_f,y_c;    
+        int j = 0;
+
+        x_f = (int) floor((i-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))-(j-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+objDim.alto/2.0);
+        x_c = (int)  ceil((i-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))-(j-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+objDim.alto/2.0);
+        y_f = (int) floor((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
+        y_c = (int)  ceil((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
+    
+        (*objMap)[index].ancho     = x_f + objPos.x;
+        (*objMap)[index].alto      = y_f + objPos.y;
+        (*objMap)[++index].ancho   = x_c + objPos.x;
+        (*objMap)[index++].alto    = y_c + objPos.y;
+    }
+
     //VERTICAL BORDERS
     for(int j=0;j<objDim.ancho;j++){
         int x_f,x_c,y_f,y_c;    
         int i = objDim.alto;
+
+        x_f = (int) floor((i-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))-(j-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+objDim.alto/2.0);
+        x_c = (int)  ceil((i-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))-(j-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+objDim.alto/2.0);
+        y_f = (int) floor((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
+        y_c = (int)  ceil((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
+
+        (*objMap)[index].ancho     = x_f + objPos.x;
+        (*objMap)[index].alto      = y_f + objPos.y;
+        (*objMap)[++index].ancho   = x_c + objPos.x;
+        (*objMap)[index++].alto    = y_c + objPos.y;
+    }
+    for(int j=0;j<objDim.ancho;j++){
+        int x_f,x_c,y_f,y_c;    
+        int i = 0;
 
         x_f = (int) floor((i-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))-(j-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+objDim.alto/2.0);
         x_c = (int)  ceil((i-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))-(j-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+objDim.alto/2.0);
