@@ -37,10 +37,10 @@ int mapObject(struct object* obj, struct size** objMap){
         y_f = (int) floor((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
         y_c = (int)  ceil((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
     
-        objMap[index]->ancho     = x_f + objPos.x;
-        objMap[index]->alto      = y_f + objPos.y;
-        objMap[++index]->ancho   = x_c + objPos.x;
-        objMap[index++]->alto    = y_c + objPos.y;
+        (*objMap)[index].ancho     = x_f + objPos.x;
+        (*objMap)[index].alto      = y_f + objPos.y;
+        (*objMap)[++index].ancho   = x_c + objPos.x;
+        (*objMap)[index++].alto    = y_c + objPos.y;
     }
 
     //VERTICAL BORDERS
@@ -53,10 +53,10 @@ int mapObject(struct object* obj, struct size** objMap){
         y_f = (int) floor((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
         y_c = (int)  ceil((i-objDim.ancho/2.0)*(sin(objPos.direction*M_PI/180.0))+(j-objDim.alto/2.0)*(cos(objPos.direction*M_PI/180.0))+objDim.ancho/2.0);
 
-        objMap[index]->ancho     = x_f + objPos.x;
-        objMap[index]->alto      = y_f + objPos.y;
-        objMap[++index]->ancho   = x_c + objPos.x;
-        objMap[index++]->alto    = y_c + objPos.y;
+        (*objMap)[index].ancho     = x_f + objPos.x;
+        (*objMap)[index].alto      = y_f + objPos.y;
+        (*objMap)[++index].ancho   = x_c + objPos.x;
+        (*objMap)[index++].alto    = y_c + objPos.y;
     }
 
     return nPoints; //should be equal to index       
