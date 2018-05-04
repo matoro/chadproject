@@ -64,6 +64,8 @@ void plotBar(struct BarObj* bar,SDL_Plotter* plot){
 	//VARs
 	struct texture redHealth;
 	struct texture blackAmmo;
+    struct texture greenHealth;
+	struct texture brownAmmo;
 	enum bartype discriminator = HEALTH;
 	enum bartype type = bar->type;
 
@@ -71,6 +73,13 @@ void plotBar(struct BarObj* bar,SDL_Plotter* plot){
 	int totalPixel;
 	double deltaChange;
 
+	greenHealth.red   = 5;
+	greenHealth.green = 255;
+	greenHealth.blue  = 5;
+
+	brownAmmo.red   = 210;
+	brownAmmo.green = 145;
+	brownAmmo.blue  = 5;
 
 	redHealth.red   = 255;
 	redHealth.green = 5;
@@ -86,9 +95,14 @@ void plotBar(struct BarObj* bar,SDL_Plotter* plot){
 	totalPixel   = (bar->obj.sizeObj.alto)*(bar->obj.sizeObj.ancho); //dots or ->?
 	pixelsToDraw = round(deltaChange*totalPixel);
 
+    for(int i=0;i<totalPixel;i++){
+        if(i>=pixelsToDraw){
+            setTexture(&(bar->obj),(type == discriminator) ? redHealth   : blackAmmo,i);
+        }else{
+            setTexture(&(bar->obj),(type == discriminator) ? greenHealth : brownAmmo,i);
+        }
+    
+    }
 
-	for(int i = totalPixel-1;i >= pixelsToDraw;i--)	setTexture(&(bar->obj),(type == discriminator) ? redHealth : blackAmmo,i);
-
-	
-	plotObject(&(bar->obj),plot);	//If this doesn't work avoid using bar pointer.
+    plotObject(&(bar->obj),plot);	//If this doesn't work avoid using bar pointer.
 }

@@ -18,14 +18,18 @@ int main(){
 	//VARs DECLARATION
 	SDL_Plotter plotter(HEIGHT,WIDTH); 	//CONSTANTS DEFINED IN screen.h
 
-	struct PlayerObj jugador;			
+	struct PlayerObj jugador;
+			
 	struct BarObj    *bars = NULL;
 	int number_of_bars = 0;
-	struct BulletObj *bullets = NULL;
+	
+    struct BulletObj *bullets = NULL;
 	int number_of_bullets = 0;
-	struct EnemyObj  *enemies = NULL;
+	
+    struct EnemyObj  *enemies = NULL;
 	int number_of_enemies = 0;
-	struct Droppable *droppables = NULL;
+	
+    struct Droppable *droppables = NULL;
 	int number_of_droppables = 0;
 
 	struct position playerPos    = {WIDTH/2,HEIGHT/2,0};
@@ -100,7 +104,7 @@ int main(){
 			fprintf(stdout,"PLAYER HEALTH: %d",jugador.health);
 		}else if (letter=='G'){
 		//simple test for bar.
-			jugador.ammo -= 5;
+            jugador.ammo -= 5;
 			fprintf(stdout,"PLAYER AMMO: %d",jugador.ammo);
 		}else if (letter==' '){
 		//testing shooting
@@ -110,56 +114,55 @@ int main(){
             }
 		}else{
 
-/*
+
             //TODO: Try collision logic for droppables. player_droppable_collision()
             if(number_of_droppables>0){
                   
                 for(int i=0;i<number_of_droppables;i++){
                     if(player_droppable_collision(&jugador,(droppables+i),letter,6)){
                         
-                        switch((droppable+i)->currentType){
+                        switch((droppables+i)->currentType){
                             case 'A':
-                                int ammo = getAmmo(&jugador);
-                                jugador.ammo_type = (droppable+i)->type.drop_ammo;  //change type of ammo accordingly
-                                setAmmo(&jugador,(ammo+20>50) ? 50 : ammo+20);      //add ammo. NOTE: starting/full Ammo is 50.                          
+                                jugador.ammo_type = (droppables+i)->type.drop_ammo;                 
+                                jugador.ammo      = (jugador.ammo+20 > 50) ? 50 : jugador.ammo+20;
                                 break;
 
                             case 'P':
-                                int health = getHealth(&jugador);
-                                if((droppable+i)->type.drop_potion == SIMPLE){
-                                    setHealth(&jugador, (health+20>100) ? 100 : health+20);
+                                if((droppables+i)->type.drop_potion == SIMPLE){
+                                    jugador.health = (jugador.health+20 > 100) ? 100 : jugador.health+20;
+
                                 }else{
-                                    setHealth(&jugador,100);                        //max health
+                                    jugador.health = 100;                                          
                                 }
                                 break;
                         
                             case 'W':
-                                jugador.player_weapon = (droppable+i)->type.drop_weapon;
+                                jugador.player_weapon = (droppables+i)->type.drop_weapon;
                                 break;
 
                             default:
                                 break;
                         }                            
+                        break;
                     }
-                    break;
                 }
                 for(int i=0;i<number_of_droppables;i++){
                     //cleaning and freeing droppables that have been taken.
-                    if(droppable[i]->taken){
+                    if((droppables+i)->taken){
                         struct position removedPos = {0,0,0};
                         struct size removedSize    =  {0,0};                        
 
-                        droppable[i]->dropObj.posObj  = removedPos;
-                        droppable[i]->dropObj.sizeObj = removedSize;
+                        (droppables+i)->dropObj.posObj  = removedPos;
+                        (droppables+i)->dropObj.sizeObj = removedSize;
                     
-                        free(droppable[i]->dropObj.textureObj);
-                        deleteDroppable(&droppables,number_of_droppables,i);
+                        free((droppables+i)->dropObj.textureObj);
+                        deleteDroppable(&droppables,&number_of_droppables,i);
+                        break;
                     }
-                    break;
                 }
                 
             }
-*/
+
 
             //TODO: Try collision logic implementation. player_enemy_collision()
         
