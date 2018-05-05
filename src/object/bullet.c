@@ -13,10 +13,11 @@ void createBullet(struct object *shooter, struct BulletObj **bullets, int *numbe
 	
 	setPosition(&newBullet.obj, &(shooter->posObj));
 	// changes the position so that the bullet doesn't start inside the player
+	int a_x = (int) ceil((0-shooter->sizeObj.alto/2.0)*(cos(shooter->posObj.direction*M_PI/180.0))-(0-shooter->sizeObj.ancho/2.0)*(sin(shooter->posObj.direction*M_PI/180.0))+shooter->sizeObj.alto/2.0);
+	int a_y = (int)  ceil((0-shooter->sizeObj.ancho/2.0)*(sin(shooter->posObj.direction*M_PI/180.0))+(0-shooter->sizeObj.alto/2.0)*(cos(shooter->posObj.direction*M_PI/180.0))+shooter->sizeObj.ancho/2.0);
+	newBullet.obj.posObj.x += a_x;
+	newBullet.obj.posObj.y += a_y;
 	struct position updatedPos = changePosition(&(newBullet.obj), 'W', 10);
-	newBullet.obj.posObj.x += updatedPos.x;
-	newBullet.obj.posObj.y += updatedPos.y;
-	updatedPos = changePosition(&(newBullet.obj), 'D', 10);
 	newBullet.obj.posObj.x += updatedPos.x;
 	newBullet.obj.posObj.y += updatedPos.y;
 	setSize(&newBullet.obj,bulletSize);
