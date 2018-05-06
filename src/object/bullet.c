@@ -1,16 +1,41 @@
 #include "bullet.h"
 
 
-
-void createBullet(struct object *shooter, struct BulletObj **bullets, int *number_of_bullets){
-	struct BulletObj newBullet;
-	struct size bulletSize = {5,10}; 
-	struct texture bulletBlack;
-
-	bulletBlack.red   = 0;
+void createBullet(struct object *shooter, struct BulletObj **bullets, int *number_of_bullets,enum weapon arms, enum ammunition ammo){
+	
+    struct BulletObj newBullet;
+	struct size bulletSize; 
+	struct texture bulletTexture;
+    
+    struct size pistolSize  = {2,2};
+    struct size shotgunSize = {4,4};
+    struct size mgSize      = {4,6};
+    struct size rifleSize   = {2,8};
+    struct texture bulletBlack;
+    struct texture bulletRed;
+    struct texture bulletBrown;
+	
+    bulletBlack.red   = 0;
 	bulletBlack.green = 0;
 	bulletBlack.blue  = 0;
+    
+    bulletRed.red   = 170;
+	bulletRed.green = 15;
+	bulletRed.blue  = 15;
+
+    bulletBrown.red   = 130;
+	bulletBrown.green = 80;
+	bulletBrown.blue  = 0;
+
+    newBullet.shotBy    = arms;
+    newBullet.ammoUsed  = ammo;
+    
+    bulletSize    = (arms == PISTOL) ? pistolSize : ((arms == SHOTGUN) ? shotgunSize : ((arms == MACHINEGUN) ? mgSize : rifleSize));
+    bulletTexture = (ammo == NORMAL) ? bulletBlack : ((ammo == INCENDIARY) ? bulletRed : bulletBrown);
 	
+
+    //BULLET POSITION
+
 	setPosition(&newBullet.obj, &(shooter->posObj));
 	// changes the position so that the bullet doesn't start inside the player
 	int a_x = (int) ceil((0-shooter->sizeObj.alto/2.0)*(cos(shooter->posObj.direction*M_PI/180.0))-(0-shooter->sizeObj.ancho/2.0)*(sin(shooter->posObj.direction*M_PI/180.0))+shooter->sizeObj.alto/2.0);
@@ -22,13 +47,12 @@ void createBullet(struct object *shooter, struct BulletObj **bullets, int *numbe
 	newBullet.obj.posObj.y += updatedPos.y;
 	setSize(&newBullet.obj,bulletSize);
 
+    //END BULLET POSITION. BULLET TEXTURE BEGINS
+
 	int totalPixel = bulletSize.alto * bulletSize.ancho;
 	newBullet.obj.textureObj = (struct texture*)malloc(sizeof(struct texture)*totalPixel);
 	
-	for(int i = 0;i<totalPixel;i++)	setTexture(&newBullet.obj, bulletBlack,i);
-
-
-
+	for(int i = 0;i<totalPixel;i++)	setTexture(&newBullet.obj, bulletTexture,i);
 
 
 	if(!*bullets){

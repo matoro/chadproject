@@ -16,7 +16,7 @@ void createDrop(struct Droppable **droppables, int *number_of_droppables, struct
 	//setting empty droppable.
 	d.type.drop_ammo = NONE;	//any drop_xxxx would do the trick
 	d.currentType = 0;
-        d.dropObj.textureObj = (struct texture*)malloc(sizeof(struct texture)*totalPixel);
+    d.dropObj.textureObj = (struct texture*)malloc(sizeof(struct texture)*totalPixel);
 	setSize(&d.dropObj,dropSize);
 	setPosition(&d.dropObj,dropPos);
 	

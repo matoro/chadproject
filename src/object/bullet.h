@@ -11,6 +11,8 @@
 
 struct BulletObj{
 	struct object obj;
+    enum weapon shotBy;
+    enum ammunition ammoUsed;
 };
 
 /**	FUNCTION: createBullet
@@ -19,9 +21,11 @@ struct BulletObj{
  *POSTCONDITION: A new bullet object is created.
  *@params struct object *shooter 	The object that is being shot.
  *	  struct BulletObj **bullets	A pointer to a pointer to the first bullet object.
- *	  int *number_of_bullets	A pointer to an int representing the number of bullets
+ *	  int *number_of_bullets	    A pointer to an int representing the number of bullets
+ *    enum weapon arms              Type of weapon that shot the bullet.
+ *    enum ammunition ammo          Type of ammo used.
  */
-void createBullet(struct object *shooter, struct BulletObj **bullets, int *number_of_bullets);
+void createBullet(struct object *shooter, struct BulletObj **bullets, int *number_of_bullets, enum weapon arms, enum ammunition ammo);
 
 /**	FUNCTION: deleteBullet
  *PURPOSE: removes a BulletObj from the array of bulletObjs.

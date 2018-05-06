@@ -108,9 +108,10 @@ int main(){
 			fprintf(stdout,"PLAYER AMMO: %d",jugador.ammo);
 		}else if (letter==' '){
 		//testing shooting
-			if(hasAmmo(&jugador)){
-                createBullet(&(jugador.obj), &bullets, &number_of_bullets);
-                jugador.ammo--; //could also use setAmmo/getAmmo
+			if(hasAmmo(&jugador)&&(jugador.player_weapon!=NO_WEAPON)){  
+                //if player has ammo and a weapon.
+                createBullet(&(jugador.obj), &bullets, &number_of_bullets, jugador.player_weapon, jugador.ammo_type);
+                jugador.ammo--;
             }
 		}else{
 

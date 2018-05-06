@@ -190,8 +190,8 @@ bool bullet_player_collision(struct BulletObj* bullet, struct PlayerObj* player)
 
     //CHECK IF BULLET COLLIDES WITH THE PLAYER.
     if (checkOverlap(&(player->obj),&(bullet->obj))){
-        //talk to matoro. bullets should carry their own weight of damage.
-        player->health -= 5;
+        //bullets should carry their own weight of damage.
+        player->health -= (bullet->shotBy)*(bullet->ammoUsed); //weapon x ammo multiplier.
         return true;
     }else{
         return false;
@@ -205,8 +205,8 @@ bool bullet_enemy_collision(struct BulletObj* bullet, struct EnemyObj* enemy){
 
     //CHECK IF BULLET COLLIDES WITH THE ENEMY.
     if (checkOverlap(&(enemy->obj),&(bullet->obj))){
-        //talk to matoro. bullets should carry their own weight of damage based on what type of weapon and ammo shot it.
-        enemy->health -= 5;
+        //bullets should carry their own weight of damage based on what type of weapon and ammo shot it.
+        enemy->health -= (bullet->shotBy)*(bullet->ammoUsed);
         return true;
     }else{
         return false;
