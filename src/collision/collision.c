@@ -182,3 +182,33 @@ bool player_droppable_collision(struct PlayerObj* player, struct Droppable* drop
     }
 
 }
+
+bool bullet_player_collision(struct BulletObj* bullet, struct PlayerObj* player){
+    //Function should be called only when there are bullets on-play.
+
+    if(!player||!bullet)     return false;
+
+    //CHECK IF BULLET COLLIDES WITH THE PLAYER.
+    if (checkOverlap(&(player->obj),&(bullet->obj))){
+        //talk to matoro. bullets should carry their own weight of damage.
+        player->health -= 5;
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool bullet_enemy_collision(struct BulletObj* bullet, struct EnemyObj* enemy){
+    //Function should be called only when there are bullets on-play.
+
+    if(!enemy||!bullet)     return false;
+
+    //CHECK IF BULLET COLLIDES WITH THE ENEMY.
+    if (checkOverlap(&(enemy->obj),&(bullet->obj))){
+        //talk to matoro. bullets should carry their own weight of damage based on what type of weapon and ammo shot it.
+        enemy->health -= 5;
+        return true;
+    }else{
+        return false;
+    }
+}

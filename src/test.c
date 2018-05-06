@@ -181,7 +181,35 @@ int main(){
 		    }
         
         }
-    
+
+
+        //TODO: Try bullet collision logic. bullet_player_collision() and bullet_enemy_collision()
+        if(number_of_bullets > 0){
+            for(int i=0;i<number_of_bullets;i++){
+                if(bullet_player_collision((bullets+i),&jugador)){
+                    deleteBullet(&bullets,&number_of_bullets,i);
+                    break;
+                }
+            }
+            if(!isAlive(&jugador)){
+            //END GAME
+            }
+        }
+        if(number_of_bullets > 0){
+            for(int i=0;i<number_of_enemies;i++){            
+                for(int j=0;j<number_of_bullets;j++){
+                    if(bullet_enemy_collision((bullets+j),(enemies+i))){
+                        deleteBullet(&bullets,&number_of_bullets,j);
+                        break;
+                    }                
+                }
+                if(!isAlive((enemies+i))){
+                    deleteEnemy(&enemies,&number_of_enemies,i);
+                    break;
+                }
+            }
+        }
+  
 		//update player new  position, health and ammo bar.
 		setPosition(&(jugador.obj),&playerPos); 
 		setCurrentValue(bars,jugador.health);			

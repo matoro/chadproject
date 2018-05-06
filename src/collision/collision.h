@@ -13,6 +13,7 @@
 #include "../object/player.h"
 #include "../object/enemy.h"
 #include "../object/droppable.h"
+#include "../object/bullet.h"
 
 //F U N C T I O N s
 
@@ -56,6 +57,24 @@
  *                  int rate                    Rate of movement.
  *@return           bool                        True if there is collision 
  */bool player_droppable_collision(struct PlayerObj* player, struct Droppable* drop,char movement,int rate);
+
+/*      FUNCTION: bullet_player_collision  
+ *PURPOSE:          Handle if the passed bullet collides with the player; if so, reduce players health and returns true.
+ *PRECONDITION:     Valid player and bullet pointers.
+ *POSTCONDITION:    Players health gets cut.
+ *@params           struct BulletObj* bullet    Pointer to the bullet.
+ *                  struct PlayerObj* player    Pointer to the player.
+ *@return           bool                        True if there is collision 
+ */bool bullet_player_collision(struct BulletObj* bullet, struct PlayerObj* player);
+
+/*      FUNCTION: bullet_enemy_collision  
+ *PURPOSE:          Handle if the passed bullet collides with an enemy; if so, reduce enemys health and returns true.
+ *PRECONDITION:     Valid enemy and bullet pointers.
+ *POSTCONDITION:    Enemys health gets cut.
+ *@params           struct BulletObj* bullet    Pointer to the bullet.
+ *                  struct EnemyObj* enemy      Pointer to the player.
+ *@return           bool                        True if there is collision 
+ */bool bullet_enemy_collision(struct BulletObj* bullet, struct EnemyObj* enemy);
 
 //... rest of collision functions ...
 
