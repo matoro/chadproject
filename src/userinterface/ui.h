@@ -8,6 +8,8 @@
 //I N C L U D E s
 #include <stdbool.h>
 #include "../graphic/screen.h"
+#include "../object/bar.h"
+#include "../object/player.h"
 
 //F U N C T I O N s
 
@@ -38,7 +40,7 @@
  *POSTCONDITION:String is returned.
  *@params       struct PlayerObj* player        Pointer to valid player object.   
  *@return       char*                           String.
- */char* getGunMsg(struct PlayerObj* player;
+ */char* getGunMsg(struct PlayerObj* player);
 
 /** FUNCTION:   getAmmoMsg
  *PURPOSE:      Returns a particular string depending on the type of ammo the player currently has.
@@ -46,6 +48,6 @@
  *POSTCONDITION:String is returned.
  *@params       struct PlayerObj* player        Pointer to valid player object.   
  *@return       char*                           String.
- */char* getGunMsg(struct PlayerObj* player;
+ */char* getAmmoMsg(struct PlayerObj* player);
 
 #endif

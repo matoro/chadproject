@@ -12,7 +12,8 @@ SRC	= src/test.c		                \
 	  src/object/droppable.c            \
 	  src/object/bullet.c               \
       src/utils/charset.c	            \
-      src/collision/collision.c
+      src/collision/collision.c         \
+      src/userinterface/ui.c
 
 #individual objects
 OBJS	= $(SRC:.c=.o)

@@ -30,18 +30,18 @@ void printUserInterface(struct PlayerObj* player, struct BarObj* bars, int* numB
 
     if(!bars||*numBars==0){
         //createBar holds the barSize at {100,20}px
-        struct position healthBarPos    = {UI_width/12,UI_heigth+20,0};
+        struct position healthBarPos    = {UI_width/12,UI_height+20,0};
         struct position ammoBarPos      = {3*UI_width/4,UI_height+20,0};
         enum bartype health = HEALTH;
         enum bartype ammo   = AMMO;
         
-        createBar(&bars, &numBars, &player, health, healthBarPos);
-        createBar(&bars, &numBars, &player, ammo, ammoBarPos);
+        createBar(&bars, numBars, player, health, healthBarPos);
+        createBar(&bars, numBars, player, ammo, ammoBarPos);
 
     }else{
         //update
-        setCurrentValue(bars,jugador.health);
-        setCurrentValue((bars+1),jugador.ammo);
+        setCurrentValue(bars,player->health);
+        setCurrentValue((bars+1),player->ammo);
         //plot base layer
         for(int i=UI_height; i<HEIGHT;i++){
             for(int j=0;j<WIDTH;j++){
@@ -84,7 +84,7 @@ char plotMenu(SDL_Plotter* plot){
     fontClr.blue  = 110;
 
     //plot entire screen black.
-    for(int i=0;i<HEIGHT,i++){
+    for(int i=0;i<HEIGHT;i++){
         for(int j=0;j<WIDTH;j++){
             plot->plotPixel(i,j,backgroundClr.red,backgroundClr.green,backgroundClr.blue);
         }
@@ -95,18 +95,18 @@ char plotMenu(SDL_Plotter* plot){
     plotText(title,textPos,titleClr,5,1,plot);
     textPos.y += 50;
     textPos.x += 50;
-    plotText(opt1,textPos,fontColor,3,0,plot);
+    plotText(opt1,textPos,fontClr,3,0,plot);
     textPos.y += 10;
-    plotText(opt2,textPos,fontColor,3,0,plot);
+    plotText(opt2,textPos,fontClr,3,0,plot);
     textPos.y += 10;
-    plotText(opt3,textPos,fontColor,3,0,plot);
+    plotText(opt3,textPos,fontClr,3,0,plot);
     //check for key pressed
     bool response = false;
     char letra;
     do{
-        bool keyhit = plotter.kbhit();
+        bool keyhit = plot->kbhit();
         if(keyhit){
-            letra = plotter.getKey();
+            letra = plot->getKey();
             if(letra == '1' || letra == '2' || letra == '3')    response = true;
         }
     }while(!response);
@@ -114,44 +114,46 @@ char plotMenu(SDL_Plotter* plot){
     return letra;
 }
 
-char* getGunMsg(struct PlayerObj* player){
+char* getGunMsg(struct PlayerObj* player){  
+    //added casting otherwise C++ would throw. ISO c++ forbids converting a string constant into char*. Valid in C though.
     
     if(!player){
-        return "Player not found!";
+        return (char*)"player not found";   
     }else{
         switch(player->player_weapon){
             case NO_WEAPON:
-                return "no gun!";
+                return (char*)"no gun!";
             case PISTOL:
-                return "holding a pistol.";
+                return (char*)"holding a pistol.";
             case SHOTGUN:
-                return "blasting a shotgun.";
+                return (char*)"blasting a shotgun.";
             case MACHINEGUN:
-                return "carrying a machinegun.";
+                return (char*)"carrying a machinegun.";
             case RIFLE:
-                return "sniping a rifle.";
+                return (char*)"sniping a rifle.";
             default:
-                return "not found";
+                return (char*)"not found";
         }
     }
 }
 
 char* getAmmoMsg(struct PlayerObj* player){
-
+    //added casting otherwise C++ would throw. ISO c++ forbids converting a string constant into char*. Valid in C though.
+    
     if(!player){
-        return "Player not found!";
+        return (char*)"player not found!";
     }else{
         switch(player->ammo_type){
             case NONE:
-                return "no ammo!";
+                return (char*)"no ammo!";
             case NORMAL:
-                return "normal ammo";
+                return (char*)"normal ammo";
             case INCENDIARY:
-                return "incendiary ammo";
+                return (char*)"incendiary ammo";
             case EXPLOSIVE:
-                return "explosive ammo";
+                return (char*)"explosive ammo";
             default:
-                return "not found";
+                return (char*)"not found";
         }
     }
 }
