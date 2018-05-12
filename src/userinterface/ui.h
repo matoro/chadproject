@@ -19,10 +19,10 @@
  *PRECONDITION: Initialized game -that is, after user decides to play in menu-. Valid player and SDL_plotter pointers.
  *POSTCONDITION:User interface is created if it wasn't already and it is refreshed.
  *@params       struct PlayerObj* player        Pointer to the player struct.
- *              struct BarObj* bars             Pointer to struct of bars.
+ *              struct BarObj** bars            Pointer to struct of bars.
  *              int numBars                     Pointer to an int holding the number of active bars.
  *              SDL_Plotter* plot               Pointer to current SDL_Plotter.
- */void printUserInterface(struct PlayerObj* player, struct BarObj* bars, int* numBars, SDL_Plotter* plot);
+ */void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* numBars, SDL_Plotter* plot);
 
 /** FUNCTION:   printMenu
  *PURPOSE:      Takes care of presenting a menu right after the program executes and when the player wants to play again.

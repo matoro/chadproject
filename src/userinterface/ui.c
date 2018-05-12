@@ -5,58 +5,57 @@
 #include "ui.h"
 
 
-void printUserInterface(struct PlayerObj* player, struct BarObj* bars, int* numBars, SDL_Plotter* plot){
+void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* numBars, SDL_Plotter* plot){
 
     if(!player || !plot) return;
 
     //VARs
     int UI_height, UI_width;
-    struct texture darkGrey,lightRed;
+    struct texture uiColor,fontColor;
     char* gun_type  = getGunMsg(player);
     char* ammo_type = getAmmoMsg(player);
     int fontSize = 3;
-    int thinSize = 1;
+    int thinSize = 0;
 
-    lightRed.red    = 200;
-    lightRed.green  = 5;
-    lightRed.blue   = 5;
+    fontColor.red    = 0;
+    fontColor.green  = 0;
+    fontColor.blue   = 145;
 
-    darkGrey.red    = 75;
-    darkGrey.green  = 75;
-    darkGrey.blue   = 75;
+    uiColor.red    = 75;
+    uiColor.green  = 75;
+    uiColor.blue   = 75;
     
     UI_height = 9*HEIGHT/10;   
     UI_width  = WIDTH;
 
-    if(!bars||*numBars==0){
+    if(*bars==NULL||*numBars==0){
         //createBar holds the barSize at {100,20}px
-        struct position healthBarPos    = {UI_width/12,UI_height+20,0};
-        struct position ammoBarPos      = {3*UI_width/4,UI_height+20,0};
+        struct position healthBarPos    = {UI_width/12,UI_height+60,0};
+        struct position ammoBarPos      = {3*UI_width/4,UI_height+60,0};
         enum bartype health = HEALTH;
         enum bartype ammo   = AMMO;
         
-        createBar(&bars, numBars, player, health, healthBarPos);
-        createBar(&bars, numBars, player, ammo, ammoBarPos);
+        createBar(bars, numBars, player, health, healthBarPos);
+        createBar(bars, numBars, player, ammo, ammoBarPos);
 
-    }else{
-        //update
-        setCurrentValue(bars,player->health);
-        setCurrentValue((bars+1),player->ammo);
-        //plot base layer
-        for(int i=UI_height; i<HEIGHT;i++){
-            for(int j=0;j<WIDTH;j++){
-                plot->plotPixel(i,j,darkGrey.red,darkGrey.green,darkGrey.blue);
-            }
-            darkGrey.red++;
-            darkGrey.green++;
-            darkGrey.blue++;
-        }
-        //plot text
-        struct position textGunPos  = {4*UI_width/12,UI_height+20,0};
-        struct position textAmmoPos = {4*UI_width/12,UI_height+30,0};
-        plotText(gun_type,textGunPos,lightRed,fontSize,thinSize,plot);
-        plotText(ammo_type,textAmmoPos,lightRed,fontSize-1,thinSize-1,plot);
     }
+    //update
+    setCurrentValue((*bars),player->health);
+    setCurrentValue(((*bars)+1),player->ammo);
+    //plot base layer
+    for(int i=UI_height; i<HEIGHT;i++){
+        for(int j=0;j<WIDTH;j++){
+            plot->plotPixel(j,i,uiColor.red,uiColor.green,uiColor.blue);
+        }
+        uiColor.red++;
+        uiColor.blue++;
+    }
+    //plot text
+    struct position textGunPos  = {4*UI_width/12,UI_height+14,0};
+    struct position textAmmoPos = {4*UI_width/12,UI_height+34,0};
+    plotText(gun_type,textGunPos,fontColor,fontSize,thinSize,plot);
+    plotText(ammo_type,textAmmoPos,fontColor,fontSize,thinSize,plot);
+    
     return;
 }
 
@@ -86,7 +85,7 @@ char plotMenu(SDL_Plotter* plot){
     //plot entire screen black.
     for(int i=0;i<HEIGHT;i++){
         for(int j=0;j<WIDTH;j++){
-            plot->plotPixel(i,j,backgroundClr.red,backgroundClr.green,backgroundClr.blue);
+            plot->plotPixel(j,i,backgroundClr.red,backgroundClr.green,backgroundClr.blue);
         }
         backgroundClr.red++;
         backgroundClr.blue++;
@@ -124,13 +123,13 @@ char* getGunMsg(struct PlayerObj* player){
             case NO_WEAPON:
                 return (char*)"no gun!";
             case PISTOL:
-                return (char*)"holding a pistol.";
+                return (char*)"holding a pistol";
             case SHOTGUN:
-                return (char*)"blasting a shotgun.";
+                return (char*)"packing a 12 gauge";
             case MACHINEGUN:
-                return (char*)"carrying a machinegun.";
+                return (char*)"grabbing tommy gun";
             case RIFLE:
-                return (char*)"sniping a rifle.";
+                return (char*)"sniping a rifle";
             default:
                 return (char*)"not found";
         }

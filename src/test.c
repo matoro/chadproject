@@ -6,12 +6,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-//#include <math.h>	//include math inside object/screen?
 #include <stdbool.h>
 
 #include "graphic/visiblecomponents.h"
-#include "graphic/screen.h"	//Contains SDL and plotting functions
+#include "graphic/screen.h"	            //Contains SDL and plotting functions
 #include "collision/collision.h"
+#include "userinterface/ui.h"
 
 int main(){
 
@@ -38,11 +38,12 @@ int main(){
 	struct position enemyPos2    = {3*WIDTH/4,HEIGHT/2,270};
 	struct size playerDim	     = {16,16};	//same for enemies
 	
-
+/*
 	struct position healthBarPos = {WIDTH/6,7*HEIGHT/8,0};
 	struct position ammoBarPos   = {3*WIDTH/4,7*HEIGHT/8,0};
 	enum bartype health          = HEALTH;
 	enum bartype ammo 	         = AMMO;
+*/
 
 	struct position dropPosP     = {WIDTH/8,HEIGHT/8,0};
 	struct position dropPosW     = {7*WIDTH/8,HEIGHT/8,0};
@@ -53,6 +54,7 @@ int main(){
 	char dropType_2[2] = {'W','P'};		//WEAPON-PISTOL
 	char dropType_3[2] = {'A','N'};		//AMMO-NORMAL
 
+/*
 	char test_msg[]              = "+-1234567890";
     char test_string[]           = "matoro, mortonman and leba! How are you doing?";
     int fontSize                 = 4;
@@ -68,16 +70,18 @@ int main(){
     colorString.red   = 105;
     colorString.green = 0;
     colorString.blue  = 110;
-
+*/
 
 	//DEFINITON
 	jugador	  = createPlayer(playerDim,&playerPos);//16X16@MIDDLE OF SCREEN
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos);
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos1);
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos2);
-	createBar(&bars, &number_of_bars, &jugador,health,healthBarPos);
-	createBar(&bars, &number_of_bars, &jugador,ammo, ammoBarPos);
-	createDrop(&droppables, &number_of_droppables,&dropPosP);	//taken==false by default
+	
+//  createBar(&bars, &number_of_bars, &jugador,health,healthBarPos);
+//  createBar(&bars, &number_of_bars, &jugador,ammo, ammoBarPos);
+	
+    createDrop(&droppables, &number_of_droppables,&dropPosP);	//taken==false by default
 	createDrop(&droppables, &number_of_droppables,&dropPosW);
 	createDrop(&droppables, &number_of_droppables,&dropPosA);
 		//FURTHER SETTINGS
@@ -86,14 +90,14 @@ int main(){
 	setCurrentType((droppables+2),dropType_3);
 
 
-	//CLEAR SCREEN
+	//CLEAR SCREEN AND INITIAL PLOTS
 	plotter.clear();
-	//PLOTS
+    printUserInterface(&jugador, &bars, &number_of_bars, &plotter);
 	plotVisibleComponents(&plotter, jugador, bars, number_of_bars, bullets, number_of_bullets, enemies, number_of_enemies, droppables, number_of_droppables);
+
 
 	//GAME LOOP VARs
 	playerPos = getPosition(&(jugador.obj));	//object.h function
-
 	char letter = '\0';
 
 	while(letter != '0')
@@ -114,7 +118,7 @@ int main(){
                 jugador.ammo--;
             }
 		}else{
-
+            //MOVEMENT:
 
             //TODO: Try collision logic for droppables. player_droppable_collision()
             if(number_of_droppables>0){
@@ -212,22 +216,25 @@ int main(){
         }
   
 		//update player new  position, health and ammo bar.
-		setPosition(&(jugador.obj),&playerPos); 
+
+        setPosition(&(jugador.obj),&playerPos); 
+/*
 		setCurrentValue(bars,jugador.health);			
 		setCurrentValue((bars+1),jugador.ammo);			
-
-		//TODO: Implement checking and clean code!
-
+*/
+        //clears, updates bars and prints user interface and rest of components again.
 		plotter.clear();
+		printUserInterface(&jugador, &bars, &number_of_bars, &plotter);
 		plotVisibleComponents(&plotter, jugador, bars, number_of_bars, bullets, number_of_bullets, enemies, number_of_enemies, droppables, number_of_droppables);
 
 		//updates the position of all bullets
 		updateBulletPos(&bullets,&number_of_bullets);
 
+/*
         //plotText test
     	plotText(test_msg,textPos,fontColor,fontSize,thinSize,&plotter);     //screen.h function
         plotText(test_string,stringPos,colorString,2,0,&plotter);        
-
+*/
 		plotter.update(); //neccessary? YES!
 		
 		bool keyhit = plotter.kbhit();
