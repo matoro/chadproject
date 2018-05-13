@@ -72,6 +72,19 @@ int main(){
     colorString.blue  = 110;
 */
 
+    //TESTING PRINTMENU
+
+    char option = printMenu(&plotter);
+    if(option != '1'){
+        //implement scoreboard with option 2.
+        plotter.setQuit(true);
+        return 0;
+    }
+
+
+
+
+
 	//DEFINITON
 	jugador	  = createPlayer(playerDim,&playerPos);//16X16@MIDDLE OF SCREEN
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos);

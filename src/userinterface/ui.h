@@ -30,7 +30,7 @@
  *POSTCONDITION:Display menu options.
  *@params       SDL_Plotter* plot               Pointer to current SDL_plotter.   
  *@return       char                            Char representing the menu option chosen by the user.
- */char plotMenu(SDL_Plotter* plot);
+ */char printMenu(SDL_Plotter* plot);
 
 //Auxiliary functions come next....
 

@@ -60,44 +60,60 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
 }
 
 
-char plotMenu(SDL_Plotter* plot){
+char printMenu(SDL_Plotter* plot){
 
-    if(!plot)   return -1;
+    if(!plot)   return 0;
 
     //VARs
     char title[] = "CHADPROJECT v1";
     char opt1[]  = "1. Play the game!";
     char opt2[]  = "2. Top 10 scoreboard.";
     char opt3[]  = "3. Exit.";
-    struct texture backgroundClr;
-    struct texture titleClr; //white default value
+    struct texture backgroundClr,stripeClr;
+    struct texture titleClr;                            //white default value
     struct texture fontClr;    
-    struct position textPos = {3*WIDTH/4,HEIGHT/4,0};
+    struct position textPos = {WIDTH/4,HEIGHT/4,0};
 
-    backgroundClr.red   = 90;
-    backgroundClr.green = 0;
-    backgroundClr.blue  = 75;
-
+    backgroundClr.red   = 110;
+    backgroundClr.green = 50;
+    backgroundClr.blue  = 100;
+    
+    stripeClr.red   = 225;
+    stripeClr.green = 225;
+    stripeClr.blue  = 50;
+    
     fontClr.red   = 1;
     fontClr.green = 1;
     fontClr.blue  = 110;
 
-    //plot entire screen black.
+    //plot background
+    plot->clear();
+    int count = 0;
     for(int i=0;i<HEIGHT;i++){
         for(int j=0;j<WIDTH;j++){
-            plot->plotPixel(j,i,backgroundClr.red,backgroundClr.green,backgroundClr.blue);
+            struct texture bgClr = ((j<100||j>500)||(i<100||i>500)&&count%4==0) ? stripeClr : backgroundClr;    //design purposes
+            plot->plotPixel(j,i,bgClr.red,bgClr.green,bgClr.blue);
         }
-        backgroundClr.red++;
-        backgroundClr.blue++;
+        //design purposes - degradation
+        count++;
+        if(count>5){
+            //if you want to change colors be careful with their rgb values. if your ++ goes beyond 255 color will go black.
+            backgroundClr.red++;
+            backgroundClr.green++;
+            backgroundClr.blue++;
+            stripeClr.green--;
+            stripeClr.blue++;
+            count = 0;
+        }
     }
     //plot title and menu options
     plotText(title,textPos,titleClr,5,1,plot);
     textPos.y += 50;
     textPos.x += 50;
     plotText(opt1,textPos,fontClr,3,0,plot);
-    textPos.y += 10;
+    textPos.y += 20;
     plotText(opt2,textPos,fontClr,3,0,plot);
-    textPos.y += 10;
+    textPos.y += 20;
     plotText(opt3,textPos,fontClr,3,0,plot);
     //check for key pressed
     bool response = false;
@@ -108,6 +124,7 @@ char plotMenu(SDL_Plotter* plot){
             letra = plot->getKey();
             if(letra == '1' || letra == '2' || letra == '3')    response = true;
         }
+        plot->update();
     }while(!response);
 
     return letra;
