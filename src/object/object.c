@@ -74,25 +74,25 @@ struct position changePosition(struct object *obj,char movement, int rate){
 			deltaX = (int) round(rate*sin(pos.direction*M_PI/180.0));
 			deltaY = (int) round(-rate*cos(pos.direction*M_PI/180.0));
 			deltaDir = 0;
-			fprintf(stdout,"You pressed W: %d %d\n",deltaX,deltaY);
+
 			break;
 		case 'S':
 			deltaX = (int) round(-rate*sin(pos.direction*M_PI/180.0));
 			deltaY = (int) round(rate*cos(pos.direction*M_PI/180.0));
 			deltaDir = 0;
-			fprintf(stdout,"You pressed S: %d %d\n",deltaX,deltaY);
+
 			break;
 		case 'A':
 			deltaX = 0;
 			deltaY = 0;
 			deltaDir = -rate;
-			fprintf(stdout,"You pressed A: %d\n",deltaDir);
+
 			break;
 		case 'D':
 			deltaX = 0;
 			deltaY = 0;
 			deltaDir = rate;
-			fprintf(stdout,"You pressed D: %d\n",deltaDir);
+
 			break;
 		case 'Q':
 			//Same as going forward in (dir-90)º.Half the rate to simulate a slow hard movement.
@@ -119,4 +119,8 @@ struct position changePosition(struct object *obj,char movement, int rate){
 	response.direction = deltaDir;
 
 	return response;
+}
+
+int calcDistance(struct position obj1, struct position obj2){
+	return sqrt((obj1.x-obj2.x)^2+(obj1.y-obj2.y)^2); //pythagorean theorem 
 }

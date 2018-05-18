@@ -224,6 +224,9 @@ int main(){
 		//updates the position of all bullets
 		updateBulletPos(&bullets,&number_of_bullets);
 
+		//updates the enemies
+		updateEnemyBehavior(&enemies, number_of_enemies,jugador, &plotter, &bullets, &number_of_bullets);
+
         //plotText test
     	plotText(test_msg,textPos,fontColor,fontSize,thinSize,&plotter);     //screen.h function
         plotText(test_string,stringPos,colorString,2,0,&plotter);        

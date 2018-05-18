@@ -6,7 +6,11 @@
 #define ENEMY_H_INCLUDED
 
 #include <stdbool.h>
+#include <time.h>
+#include <stdlib.h>
 #include "object.h"
+#include "player.h"
+#include "bullet.h"
 #include "../graphic/screen.h"
 #include "../graphic/SDL_Plotter.h"
 
@@ -30,6 +34,8 @@ struct EnemyObj{
 	int fov     = 60;
 	bool active = false;
 	bool sight  = false;
+	struct position last_player_loc = {300,300,0};
+	int cooldown = 0;
 	//enums for type of weapon and ammo go here. Dont forget the includes as well when this component merges into 'testing'
 	//...	
 };
@@ -145,4 +151,25 @@ POSTCONDITION: The specified enemies is removed. All enemies after that enemies 
 */
 void deleteEnemy(struct EnemyObj ** enemies, int *number_of_enemies, int enemy_number);
 
+/*	FUNCTION:updateEnemyBehavior
+PURPOSE: Makes the enemies act based on thier relation to the player.
+POSTCONDITION: The enemy acts based on the current game conditions
+@params struct EnemyObj **enemies	A pointer to a pointer to the first EnemyObj.
+	int number_of_enemies		The number of enemies.
+	struct PlayerObj player		The player.
+*/
+void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets);
+
+void search(struct EnemyObj *enemy,struct PlayerObj player);
+
+void attack(struct EnemyObj *enemy,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets);
+
+bool loc_is_seen(struct EnemyObj enemy, struct position playerPos);
+
+bool loc_is_ahead(struct EnemyObj enemy, struct position playerPos);
+
+
+struct position *createSightLine(struct EnemyObj enemy, int degree_offset);
+
+int dirToLoc(struct EnemyObj enemy, struct position pos);
 #endif

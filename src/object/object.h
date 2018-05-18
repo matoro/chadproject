@@ -142,4 +142,6 @@ struct object{
  *@return struct position       Data block containing adjusted position values.
  */struct position changePosition(struct object *obj,char movement, int rate);
 
+int calcDistance(struct position obj1, struct position obj2);
+
 #endif
