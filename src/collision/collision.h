@@ -76,6 +76,19 @@
  *@return           bool                        True if there is collision 
  */bool bullet_enemy_collision(struct BulletObj* bullet, struct EnemyObj* enemy);
 
+/*      FUNCTION:   enemy_enemies_collision  
+ *PURPOSE:          Handles if the next movement of an enemy collides with another enemy; returns response as a boolean.
+ *PRECONDITION:     Valid enemy(single) and enemies(array) pointers.
+ *POSTCONDITION:    Enemy gets permission to update its position.
+ *                  
+ *@params           struct EnemyObj* enemy      Pointer to the enemy.
+ *                  char movement               Char representing next movement
+ *                  int rate                    Rate of movement.
+ *                  struct EnemyObj** enemies   Pointer to the enemies array.
+ *                  int number_enemies          Number of enemies onplay.
+ *@return           bool                        True if there is collision 
+ */bool enemy_enemies_collision(struct EnemyObj* enemy,char movement,int rate, struct EnemyObj** enemies, int number_enemies);
+
 //... rest of collision functions ...
 
 #endif
