@@ -13,6 +13,7 @@
 #include "bullet.h"
 #include "../graphic/screen.h"
 #include "../graphic/SDL_Plotter.h"
+#include "../collision/collision.h"     //collision logic
 
 //S T R U C T s
 
@@ -141,35 +142,79 @@ struct EnemyObj{
  *	  struct position*	The position values of the enemy object. Struct position pointer.
  */void createEnemy(struct EnemyObj ** enemies, int *number_of_enemies, struct size dim, struct position* pos);
 
-/*	FUNCTION:deleteEnemy
-PURPOSE: Deletes a enemy from the array of enemies.
-PRECONDITION: A pointer to a valid array of enemies with at least 1 member, the number of a enemies that exists within the array.
-POSTCONDITION: The specified enemies is removed. All enemies after that enemies are moved back one space in the array.
-@params struct EnemyObj **enemies	A pointer to a pointer to the first EnemyObj.
-	int *number_of_enemies		A pointer the the number of enemies.
-	int enemy_number		The position in the array of the enemy to be deleted, starts at 0.
-*/
-void deleteEnemy(struct EnemyObj ** enemies, int *number_of_enemies, int enemy_number);
+/**	FUNCTION:deleteEnemy
+ *PURPOSE: Deletes a enemy from the array of enemies.
+ *PRECONDITION: A pointer to a valid array of enemies with at least 1 member, the number of a enemies that exists within the array.
+ *POSTCONDITION: The specified enemies is removed. All enemies after that enemies are moved back one space in the array.
+ *@params struct EnemyObj **enemies	A pointer to a pointer to the first EnemyObj.
+ *	int *number_of_enemies		A pointer the the number of enemies.
+ *	int enemy_number		The position in the array of the enemy to be deleted, starts at 0.
+ */void deleteEnemy(struct EnemyObj ** enemies, int *number_of_enemies, int enemy_number);
 
-/*	FUNCTION:updateEnemyBehavior
-PURPOSE: Makes the enemies act based on thier relation to the player.
-POSTCONDITION: The enemy acts based on the current game conditions
-@params struct EnemyObj **enemies	A pointer to a pointer to the first EnemyObj.
-	int number_of_enemies		The number of enemies.
-	struct PlayerObj player		The player.
-*/
-void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets);
+/** FUNCTION:updateEnemyBehavior
+ *PURPOSE: Makes the enemies act based on thier relation to the player.
+ *POSTCONDITION: The enemy acts based on the current game conditions
+ *@params   struct EnemyObj **enemies	A pointer to a pointer to the first EnemyObj.
+ *	        int number_of_enemies		The number of enemies.
+ *	        struct PlayerObj player		The player.
+ *          SDL_Plotter *plot           Pointer to active SDL plotter.
+ *          struct BulletObj **bullets  A pointer to a pointer to the first bullet from the array of bullets.
+ *          int *number_of_bullets      Pointer to the int holding the current number of bullets on play.
+ */void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets);
 
-void search(struct EnemyObj *enemy,struct PlayerObj player);
+/** FUNCTION: search
+ *PURPOSE: Makes the enemy search for the player, trying to localize it, turning around if he has lost sight of it and advancing towards it otherwise. 
+ *PRECONDITION:     Valid enemies pointer, enemy_index must be smaller than n_enemies.
+ *POSTCONDITION:    Enemy acts accordingly to its current sight and active state.
+ *@params   int enemy_index             Int containing the index of the enemy we want it to search.   
+ *          struct PlayerObj player     Struct containing a copy of the current player.
+ *          struct EnemyObj **enemies   A pointer to a pointer to the first enemy from the array of enemies.
+ *          int n_enemies               Int containing the current number of enemies onplay.
+ */void search(int enemy_index, struct PlayerObj player, struct EnemyObj **enemies, int n_enemies);
 
-void attack(struct EnemyObj *enemy,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets);
+/** FUNCTION: attack
+ *PURPOSE: Makes the enemy attack the player, moving towards him and shooting. Also updates enemy sight state if he has lost sight of him.
+ *PRECONDITION:     Valid plot, enemies and bullets pointers. Enemy_index smaller than n_enemies.
+ *POSTCONDITION:    Enemy attacks player until he loose sight of him.  
+ *@params   int enemy_index             Int containing the index of the enemy we want it to search.   
+ *          struct PlayerObj player     Struct containing a copy of the current player.
+ *          SDL_Plotter *plot           Pointer to active SDL plotter.
+ *          struct BulletObj **bullets  A pointer to a pointer to the first bullet from the array of bullets.
+ *          int *number_of_bullets      Pointer to the int holding the current number of bullets on play.
+ *          struct EnemyObj **enemies   A pointer to a pointer to the first enemy from the array of enemies.
+ *          int n_enemies               Int containing the current number of enemies onplay.
+ */void attack(int enemy_index, struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets, struct EnemyObj **enemies, int n_enemies);
 
-bool loc_is_seen(struct EnemyObj enemy, struct position playerPos);
+/** FUNCTION: loc_is_seen
+ *PURPOSE: Test if an enemy sees the player at the moment.
+ *POSTCONDITION: True will be returned if the player is on the enemy range of vision.
+ *@params   struct EnemyObj enemy       A copy of the enemy struct in question.
+ *          struct position playerPos   A copy of the current position of the player. (struct)
+ *@return   true                        Enemy can see the player.
+ */bool loc_is_seen(struct EnemyObj enemy, struct position playerPos);
 
-bool loc_is_ahead(struct EnemyObj enemy, struct position playerPos);
+/** FUNCTION: loc_is_ahead
+ *PURPOSE: Test if a given location is ahead of the enemy.
+ *POSTCONDITION: True will be returned if the location is in front of the enemy.
+ *@params   struct EnemyObj enemy       A copy of the enemy struct in question.
+ *          struct position playerPos   A copy of the current position of the player. (struct)
+ *@return   true                        Given location is in front of enemy.      
+ *
+ */bool loc_is_ahead(struct EnemyObj enemy, struct position playerPos);
 
+/** FUNCTION: createSightLine
+ *PURPOSE: Creates one sightline based upon the current enemy position and a given offset and a constant depth of view.
+ *POSTCONDITION: A sightline containing an array of 12 struct positions (separated 16 pixels from one another) is allocated in memory, defined and returned.
+ *@params   struct EnemyObj enemy       A copy of the enemy struct in question.
+ *          int degree_offset           Direction of the sightline (variation +-º taking 0 as the current enemy dir).
+ *@return   struct position*            A pointer to an array of 12 struct positions.   
+ */struct position *createSightLine(struct EnemyObj enemy, int degree_offset);
 
-struct position *createSightLine(struct EnemyObj enemy, int degree_offset);
+/** FUNCTION: dirToLoc 
+ *PURPOSE:  Help gives direction to a given location.  
+ *@params   struct EnemyObj enemy       A copy of the enemy object.
+ *          struct position playerPos   A struct to the location we need directions to.
+ *@return   int                     1 or -1.
+ */int dirToLoc(struct EnemyObj enemy, struct position playerPos);
 
-int dirToLoc(struct EnemyObj enemy, struct position pos);
 #endif

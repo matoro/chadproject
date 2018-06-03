@@ -136,43 +136,76 @@ void deleteEnemy(struct EnemyObj ** enemies, int *number_of_enemies, int enemy_n
 }
 
 void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets){
-	for(int i = 0; i< number_of_enemies; i++){
+	if(!enemies||!bullets||!plot||number_of_enemies<0) return;
+
+    for(int i = 0; i< number_of_enemies; i++){
 		if((*enemies+i)->sight){
-			attack((*enemies+i), player, plot, bullets, number_of_bullets);
+			attack(i,player,plot,bullets,number_of_bullets,enemies,number_of_enemies);
 		}else{
-			search((*enemies+i), player);
+			search(i,player,enemies,number_of_enemies);
 		}
 	}
 }
 
-void search(struct EnemyObj *enemy,struct PlayerObj player){
-	if(loc_is_seen(*enemy, player.obj.posObj)){
+void search(int enemy_index, struct PlayerObj player, struct EnemyObj **enemies, int n_enemies){
+	
+    if(!enemies||enemy_index<0||n_enemies<1||enemy_index>n_enemies) return;
+    
+    //VARs
+    struct EnemyObj *enemy = ((*enemies)+enemy_index);
+
+
+
+    if(loc_is_seen(*enemy, player.obj.posObj)){
 		enemy->sight = true;
 		printf("enemy can see player\n");
 		return;		
 	}
 	if(!loc_is_ahead(*enemy, enemy->last_player_loc)){ // turn toward last know player location.
-		struct position updatedPos = changePosition(&(enemy->obj), 'D', 6);
-		enemy->obj.posObj.direction += (updatedPos.direction*dirToLoc(*enemy, enemy->last_player_loc));		
+		
+        bool collision = enemy_enemies_collision(enemy,'D',6,enemies,n_enemies);
+        if(!collision){    
+            struct position updatedPos = changePosition(&(enemy->obj), 'D', 6);
+		    enemy->obj.posObj.direction += (updatedPos.direction*dirToLoc(*enemy, enemy->last_player_loc));
+        }
+		
 	}/*else if(calcDistance(enemy->obj.posObj, enemy->last_player_loc) < 40){
 		enemy->last_player_loc.x = (rand() % 400)+100; 
 		enemy->last_player_loc.y = (rand() % 400)+100;
 	}*/ else{
-		struct position updatedPos = changePosition(&(enemy->obj), 'W', 6); 
-		enemy->obj.posObj.x += updatedPos.x;
-		enemy->obj.posObj.y += updatedPos.y;
+		
+        bool collision = enemy_enemies_collision(enemy,'W',6,enemies,n_enemies);
+        if(!collision){
+            struct position updatedPos = changePosition(&(enemy->obj), 'W', 6); 
+		    enemy->obj.posObj.x += updatedPos.x;
+		    enemy->obj.posObj.y += updatedPos.y;
+        }
+
 	}
 }
 
-void attack(struct EnemyObj *enemy,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets){
-	if(!loc_is_seen(*enemy, player.obj.posObj)){
+void attack(int enemy_index,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets, struct EnemyObj **enemies, int n_enemies){
+	
+    if(!enemies||enemy_index<0||n_enemies<1||enemy_index>n_enemies) return;
+
+    //VARs
+    struct EnemyObj *enemy = ((*enemies)+enemy_index);
+
+
+
+    if(!loc_is_seen(*enemy, player.obj.posObj)){
 		enemy->sight = false;
 		printf("enemy can't see player\n");
 		return;		
 	}
 	if(!loc_is_ahead(*enemy, player.obj.posObj)){ // turn toward player location.
-		struct position updatedPos = changePosition(&(enemy->obj), 'D', 6);
-		enemy->obj.posObj.direction += (updatedPos.direction*dirToLoc(*enemy, player.obj.posObj));		
+		
+        bool collision = enemy_enemies_collision(enemy,'D',6,enemies,n_enemies);
+        if(!collision){
+            struct position updatedPos = changePosition(&(enemy->obj), 'D', 6);
+		    enemy->obj.posObj.direction += (updatedPos.direction*dirToLoc(*enemy, player.obj.posObj));
+        }
+
 	}/*else{
 		createBullet(&(enemy->obj), bullets, number_of_bullets, PISTOL, NORMAL);
 	}*/
@@ -267,5 +300,3 @@ int dirToLoc(struct EnemyObj enemy, struct position playerPos){
 	if(dir1-dir2 > 0) return -1;
 	return 1;
 }
-
-
