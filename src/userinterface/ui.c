@@ -11,11 +11,22 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
 
     //VARs
     int UI_height, UI_width;
-    struct texture uiColor,fontColor;
+    struct texture uiColor,fontColor, terrainColor, sandColor, waterColor;
     char* gun_type  = getGunMsg(player);
     char* ammo_type = getAmmoMsg(player);
     int fontSize = 3;
     int thinSize = 0;
+
+    UI_height = 9*HEIGHT/10;   
+    UI_width  = WIDTH;
+    
+    //TERRAIN DESIGN AUX VARs
+    int waterLimit      = 20;
+    int sandRadius      = UI_height/2;
+    int waterRadius     = WIDTH/2;
+    int circleY         = UI_height/2;
+    int circleX         = WIDTH/2;
+
 
     fontColor.red    = 0;
     fontColor.green  = 0;
@@ -25,8 +36,17 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
     uiColor.green  = 75;
     uiColor.blue   = 75;
     
-    UI_height = 9*HEIGHT/10;   
-    UI_width  = WIDTH;
+    terrainColor.red    = 50;
+    terrainColor.green  = 100;
+    terrainColor.blue   = 0;
+
+    sandColor.red    = 235;
+    sandColor.green  = 200;
+    sandColor.blue   = 175;
+
+    waterColor.red    = 100;
+    waterColor.green  = 175;
+    waterColor.blue   = 255;
 
     if(*bars==NULL||*numBars==0){
         //createBar holds the barSize at {100,20}px
@@ -42,9 +62,30 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
     //update
     setCurrentValue((*bars),player->health);
     setCurrentValue(((*bars)+1),player->ammo);
-    //plot base layer
-    for(int i=UI_height; i<HEIGHT;i++){
-        for(int j=0;j<WIDTH;j++){
+    
+    int i,j;
+    //plot terrain
+    for(i=0; i<UI_height;i++){
+        for(j=0; j<WIDTH;j++){
+            
+            double distance;                
+            distance = sqrt((j-circleX)*(j-circleX)+(i-circleY)*(i-circleY));       //int -> double. no loss in precision. no warns.
+            if(distance>waterRadius){
+                //water
+                plot->plotPixel(j,i,waterColor.red,waterColor.green,waterColor.blue);
+            }else if(distance>sandRadius){
+                //sand
+                plot->plotPixel(j,i,sandColor.red,sandColor.green,sandColor.blue);
+            }else{
+                //grass
+                plot->plotPixel(j,i,terrainColor.red,terrainColor.green,terrainColor.blue);
+            }
+       }
+    }   
+
+    //plot base layer UIBar
+    for(i=UI_height; i<HEIGHT;i++){
+        for(j=0;j<WIDTH;j++){
             plot->plotPixel(j,i,uiColor.red,uiColor.green,uiColor.blue);
         }
         uiColor.red++;
