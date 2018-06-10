@@ -137,8 +137,12 @@ void deleteEnemy(struct EnemyObj ** enemies, int *number_of_enemies, int enemy_n
 
 void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets){
 	if(!enemies||!bullets||!plot||number_of_enemies<0) return;
-
-    for(int i = 0; i< number_of_enemies; i++){
+	for(int i = 0; i< number_of_enemies; i++){
+			(*enemies+i)->line_of_sight = createSightLine(*(*enemies+i), 40);
+			(*enemies+i)->cooldown++;
+		if((*enemies+i)->cooldown%2 != 0) return;
+			plot->plotPixel((*enemies+i)->line_of_sight.point3.x,(*enemies+i)->line_of_sight.point3.y,150,150,4);
+			plot->plotPixel((*enemies+i)->line_of_sight.point4.x,(*enemies+i)->line_of_sight.point4.y,150,150,4);
 		if((*enemies+i)->sight){
 			attack(i,player,plot,bullets,number_of_bullets,enemies,number_of_enemies);
 		}else{
@@ -148,155 +152,95 @@ void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct
 }
 
 void search(int enemy_index, struct PlayerObj player, struct EnemyObj **enemies, int n_enemies){
-	
-    if(!enemies||enemy_index<0||n_enemies<1||enemy_index>n_enemies) return;
-    
-    //VARs
-    struct EnemyObj *enemy = ((*enemies)+enemy_index);
-
-
-
-    if(loc_is_seen(*enemy, player.obj.posObj)){
-		enemy->sight = true;
-		printf("enemy can see player\n");
-		return;		
+	if(loc_is_seen(*(*enemies+enemy_index), player.obj.posObj)){
+		(*enemies+enemy_index)->sight = true;
 	}
-	if(!loc_is_ahead(*enemy, enemy->last_player_loc)){ // turn toward last know player location.
-		
-        bool collision = enemy_enemies_collision(enemy,'D',6,enemies,n_enemies);
-        if(!collision){    
-            struct position updatedPos = changePosition(&(enemy->obj), 'D', 6);
-		    enemy->obj.posObj.direction += (updatedPos.direction*dirToLoc(*enemy, enemy->last_player_loc));
-        }
-		
-	}/*else if(calcDistance(enemy->obj.posObj, enemy->last_player_loc) < 40){
-		enemy->last_player_loc.x = (rand() % 400)+100; 
-		enemy->last_player_loc.y = (rand() % 400)+100;
-	}*/ else{
-		
-        bool collision = enemy_enemies_collision(enemy,'W',6,enemies,n_enemies);
-        if(!collision){
-            struct position updatedPos = changePosition(&(enemy->obj), 'W', 6); 
-		    enemy->obj.posObj.x += updatedPos.x;
-		    enemy->obj.posObj.y += updatedPos.y;
-        }
-
+	if(dirToLoc(*(*enemies+enemy_index), player.obj.posObj) == -1){
+		printf("Player is to the left of enemy.\n");
+	}else{
+		printf("Player is to the right of enemy.\n");
 	}
 }
 
 void attack(int enemy_index,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets, struct EnemyObj **enemies, int n_enemies){
-	
-    if(!enemies||enemy_index<0||n_enemies<1||enemy_index>n_enemies) return;
-
-    //VARs
-    struct EnemyObj *enemy = ((*enemies)+enemy_index);
-
-
-
-    if(!loc_is_seen(*enemy, player.obj.posObj)){
-		enemy->sight = false;
-		printf("enemy can't see player\n");
-		return;		
+	if(!loc_is_seen(*(*enemies+enemy_index), player.obj.posObj)){
+		(*enemies+enemy_index)->sight = false;
 	}
-	if(!loc_is_ahead(*enemy, player.obj.posObj)){ // turn toward player location.
-		
-        bool collision = enemy_enemies_collision(enemy,'D',6,enemies,n_enemies);
-        if(!collision){
-            struct position updatedPos = changePosition(&(enemy->obj), 'D', 6);
-		    enemy->obj.posObj.direction += (updatedPos.direction*dirToLoc(*enemy, player.obj.posObj));
-        }
-
-	}/*else{
-		createBullet(&(enemy->obj), bullets, number_of_bullets, PISTOL, NORMAL);
-	}*/
-	enemy->last_player_loc = player.obj.posObj;
-	
 }
 
-bool loc_is_seen(struct EnemyObj enemy, struct position playerPos){
-	struct position **lines = (struct position **)malloc(sizeof(struct position *)*5);
-	*lines = createSightLine(enemy, 0);
-	*(lines+1) = createSightLine(enemy, -10);
-	*(lines+2) = createSightLine(enemy, 10);
-	*(lines+3) = createSightLine(enemy, 30);
-	*(lines+4) = createSightLine(enemy, -30);
-	for(int x = 0; x < 5; x++){
-		for(int y = 0; y < 12; y++){
-			struct position *currentline = *(lines+x); //the compiler doesn't like it when I try to dereference twice in an if statement.
-			if((currentline+y)->x < playerPos.x+10 && (currentline+y)->x > playerPos.x-10 && (currentline+y)->y < playerPos.y+10 && (currentline+y)->y > playerPos.y-10) {
-				return true;
-
-				printf("There is a match between the vision point located at %i %i and the player ate %i %i\n", (currentline+y)->x, (currentline+y)->y, playerPos.x, playerPos.y);
-			}
-		} 
-	
+bool locIsSeen(struct EnemyObj enemy, struct position playerPos){
+	struct object p_obj;
+	p_obj.posObj = playerPos;
+	struct position updatedPos = changePosition(&(p_obj), 'E', 16);
+	playerPos.x += updatedPos.x;
+	playerPos.y += updatedPos.y;
+	updatedPos = changePosition(&(p_obj), 'S', 8);
+	playerPos.x += updatedPos.x;
+	playerPos.y += updatedPos.y;
+	struct position points[4];
+	points[0] = enemy.line_of_sight.point1;
+	points[1] = enemy.line_of_sight.point2;
+	points[2] = enemy.line_of_sight.point3;
+	points[3] = enemy.line_of_sight.point4;
+	double slope[4];
+	if(enemy.line_of_sight.point2.x-enemy.line_of_sight.point1.x == 0){
+		slope[0] = 2000; //value impossible on a 600*600 board.
+		slope[2] = 2000;
+	}else{
+		slope[0] = ((enemy.line_of_sight.point2.y-enemy.line_of_sight.point1.y)/(enemy.line_of_sight.point2.x-enemy.line_of_sight.point1.x));
+		slope[2] = ((enemy.line_of_sight.point4.y-enemy.line_of_sight.point3.y)/(enemy.line_of_sight.point4.x-enemy.line_of_sight.point3.x));
 	}
-	return false;
-	printf("there was no match, location not seen");
-	for(int x = 0; x < 5; x++){
-		free(*(lines+x));
+	if(enemy.line_of_sight.point3.x-enemy.line_of_sight.point2.x == 0){
+		slope[1] = 0;	
+	}else{
+		slope[1] = ((enemy.line_of_sight.point3.y-enemy.line_of_sight.point2.y)/(enemy.line_of_sight.point3.x-enemy.line_of_sight.point2.x));	
 	}
-	free(lines);
-}
-
-bool loc_is_ahead(struct EnemyObj enemy, struct position playerPos){
-	struct position currentPosition = enemy.obj.posObj;
-	struct position updatedPos = changePosition(&(enemy.obj), 'E', 16);
-	currentPosition.x += updatedPos.x;
-	currentPosition.y += updatedPos.y;
-	/*
-	updatedPos = changePosition(&(enemy.obj), 'S', 8);
-	currentPosition.x += updatedPos.x;
-	currentPosition.y += updatedPos.y;
-	*/
-	while(currentPosition.x < 600 && currentPosition.x > 0 && currentPosition.y < 600 && currentPosition.y > 0){
-		updatedPos = changePosition(&(enemy.obj), 'W', 5);
-		currentPosition.x += updatedPos.x;
-		currentPosition.y += updatedPos.y;
-		if(currentPosition.x < playerPos.x+20 && currentPosition.x > playerPos.x-20 && currentPosition.y < playerPos.y+20 && currentPosition.y > playerPos.y-20) return true;
-	}	
+	if(enemy.line_of_sight.point1.x-enemy.line_of_sight.point4.x == 0){
+		slope[3] = 0;
+	}else{
+		slope[3] = ((enemy.line_of_sight.point1.y-enemy.line_of_sight.point4.y)/(enemy.line_of_sight.point1.x-enemy.line_of_sight.point4.x));
+	}
+	int hits = 0;
+	while(playerPos.x < 600){
+		for(int i = 0; i < 4; i++){
+			if(slope[i] == 2000 && points[i].x==playerPos.x && ((points[i].y>playerPos.y && points[i+1].y<playerPos.y)||(points[i].y<playerPos.y && points[i+1].y>playerPos.y))){
+			hits++;
+			}else if(points[i].y+((playerPos.x-points[i].x)*slope[i]) ==  playerPos.y && ((points[i].x>playerPos.x && points[i+1].x<playerPos.x)||(points[i].x<playerPos.x && points[i+1].x>playerPos.x))) hits++;
+		}
+		playerPos.x++;
+	}
+	if(hits == 1) return true;
 	return false;
 
 }
 
-struct position *createSightLine(struct EnemyObj enemy, int degree_offset){
-	struct position *sightLine = (struct position *)malloc(sizeof(struct position)* 12);	//vision distance is constant
-	struct position currentPosition = enemy.obj.posObj;
-	struct position updatedPos = changePosition(&(enemy.obj), 'E', 16);
-	currentPosition.x += updatedPos.x;
-	currentPosition.y += updatedPos.y;
-	enemy.obj.posObj.direction += degree_offset;
-	for(int i = 0; i <12; i++){
-		updatedPos = changePosition(&(enemy.obj), 'W', 16); //16 * 12 = 192 pixel vision distance.
-		currentPosition.x += updatedPos.x;
-		currentPosition.y += updatedPos.y;
-		*(sightLine+i) = currentPosition;
-	}
-	return sightLine;
-}	
+struct LOS createSightLine(struct EnemyObj enemy, int end_width_offset){
+	struct LOS line_of_sight;
+	line_of_sight.point1 = enemy.obj.posObj;
+	line_of_sight.point2 = enemy.obj.posObj;
+	line_of_sight.point3 = enemy.obj.posObj;
+	line_of_sight.point4 = enemy.obj.posObj;
+	struct position updatedPos = changePosition(&(enemy.obj), 'E', 32);
+	line_of_sight.point1.x += updatedPos.x;
+	line_of_sight.point1.y += updatedPos.y;
+	 updatedPos = changePosition(&(enemy.obj), 'W', 200);
+	line_of_sight.point3.x += updatedPos.x;
+	line_of_sight.point3.y += updatedPos.y;
+	 updatedPos = changePosition(&(enemy.obj), 'Q', end_width_offset);
+	line_of_sight.point3.x += updatedPos.x;
+	line_of_sight.point3.y += updatedPos.y;
+	 updatedPos = changePosition(&(enemy.obj), 'W', 200);
+	line_of_sight.point4.x += updatedPos.x;
+	line_of_sight.point4.y += updatedPos.y;
+	 updatedPos = changePosition(&(enemy.obj), 'E', end_width_offset+32);
+	line_of_sight.point4.x += updatedPos.x;
+	line_of_sight.point4.y += updatedPos.y;
+	return line_of_sight;
+}
 
 int dirToLoc(struct EnemyObj enemy, struct position playerPos){
-	int dir1 =  enemy.obj.posObj.direction;
-	int dir2 = -1;
-	struct position testposition;
-	int distance = calcDistance(enemy.obj.posObj, playerPos);
-	for(int i = 0; i < 60; i++){
-		enemy.obj.posObj.direction = i*6;
-		testposition = enemy.obj.posObj;
-		struct position updatedPos = changePosition(&(enemy.obj), 'W', distance); //16 * 12 = 192 pixel vision distance.
-		testposition.x += updatedPos.x;
-		testposition.y += updatedPos.y;
-		if(testposition.x < playerPos.x+10 && testposition.x > playerPos.x-10 && testposition.y < playerPos.y+10 && testposition.y > playerPos.y-10){
-			dir2 = i * 6;
-			break;
-		}
-	}
-	if(dir2 = -1) return 1;
-	if(abs(dir1-dir2) > 180 && dir1 < dir2){
-		dir1 +=360;
-	}else{
-		dir2 +=360;
-	}
-	if(dir1-dir2 > 0) return -1;
-	return 1;
+		float dist_left = sqrt(abs(enemy.line_of_sight.point3.x-playerPos.x)+abs(enemy.line_of_sight.point3.y-playerPos.y));
+		float dist_right = sqrt(abs(enemy.line_of_sight.point4.x-playerPos.x)+abs(enemy.line_of_sight.point4.y-playerPos.y));
+		if(dist_left < dist_right) return -1;
+		return 1;
 }

@@ -16,6 +16,13 @@
 #include "../collision/collision.h"     //collision logic
 
 //S T R U C T s
+struct LOS{
+
+	struct position point1;
+	struct position point2;
+	struct position point3;
+	struct position point4;
+};
 
 /**	STRUCT: EnemyObj
  *PURPOSE: Holds the health and ammo variables relavent to the enemy class,
@@ -37,6 +44,7 @@ struct EnemyObj{
 	bool sight  = false;
 	struct position last_player_loc = {300,300,0};
 	int cooldown = 0;
+	struct LOS line_of_sight;
 	//enums for type of weapon and ammo go here. Dont forget the includes as well when this component merges into 'testing'
 	//...	
 };
@@ -191,16 +199,7 @@ struct EnemyObj{
  *@params   struct EnemyObj enemy       A copy of the enemy struct in question.
  *          struct position playerPos   A copy of the current position of the player. (struct)
  *@return   true                        Enemy can see the player.
- */bool loc_is_seen(struct EnemyObj enemy, struct position playerPos);
-
-/** FUNCTION: loc_is_ahead
- *PURPOSE: Test if a given location is ahead of the enemy.
- *POSTCONDITION: True will be returned if the location is in front of the enemy.
- *@params   struct EnemyObj enemy       A copy of the enemy struct in question.
- *          struct position playerPos   A copy of the current position of the player. (struct)
- *@return   true                        Given location is in front of enemy.      
- *
- */bool loc_is_ahead(struct EnemyObj enemy, struct position playerPos);
+ */bool locIsSeen(struct EnemyObj enemy, struct position playerPos);
 
 /** FUNCTION: createSightLine
  *PURPOSE: Creates one sightline based upon the current enemy position and a given offset and a constant depth of view.
@@ -208,7 +207,7 @@ struct EnemyObj{
  *@params   struct EnemyObj enemy       A copy of the enemy struct in question.
  *          int degree_offset           Direction of the sightline (variation +-º taking 0 as the current enemy dir).
  *@return   struct position*            A pointer to an array of 12 struct positions.   
- */struct position *createSightLine(struct EnemyObj enemy, int degree_offset);
+ */struct LOS createSightLine(struct EnemyObj enemy, int end_width_offset);
 
 /** FUNCTION: dirToLoc 
  *PURPOSE:  Help gives direction to a given location.  
