@@ -230,15 +230,11 @@ FILE* openFile(char* mode){
 
 int readScoreBoard(char* strings[]){
 
-    if(!strings||TOP_TEN!=20)   return -1;
+    if(!strings||TOP_TEN!=10)   return -1;
 
     //VARs      
     FILE* file = NULL;
     char* mode  = NULL;
-    char* name;
-    char* score;
-    int number;   
-    int returns;
 
     mode = (char*)"r";
     file = openFile(mode);
@@ -247,17 +243,22 @@ int readScoreBoard(char* strings[]){
     int i;
     for(i=0; i<TOP_TEN; i++){
         
-        returns = fscanf(file,"%s %s",name,score);
-        if(returns==-1){
-            break;
+        int ch; 
+        int j=0;
+        char buffer[15];        
+        for(ch = fgetc(file); ch != EOF && ch != '\n'; ch = fgetc(file)){
+            buffer[j++] = ch;
         }
-        strings[i]   = name;
+        if(ch==EOF) break;
+
+        strings[i] = buffer;
     }
     for(;i<TOP_TEN;i++){
         strings[i]   = (char*)"";
     }
     
     fclose(file);
+    return 0;
 }
 
 int writeScoreBoard(){}
@@ -324,6 +325,8 @@ bool printScoreBoard(SDL_Plotter* plot){
     textPos.y += 50;
     textPos.x += 50;
     plotText(header,textPos,textColor1,3,0,plot);
+
+
 /*
     for(int i=0; i<TOP_TEN/2; i++){
         textPos.y += 20;

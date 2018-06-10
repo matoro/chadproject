@@ -16,7 +16,7 @@
 //D E F I N E
 
 #define SCOREBOARD_FILE "scoreboard.txt"
-#define TOP_TEN  20
+#define TOP_TEN  10
 
 //F U N C T I O N s
 
