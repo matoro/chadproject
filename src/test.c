@@ -74,14 +74,22 @@ int main(){
 
     //TESTING PRINTMENU
 
-    char option = printMenu(&plotter);
-    if(option != '1'){
-        //implement scoreboard with option 2.
-        plotter.setQuit(true);
-        return 0;
-    }
-
-
+    bool cont = true;
+    do{
+        char option = printMenu(&plotter);
+        if(option == '3'){
+            plotter.setQuit(true);
+	        return 0;
+        }else if(option == '2'){
+            cont = printScoreBoard(&plotter);
+            if(!cont){
+                plotter.setQuit(true);
+	            return 0;
+            }
+        }else{break;}
+    }while(cont);
+    
+      
 
 
 
@@ -275,6 +283,5 @@ int main(){
 	free(droppables);
 
 	plotter.setQuit(true);
-
 	return 0;
 }

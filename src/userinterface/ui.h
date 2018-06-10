@@ -7,9 +7,16 @@
 
 //I N C L U D E s
 #include <stdbool.h>
+#include <stdio.h>
+#include <errno.h>              //openFile error handling.
 #include "../graphic/screen.h"
 #include "../object/bar.h"
 #include "../object/player.h"
+
+//D E F I N E
+
+#define SCOREBOARD_FILE "scoreboard.txt"
+#define TOP_TEN  20
 
 //F U N C T I O N s
 
@@ -49,5 +56,13 @@
  *@params       struct PlayerObj* player        Pointer to valid player object.   
  *@return       char*                           String.
  */char* getAmmoMsg(struct PlayerObj* player);
+
+FILE* openFile(char* mode);
+
+int readScoreBoard(char* strings[]);
+
+int writeScoreBoard();
+
+bool printScoreBoard(SDL_Plotter* plot);
 
 #endif

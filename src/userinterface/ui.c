@@ -215,3 +215,137 @@ char* getAmmoMsg(struct PlayerObj* player){
     }
 }
 
+FILE* openFile(char* mode){
+
+    FILE* fp = NULL;
+
+    fp = fopen("scores.txt",mode);
+    if(!fp){
+        fprintf(stderr,"Error, couldnt open file. Error num: %d\n",errno);
+        perror("Description:");
+    }    
+
+    return fp;
+}
+
+int readScoreBoard(char* strings[]){
+
+    if(!strings||TOP_TEN!=20)   return -1;
+
+    //VARs      
+    FILE* file = NULL;
+    char* mode  = NULL;
+    char* name;
+    char* score;
+    int number;   
+    int returns;
+
+    mode = (char*)"r";
+    file = openFile(mode);
+    if(!file)  return -2;
+
+    int i;
+    for(i=0; i<TOP_TEN; i++){
+        
+        returns = fscanf(file,"%s %s",name,score);
+        if(returns==-1){
+            break;
+        }
+        strings[i]   = name;
+    }
+    for(;i<TOP_TEN;i++){
+        strings[i]   = (char*)"";
+    }
+    
+    fclose(file);
+}
+
+int writeScoreBoard(){}
+
+
+bool printScoreBoard(SDL_Plotter* plot){
+
+    if(!plot)   return false;
+
+    //VARs
+    char title[]    = "TOP 10 SCOREBOARD";
+    char header[]   = "NAME--------SCORE";
+    char *scores[TOP_TEN];
+    int error = 0;
+
+    struct position textPos;
+    struct texture bgColor1, bgColor2, titleColor, textColor1, textColor2;
+
+    //DEFINITION
+    textPos = {WIDTH/4,HEIGHT/4,0};
+
+    bgColor1.red   = 110;
+    bgColor1.green = 50;
+    bgColor1.blue  = 100;
+    
+    bgColor2.red   = 225;
+    bgColor2.green = 225;
+    bgColor2.blue  = 50;
+    
+    titleColor.red   = 0;
+    titleColor.green = 0;
+    titleColor.blue  = 10;
+
+    textColor1.red   = 150;
+    textColor1.green = 0;
+    textColor1.blue  = 150;
+
+    textColor2.red   = 64;
+    textColor2.green = 64;
+    textColor2.blue  = 64;
+
+
+    error = readScoreBoard(scores);
+    if(error<0){
+        fprintf(stderr,"Error reading scoreboard, code: %d\n",error);
+        return false;
+    }
+    
+    //plot background
+    plot->clear();
+    for(int i=0;i<HEIGHT;i++){
+        for(int j=0;j<WIDTH;j++){
+            struct texture bgClr = ((j<100||j>500)||(i<100||i>500)) ? bgColor1 : bgColor2;
+            plot->plotPixel(j,i,bgClr.red,bgClr.green,bgClr.blue);
+        }
+        bgColor1.green++;
+        bgColor2.blue++;   
+        if(bgColor1.green>255)  bgColor1.green = bgColor1.green%255;
+        if(bgColor2.green>255)  bgColor2.green = bgColor2.green%255;
+    }
+
+    //plot title and scores
+    plotText(title,textPos,titleColor,5,1,plot);
+    textPos.y += 50;
+    textPos.x += 50;
+    plotText(header,textPos,textColor1,3,0,plot);
+/*
+    for(int i=0; i<TOP_TEN/2; i++){
+        textPos.y += 20;
+        plotText(scores[i],textPos,textColor2,2,0,plot);
+        textPos.x += 50;
+        plotText(scores[i+1],textPos, textColor1,2,0,plot);
+        textPos.x -= 50;
+    }
+
+*/
+    //check for key pressed
+    char letra;
+    do{
+        bool keyhit = plot->kbhit();
+        if(keyhit){
+            letra = plot->getKey();
+            if(letra == '0'){
+                return false;
+            }else if(letra == 'B'){
+                return true;
+            }
+        }
+        plot->update();
+    }while(true);
+}
