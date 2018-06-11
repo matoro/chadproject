@@ -9,14 +9,22 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <errno.h>              //openFile error handling.
+#include <stdlib.h>
 #include "../graphic/screen.h"
 #include "../object/bar.h"
 #include "../object/player.h"
 
 //D E F I N E
 
-#define SCOREBOARD_FILE "scoreboard.txt"
-#define TOP_TEN  10
+#define SCOREBOARD_FILE "scoreboard.bin"
+#define TOP  10
+
+//S T R U C T
+struct file_data{
+    char name[10];
+    int score;
+//14bytes  
+};
 
 //F U N C T I O N s
 
@@ -59,7 +67,7 @@
 
 FILE* openFile(char* mode);
 
-int readScoreBoard(char* strings[]);
+int readScoreBoard(struct file_data** data);
 
 int writeScoreBoard();
 
