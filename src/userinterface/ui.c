@@ -344,13 +344,15 @@ bool printScoreBoard(SDL_Plotter* plot){
     //VARs
     char title[]    = "TOP10 SCOREBOARD";
     char header[]   = "NAME-+-+-+-+-SCORE";
+    char back[]     = "-b-ack";
     int num_data;
     struct file_data* data;
-    struct position textPos;
-    struct texture bgColor1, bgColor2, titleColor, textColor1, textColor2;
+    struct position textPos, backPos;
+    struct texture bgColor1, bgColor2, titleColor, textColor1, textColor2, textColor3;
 
     //DEFINITION
     textPos = {WIDTH/4,HEIGHT/4,0};
+    backPos = {41*WIDTH/60,94*HEIGHT/120,0};
 
     bgColor1.red   = 110;
     bgColor1.green = 50;
@@ -372,6 +374,9 @@ bool printScoreBoard(SDL_Plotter* plot){
     textColor2.green = 64;
     textColor2.blue  = 64;
 
+    textColor3.red   = 0;
+    textColor3.green = 155;
+    textColor3.blue  = 0;
 
     num_data = readScoreBoard(&data);
     if(num_data<0){
@@ -392,23 +397,24 @@ bool printScoreBoard(SDL_Plotter* plot){
             if(bgColor2.green>255)  bgColor2.green = bgColor2.green%255;
         }
 
-        //plot title and scores
+        //plot title, back reference and scores
+        plotText(back,backPos,textColor3,3,0,plot);
         plotText(title,textPos,titleColor,5,1,plot);
-        textPos.y += 50;
-        textPos.x += 50;
+        textPos.y += HEIGHT/12;
+        textPos.x += WIDTH/15;
         plotText(header,textPos,textColor1,3,0,plot);
 
         if(num_data>0){
 
-            textPos.y+=25;
+            textPos.y+=HEIGHT/30;
             for(int i=0; i<num_data; i++){
-                textPos.y += 20;
+                textPos.y += HEIGHT/30;
                 plotText(data[i].name,textPos,textColor2,2,0,plot);
-                textPos.x += 50;
+                textPos.x += 3*WIDTH/10;
                 char score[12];
                 sprintf(score,"%d",data[i].score);
                 plotText(score,textPos,textColor2,2,0,plot);
-                textPos.x -= 50;
+                textPos.x -= 3*WIDTH/10;
             }
 
             free(data);

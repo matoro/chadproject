@@ -31,7 +31,7 @@ struct sprite{
 };
 
 /*  CHARACTER SPRITES.
- *  charSet current dictionary: "abcdefghijklmnopqrstuvwxyz0123SPRITE_DIM56789,.;+-!? ";
+ *  charSet current dictionary: "abcdefghijklmnopqrstuvwxyz0123456789,.;+-!? ";
  */
 const bool letra_a[SPRITE_DIM][SPRITE_DIM]={
     {0,1,0,0},

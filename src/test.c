@@ -73,14 +73,15 @@ int main(){
 */
 
     //TESTING SCOREBOARD
-    struct file_data lebaScore = {"morton",555};
+/*
+    struct file_data lebaScore = {"bot",1000};
     int err = writeScoreBoard(lebaScore);
     if(err>=0){
         fprintf(stdout,"SUCESS SAVING SCORE!\n");
     }else{
         fprintf(stdout,"ERROR WRITING FILE!. Code: %d\n",err);
     }
-
+*/
     //TESTING PRINTMENU
 
     bool cont = true;
