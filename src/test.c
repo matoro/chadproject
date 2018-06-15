@@ -72,6 +72,15 @@ int main(){
     colorString.blue  = 110;
 */
 
+    //TESTING SCOREBOARD
+    struct file_data lebaScore = {"morton",555};
+    int err = writeScoreBoard(lebaScore);
+    if(err>=0){
+        fprintf(stdout,"SUCESS SAVING SCORE!\n");
+    }else{
+        fprintf(stdout,"ERROR WRITING FILE!. Code: %d\n",err);
+    }
+
     //TESTING PRINTMENU
 
     bool cont = true;
@@ -271,6 +280,7 @@ int main(){
 		}
 
 	}
+
 	//free all visible components dyn allocated struct texture[]
 	free(jugador.obj.textureObj);
 	//free object textures

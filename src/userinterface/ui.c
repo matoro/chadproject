@@ -266,7 +266,75 @@ int readScoreBoard(struct file_data** data){
     return n_data;
 }
 
-int writeScoreBoard(){}
+int writeScoreBoard(struct file_data new_data){
+
+    //VARs
+    struct file_data* data;
+    int num_data, name_length;
+    FILE* file = NULL;
+    char* mode = NULL;
+    bool new_file = false;
+
+    //VALIDATE INPUT
+    name_length = strlen(new_data.name);
+    if(new_data.score<0||name_length<3){
+        fprintf(stderr,"Score must be positive and nickname length at least 3 characters long.\n");
+        return -1;        //Invalid file_data struct input.
+    }
+    
+    //READ FILE
+    num_data = readScoreBoard(&data);
+    if(num_data<0){
+        fprintf(stderr,"Error reading scoreboard binary, code: %d\n",num_data);
+        return -2;                                      //Error reading scoreboard.bin
+    }else if(num_data>10){
+        fprintf(stderr,"Scoreboard binary malformed, code: %d\n",num_data);
+        return -3;                                      //Error reading scoreboard.bin
+    }else if(num_data==0){
+        new_file = true;        //no need to free data
+    }
+    
+    //WRITE FILE
+    mode = (char*)"w";
+    file = openFile(mode);
+    if(!file)  return -2;       //Err: couldnt open file 
+
+    if(new_file){
+        fwrite(&new_data, sizeof(struct file_data),1,file);
+    }else{
+        
+        //INSERT POINT (SCOREBOARD KEEPS ITSELF SORTED)
+        bool end = true;
+        int index;
+        for(index = 0; index<num_data; index++){
+            if(new_data.score>data[index].score){
+                end = false;
+                break;
+            }
+        }
+        if(end) index = num_data;
+
+        int arr = 0;
+        for(int i=0; i<TOP; i++){
+            if(i==index){
+                fwrite(&new_data, sizeof(struct file_data),1,file);
+            }else{
+                if(i>num_data)  break;
+                fwrite((data+arr), sizeof(struct file_data),1,file);
+                arr++;
+            }
+        }
+    }
+
+    //CLOSE AND FREE
+    if(!new_file){ 
+        free(data);     
+        data = NULL;
+    }
+    fclose(file);
+    
+    return 0;
+}
 
 
 bool printScoreBoard(SDL_Plotter* plot){

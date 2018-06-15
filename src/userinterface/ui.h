@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <errno.h>              //openFile error handling.
 #include <stdlib.h>
+#include <string.h>
 #include "../graphic/screen.h"
 #include "../object/bar.h"
 #include "../object/player.h"
@@ -23,7 +24,7 @@
 struct file_data{
     char name[10];
     int score;
-//14bytes  
+    //14bytes  
 };
 
 //F U N C T I O N s
@@ -69,7 +70,7 @@ FILE* openFile(char* mode);
 
 int readScoreBoard(struct file_data** data);
 
-int writeScoreBoard();
+int writeScoreBoard(struct file_data new_data);
 
 bool printScoreBoard(SDL_Plotter* plot);
 
