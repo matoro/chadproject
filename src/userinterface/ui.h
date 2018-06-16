@@ -19,6 +19,7 @@
 
 #define SCOREBOARD_FILE "scoreboard.bin"
 #define TOP  10
+#define MAX_NAME 10
 
 //S T R U C T
 struct file_data{
@@ -73,5 +74,7 @@ int readScoreBoard(struct file_data** data);
 int writeScoreBoard(struct file_data new_data);
 
 bool printScoreBoard(SDL_Plotter* plot);
+
+bool printSaveScore(SDL_Plotter* plot, int score);
 
 #endif

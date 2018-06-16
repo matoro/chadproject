@@ -437,3 +437,147 @@ bool printScoreBoard(SDL_Plotter* plot){
         }while(true);
     }
 }
+
+bool printSaveScore(SDL_Plotter* plot, int score){
+
+    if(!plot)   return false;
+
+    //VARs
+    char title[]    = "SAVE SCORE";
+    char header[]   = "Enter your nickname";
+    char rules[]    = "3-10 characters long";
+    char save[]     = "SAVE";
+    char back[]     = "EXIT";
+    char clear[]    = "CLEAR";
+    char score_str[12];
+    char points[]   = " points";    
+    int inputY, inputX;
+    
+    struct file_data data;
+    struct position titlePos, textPos, savePos, backPos, clearPos, inputPos;
+    struct texture bgColor1, bgColor2, bgColor3, bgColor4, titleColor, textColor1, textColor2, textColor3, textColor4;
+
+    //DEFINITION
+
+    bgColor1.red   = 80;
+    bgColor1.green = 50;
+    bgColor1.blue  = 40;
+    
+    bgColor2.red   = 50;
+    bgColor2.green = 150;
+    bgColor2.blue  = 150;
+    
+    bgColor3.red   = 150;
+    bgColor3.green = 0;
+    bgColor3.blue  = 75;
+
+    bgColor4.red   = 235;
+    bgColor4.green = 235;
+    bgColor4.blue  = 235;
+
+    titleColor.red   = 25;
+    titleColor.green = 25;
+    titleColor.blue  = 25;
+
+    textColor1.red   = 150;
+    textColor1.green = 0;
+    textColor1.blue  = 150;
+
+    textColor2.red   = 0;
+    textColor2.green = 0;
+    textColor2.blue  = 250;
+
+    textColor3.red   = 250;
+    textColor3.green = 250;
+    textColor3.blue  = 50;
+
+    textColor4.red   = 250;
+    textColor4.green = 0;
+    textColor4.blue  = 0;
+
+
+    PLOT:
+    titlePos = {WIDTH/3,HEIGHT/4,0};
+    textPos = {19*WIDTH/60,HEIGHT/3,0};
+    savePos = {2*WIDTH/3,94*HEIGHT/120,0};
+    backPos = {WIDTH/4,94*HEIGHT/120,0};
+    clearPos = {9*WIDTH/20,94*HEIGHT/120,0};
+
+    //plot background
+    plot->clear();
+    for(int i=0;i<HEIGHT;i++){
+        for(int j=0;j<WIDTH;j++){
+            struct texture bgClr = ((j<100||j>500)||(i<100||i>500)) ? bgColor1 : bgColor2;
+            bgClr = ((i+j)%8==0) ?  bgColor3 : bgClr;
+            plot->plotPixel(j,i,bgClr.red,bgClr.green,bgClr.blue);
+        }
+    }
+
+    //plot title, header and options
+    plotText(back,backPos,textColor3,3,0,plot);
+    plotText(clear,clearPos,textColor3,3,0,plot);
+    plotText(save,savePos,textColor3,3,0,plot);
+    plotText(title,titlePos,titleColor,5,0,plot);
+    plotText(header,textPos,textColor1,3,0,plot);
+    textPos.y += HEIGHT/30;
+    textPos.x += WIDTH/20;
+    plotText(rules,textPos,textColor4,2,0,plot);
+
+
+    //plot input textbox and score
+    inputPos    = {WIDTH/4,HEIGHT/2,0};
+    inputX      = inputPos.x+WIDTH/2;
+    inputY      = inputPos.y+HEIGHT/12;     
+
+    for(int i=inputPos.y;i<inputY;i++){
+        for(int j=inputPos.x;j<inputX;j++){
+            plot->plotPixel(j,i,bgColor4.red,bgColor4.green,bgColor4.blue);
+        }
+    }
+    inputPos.y += HEIGHT/30;
+    inputPos.x += WIDTH/4;
+    sprintf(score_str,"%d",score);
+    strcat(score_str,points);
+    plotText(score_str,inputPos,textColor2,3,1,plot);
+
+    inputPos.x -= WIDTH/4;
+    inputPos.x += HEIGHT/20;
+    //check for key pressed
+    char nickname[10] = "";
+    char letra;
+    int count = 0;
+    do{
+        bool keyhit = plot->kbhit();
+        if(keyhit){
+            letra = plot->getKey();
+            if(letra == '0'){
+                //user press exit. player doesn't want to play anymore. return false.
+                return false;
+            }else if(letra == '1'){
+                //user wants to clear input textbox                
+                for(int i=0; i<MAX_NAME; i++)   nickname[i] = '\0';
+                count = 0;
+                goto PLOT;
+            }else if(letra == '3' || letra == '('){
+                //user submits
+                if(count<3||count>=MAX_NAME)    continue;                               
+            
+                memmove(data.name,nickname,count);
+                data.score = score;
+                int err = writeScoreBoard(data);
+                if(err==0){
+                    //Success saving scoreboard, sends user back to main menu.
+                    return true;
+                }else{
+                    //Something failed saving scoreboard, exits program.
+                    return false;
+                }
+            }else{
+                //add letter
+                if(count<MAX_NAME-1)    nickname[count++] = letra;
+            }
+        }
+        plotText(nickname,inputPos,textColor2,3,0,plot);
+        plot->update();
+    }while(true);
+}

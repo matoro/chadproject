@@ -82,6 +82,10 @@ int main(){
         fprintf(stdout,"ERROR WRITING FILE!. Code: %d\n",err);
     }
 */
+//  TESTING PRINTSAVESCOREBOARD
+    if(!printSaveScore(&plotter, 651))    return 0;
+
+
     //TESTING PRINTMENU
 
     bool cont = true;
