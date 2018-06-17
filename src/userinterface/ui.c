@@ -451,7 +451,9 @@ bool printSaveScore(SDL_Plotter* plot, int score){
     char clear[]    = "CLEAR";
     char score_str[12];
     char points[]   = " points";    
-    int inputY, inputX;
+    int inputY, inputX, count;
+    char nickname[10] = "";
+    char letra;
     
     struct file_data data;
     struct position titlePos, textPos, savePos, backPos, clearPos, inputPos;
@@ -542,10 +544,9 @@ bool printSaveScore(SDL_Plotter* plot, int score){
 
     inputPos.x -= WIDTH/4;
     inputPos.x += HEIGHT/20;
+    
     //check for key pressed
-    char nickname[10] = "";
-    char letra;
-    int count = 0;
+    count = 0;
     do{
         bool keyhit = plot->kbhit();
         if(keyhit){
@@ -556,13 +557,12 @@ bool printSaveScore(SDL_Plotter* plot, int score){
             }else if(letra == '1'){
                 //user wants to clear input textbox                
                 for(int i=0; i<MAX_NAME; i++)   nickname[i] = '\0';
-                count = 0;
                 goto PLOT;
             }else if(letra == '3' || letra == '('){
                 //user submits
                 if(count<3||count>=MAX_NAME)    continue;                               
-            
-                memmove(data.name,nickname,count);
+                
+                memmove(data.name,nickname,count+1);
                 data.score = score;
                 int err = writeScoreBoard(data);
                 if(err==0){
