@@ -74,7 +74,7 @@ int main(){
 	jugador	  = createPlayer(playerDim,&playerPos);//16X16@MIDDLE OF SCREEN
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos);
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos1);
-	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos2);
+	//createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos2);
 	createBar(&bars, &number_of_bars, &jugador,health,healthBarPos);
 	createBar(&bars, &number_of_bars, &jugador,ammo, ammoBarPos);
 	createDrop(&droppables, &number_of_droppables,&dropPosP);	//taken==false by default
@@ -225,7 +225,7 @@ int main(){
 		updateBulletPos(&bullets,&number_of_bullets);
 
 		//updates the enemies
-		updateEnemyBehavior(&enemies, number_of_enemies,jugador, &plotter, &bullets, &number_of_bullets);
+		updateEnemyBehavior(&enemies, number_of_enemies,jugador, &bullets, &number_of_bullets);
 
         //plotText test
     	plotText(test_msg,textPos,fontColor,fontSize,thinSize,&plotter);     //screen.h function

@@ -135,16 +135,16 @@ void deleteEnemy(struct EnemyObj ** enemies, int *number_of_enemies, int enemy_n
 	}
 }
 
-void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets){
-	if(!enemies||!bullets||!plot||number_of_enemies<0) return;
+void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct PlayerObj player, struct BulletObj **bullets, int *number_of_bullets){
+	if(!enemies||!bullets||number_of_enemies<0) return;
+	
 	for(int i = 0; i< number_of_enemies; i++){
-			(*enemies+i)->line_of_sight = createSightLine(*(*enemies+i), 40);
+			(*enemies+i)->line_of_sight = createSightLine(*(*enemies+i), 60);
 			(*enemies+i)->cooldown++;
+			if((*enemies+i)->cooldown > 100000) (*enemies+i)->cooldown = 0;
 		if((*enemies+i)->cooldown%2 != 0) return;
-			plot->plotPixel((*enemies+i)->line_of_sight.point3.x,(*enemies+i)->line_of_sight.point3.y,150,150,4);
-			plot->plotPixel((*enemies+i)->line_of_sight.point4.x,(*enemies+i)->line_of_sight.point4.y,150,150,4);
 		if((*enemies+i)->sight){
-			attack(i,player,plot,bullets,number_of_bullets,enemies,number_of_enemies);
+			attack(i,player,bullets,number_of_bullets,enemies,number_of_enemies);
 		}else{
 			search(i,player,enemies,number_of_enemies);
 		}
@@ -152,70 +152,118 @@ void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct
 }
 
 void search(int enemy_index, struct PlayerObj player, struct EnemyObj **enemies, int n_enemies){
-	if(loc_is_seen(*(*enemies+enemy_index), player.obj.posObj)){
-		(*enemies+enemy_index)->sight = true;
+	int y1 = (*enemies+enemy_index)->obj.posObj.y;
+	int x1 = (*enemies+enemy_index)->obj.posObj.x;
+	int y2 = player.obj.posObj.y;
+	int x2 = player.obj.posObj.x;
+	if(locIsSeen(*(*enemies+enemy_index), player.obj.posObj) || sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 50) (*enemies+enemy_index)->sight = true;
+	for(int i = 0; i < n_enemies; i++){
+		if(i == enemy_index) i++;
+		if(i > n_enemies) break;
+		y2 = (*enemies+i)->obj.posObj.y;	
+		x2 = (*enemies+i)->obj.posObj.x;
+		if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 50){
+			if((*enemies+enemy_index)->cooldown%6 == 0){
+				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'E', 6);
+				(*enemies+enemy_index)->obj.posObj.x += updatedPos.x*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
+				(*enemies+enemy_index)->obj.posObj.y += updatedPos.y*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
+			}
+			return;
+		}
 	}
-	if(dirToLoc(*(*enemies+enemy_index), player.obj.posObj) == -1){
-		printf("Player is to the left of enemy.\n");
-	}else{
-		printf("Player is to the right of enemy.\n");
+	struct position memoryPosition = (*enemies+enemy_index)->last_player_loc;
+	if((*enemies+enemy_index)->cooldown%4 == 0){
+		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'A', 6);
+		(*enemies+enemy_index)->obj.posObj.direction += updatedPos.direction*dirToLoc(*(*enemies+enemy_index), memoryPosition);
+	}
+	if((*enemies+enemy_index)->cooldown%12 == 0){// move toward last know player location, moves slower while searching.
+		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', 6);
+		(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
+		(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
+	}
+	y2 = memoryPosition.y;
+	x2 = memoryPosition.x;
+	if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) > 12 && (*enemies+enemy_index)->cooldown%1000 == 0){ // looks around for the player if it isn't found
+		(*enemies+enemy_index)->last_player_loc.x = rand()%500;
+		(*enemies+enemy_index)->last_player_loc.y = rand()%500;
 	}
 }
 
-void attack(int enemy_index,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets, struct EnemyObj **enemies, int n_enemies){
-	if(!loc_is_seen(*(*enemies+enemy_index), player.obj.posObj)){
-		(*enemies+enemy_index)->sight = false;
+void attack(int enemy_index,struct PlayerObj player, struct BulletObj **bullets, int *number_of_bullets, struct EnemyObj **enemies, int n_enemies){
+	(*enemies+enemy_index)->last_player_loc= player.obj.posObj;
+	int y1 = (*enemies+enemy_index)->obj.posObj.y;
+	int x1 = (*enemies+enemy_index)->obj.posObj.x;
+	int y2 = player.obj.posObj.y;
+	int x2 = player.obj.posObj.y;
+	if(!locIsSeen(*(*enemies+enemy_index), player.obj.posObj) && sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 50) (*enemies+enemy_index)->sight = false;
+	for(int i = 0; i < n_enemies; i++){
+		if(i == enemy_index) i++;
+		if(i > n_enemies) break;
+		y2 = (*enemies+i)->obj.posObj.y;	
+		x2 = (*enemies+i)->obj.posObj.x;
+		if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 50){
+			if((*enemies+enemy_index)->cooldown%6 == 0){
+				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'E', 6);
+				(*enemies+enemy_index)->obj.posObj.x += updatedPos.x*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
+				(*enemies+enemy_index)->obj.posObj.y += updatedPos.y*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
+			}
+			return;
+		}
 	}
+	y2 = player.obj.posObj.y;
+	x2 = player.obj.posObj.x;
+	//shoot, enemy will always shoot if player is visible and time is right
+	if((*enemies+enemy_index)->cooldown%300 == 0){
+		createBullet(&((*enemies+enemy_index)->obj),bullets,number_of_bullets,PISTOL,NORMAL);
+	}else if((*enemies+enemy_index)->cooldown%20 == 0){
+		struct EnemyObj aimingE = *(*enemies+enemy_index);// enemy struct for purpose of aiming
+		aimingE.line_of_sight = createSightLine(*(*enemies+enemy_index), -3);// smaller LOS for aiming.
+		if(!locIsSeen(aimingE, player.obj.posObj)){
+			struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'A', 6);
+			(*enemies+enemy_index)->obj.posObj.direction += updatedPos.direction*dirToLoc(*(*enemies+enemy_index), player.obj.posObj);
+		}
+	}else if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) > 100 && (*enemies+enemy_index)->cooldown%6 == 0){//pursue player if too far
+		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', 6);
+		(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
+		(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
+	}else if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 50 && (*enemies+enemy_index)->cooldown%6 == 0){//move back from player if too close
+		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'S', 6);
+		(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
+		(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
+	}
+	//avoid other enemies
+
+	// save last known player location
+	
 }
 
 bool locIsSeen(struct EnemyObj enemy, struct position playerPos){
 	struct object p_obj;
 	p_obj.posObj = playerPos;
-	struct position updatedPos = changePosition(&(p_obj), 'E', 16);
+	struct position updatedPos = changePosition(&(p_obj), 'E', 16);//player position for use in this function should be @ the center of the player, not the corner.
 	playerPos.x += updatedPos.x;
 	playerPos.y += updatedPos.y;
 	updatedPos = changePosition(&(p_obj), 'S', 8);
 	playerPos.x += updatedPos.x;
 	playerPos.y += updatedPos.y;
-	struct position points[4];
+	struct position points[5];//LOS points
 	points[0] = enemy.line_of_sight.point1;
 	points[1] = enemy.line_of_sight.point2;
 	points[2] = enemy.line_of_sight.point3;
 	points[3] = enemy.line_of_sight.point4;
-	double slope[4];
-	if(enemy.line_of_sight.point2.x-enemy.line_of_sight.point1.x == 0){
-		slope[0] = 2000; //value impossible on a 600*600 board.
-		slope[2] = 2000;
-	}else{
-		slope[0] = ((enemy.line_of_sight.point2.y-enemy.line_of_sight.point1.y)/(enemy.line_of_sight.point2.x-enemy.line_of_sight.point1.x));
-		slope[2] = ((enemy.line_of_sight.point4.y-enemy.line_of_sight.point3.y)/(enemy.line_of_sight.point4.x-enemy.line_of_sight.point3.x));
+	points[4] = enemy.line_of_sight.point1; // for the for loop later
+	bool c = false;
+	for (int i = 0; i < 4; i++) {
+		if(!((points[i].y-points[i+1].y) + points[i+1].x)) return false;//can't divide by 0
+		if (((points[i+1].y>playerPos.y)!=(points[i].y>playerPos.y))&&(playerPos.x<(points[i].x-points[i+1].x)*(playerPos.y-points[i+1].y)/(points[i].y-points[i+1].y) + points[i+1].x)) c = !c;
+	  }
+	  return c;
 	}
-	if(enemy.line_of_sight.point3.x-enemy.line_of_sight.point2.x == 0){
-		slope[1] = 0;	
-	}else{
-		slope[1] = ((enemy.line_of_sight.point3.y-enemy.line_of_sight.point2.y)/(enemy.line_of_sight.point3.x-enemy.line_of_sight.point2.x));	
-	}
-	if(enemy.line_of_sight.point1.x-enemy.line_of_sight.point4.x == 0){
-		slope[3] = 0;
-	}else{
-		slope[3] = ((enemy.line_of_sight.point1.y-enemy.line_of_sight.point4.y)/(enemy.line_of_sight.point1.x-enemy.line_of_sight.point4.x));
-	}
-	int hits = 0;
-	while(playerPos.x < 600){
-		for(int i = 0; i < 4; i++){
-			if(slope[i] == 2000 && points[i].x==playerPos.x && ((points[i].y>playerPos.y && points[i+1].y<playerPos.y)||(points[i].y<playerPos.y && points[i+1].y>playerPos.y))){
-			hits++;
-			}else if(points[i].y+((playerPos.x-points[i].x)*slope[i]) ==  playerPos.y && ((points[i].x>playerPos.x && points[i+1].x<playerPos.x)||(points[i].x<playerPos.x && points[i+1].x>playerPos.x))) hits++;
-		}
-		playerPos.x++;
-	}
-	if(hits == 1) return true;
-	return false;
 
-}
 
 struct LOS createSightLine(struct EnemyObj enemy, int end_width_offset){
 	struct LOS line_of_sight;
+	//4 corners of the quadrilateral.
 	line_of_sight.point1 = enemy.obj.posObj;
 	line_of_sight.point2 = enemy.obj.posObj;
 	line_of_sight.point3 = enemy.obj.posObj;
@@ -238,9 +286,24 @@ struct LOS createSightLine(struct EnemyObj enemy, int end_width_offset){
 	return line_of_sight;
 }
 
-int dirToLoc(struct EnemyObj enemy, struct position playerPos){
-		float dist_left = sqrt(abs(enemy.line_of_sight.point3.x-playerPos.x)+abs(enemy.line_of_sight.point3.y-playerPos.y));
-		float dist_right = sqrt(abs(enemy.line_of_sight.point4.x-playerPos.x)+abs(enemy.line_of_sight.point4.y-playerPos.y));
-		if(dist_left < dist_right) return -1;
-		return 1;
+int dirToLoc(struct EnemyObj enemy, struct position location){
+	struct position updatedPos = changePosition(&(enemy.obj), 'E', 16);
+	enemy.obj.posObj.x += updatedPos.x;
+	enemy.obj.posObj.y += updatedPos.y;
+	updatedPos = changePosition(&(enemy.obj), 'S', 8);
+	enemy.obj.posObj.x += updatedPos.x;
+	enemy.obj.posObj.y += updatedPos.y;
+	struct position leftPos = enemy.obj.posObj;//a position to the left of the enemy
+	struct position rightPos = enemy.obj.posObj;//a position to the right of the enemy opposite of leftPos
+	updatedPos = changePosition(&(enemy.obj), 'E', 50);
+	rightPos.x += updatedPos.x;
+	rightPos.y += updatedPos.y;
+	leftPos.x -= updatedPos.x;
+	leftPos.y -= updatedPos.y; 
+	// the distance  between the leftPos and the player position from the formula d=sqrt((y2-y1)^2+(x2-x1)^2)
+	double dist_left = sqrt(((location.y-leftPos.y)*(location.y-leftPos.y))+((location.x-leftPos.x)*(location.x-leftPos.x)));
+	double dist_right = sqrt(((location.y-rightPos.y)*(location.y-rightPos.y))+((location.x-rightPos.x)*(location.x-rightPos.x)));
+	// because rightPos and leftPos are an equal distance from the enemy, with one on the left and the other on the right, the side of the enemy that the player is on can be determined by comparing the distance between each position and the player position
+	if(dist_left > dist_right) return -1;
+	return 1;
 }

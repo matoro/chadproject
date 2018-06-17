@@ -42,7 +42,7 @@ struct EnemyObj{
 	int fov     = 60;
 	bool active = false;
 	bool sight  = false;
-	struct position last_player_loc = {300,300,0};
+	struct position last_player_loc = {300,300,0};// assumes player is in the middle at first.
 	int cooldown = 0;
 	struct LOS line_of_sight;
 	//enums for type of weapon and ammo go here. Dont forget the includes as well when this component merges into 'testing'
@@ -168,7 +168,7 @@ struct EnemyObj{
  *          SDL_Plotter *plot           Pointer to active SDL plotter.
  *          struct BulletObj **bullets  A pointer to a pointer to the first bullet from the array of bullets.
  *          int *number_of_bullets      Pointer to the int holding the current number of bullets on play.
- */void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets);
+ */void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct PlayerObj player, struct BulletObj **bullets, int *number_of_bullets);
 
 /** FUNCTION: search
  *PURPOSE: Makes the enemy search for the player, trying to localize it, turning around if he has lost sight of it and advancing towards it otherwise. 
@@ -191,7 +191,7 @@ struct EnemyObj{
  *          int *number_of_bullets      Pointer to the int holding the current number of bullets on play.
  *          struct EnemyObj **enemies   A pointer to a pointer to the first enemy from the array of enemies.
  *          int n_enemies               Int containing the current number of enemies onplay.
- */void attack(int enemy_index, struct PlayerObj player, SDL_Plotter *plot, struct BulletObj **bullets, int *number_of_bullets, struct EnemyObj **enemies, int n_enemies);
+ */void attack(int enemy_index, struct PlayerObj player, struct BulletObj **bullets, int *number_of_bullets, struct EnemyObj **enemies, int n_enemies);
 
 /** FUNCTION: loc_is_seen
  *PURPOSE: Test if an enemy sees the player at the moment.
@@ -214,6 +214,6 @@ struct EnemyObj{
  *@params   struct EnemyObj enemy       A copy of the enemy object.
  *          struct position playerPos   A struct to the location we need directions to.
  *@return   int                     1 or -1.
- */int dirToLoc(struct EnemyObj enemy, struct position playerPos);
+ */int dirToLoc(struct EnemyObj enemy, struct position location);
 
 #endif
