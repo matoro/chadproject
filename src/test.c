@@ -83,7 +83,7 @@ int main(){
     }
 */
 //  TESTING PRINTSAVESCOREBOARD
-    if(!printSaveScore(&plotter, 651))    return 0;
+    if(!printSaveScore(&plotter, 855))    return 0;
 
 
     //TESTING PRINTMENU

@@ -440,12 +440,12 @@ bool printScoreBoard(SDL_Plotter* plot){
 
 bool printSaveScore(SDL_Plotter* plot, int score){
 
-    if(!plot)   return false;
+    if(!plot||score<0)   return false;
 
     //VARs
     char title[]    = "SAVE SCORE";
     char header[]   = "Enter your nickname";
-    char rules[]    = "3-10 characters long";
+    char rules[]    = "3-9 characters long";
     char save[]     = "SAVE";
     char back[]     = "EXIT";
     char clear[]    = "CLEAR";
@@ -567,9 +567,11 @@ bool printSaveScore(SDL_Plotter* plot, int score){
                 int err = writeScoreBoard(data);
                 if(err==0){
                     //Success saving scoreboard, sends user back to main menu.
+                    fprintf(stdout,"SUCCESS SAVING SCORE!\n");
                     return true;
                 }else{
                     //Something failed saving scoreboard, exits program.
+                    fprintf(stderr,"SAVING SCORE ERROR. Numcode: %d\n",err);
                     return false;
                 }
             }else{
