@@ -14,6 +14,7 @@
 #include "../object/enemy.h"
 #include "../object/droppable.h"
 #include "../object/bullet.h"
+#include "../graphic/screen.h" 
 
 //F U N C T I O N s
 
@@ -88,6 +89,9 @@
  *                  int number_enemies          Number of enemies onplay.
  *@return           bool                        True if there is collision 
  */bool enemy_enemies_collision(struct EnemyObj* enemy,char movement,int rate, struct EnemyObj** enemies, int number_enemies);
+
+
+bool border_collision(struct object obj, char movement, int rate);
 
 //... rest of collision functions ...
 

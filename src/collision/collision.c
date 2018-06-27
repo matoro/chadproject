@@ -251,3 +251,9 @@ bool enemy_enemies_collision(struct EnemyObj* enemy, char movement, int rate, st
     }
 
 }
+
+bool border_collision(struct object obj, char movement, int rate){
+
+    
+
+}
