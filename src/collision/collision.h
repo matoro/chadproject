@@ -91,7 +91,7 @@
  */bool enemy_enemies_collision(struct EnemyObj* enemy,char movement,int rate, struct EnemyObj** enemies, int number_enemies);
 
 
-bool border_collision(struct object obj, char movement, int rate);
+bool border_collision(struct object* obj, char movement, int rate);
 
 //... rest of collision functions ...
 

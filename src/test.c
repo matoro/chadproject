@@ -98,7 +98,12 @@ int main(){
 
 	while(letter != '0')
 	{
-		if (letter=='H'){
+        if(letter=='E'){
+            letter='A';
+            letter='E';
+        }		
+
+        if (letter=='H'){
 		//simple test for bar.
 			jugador.health -= 5;
 			fprintf(stdout,"PLAYER HEALTH: %d",jugador.health);
@@ -165,16 +170,19 @@ int main(){
             }
 
 
-            //TODO: Try collision logic implementation. player_enemy_collision()
+            //TODO: Try collision logic implementation. player_enemy_collision() and border_collision
         
-            bool playerEnemyCol = false;
+            bool playerBorderCol = false;
+            bool playerEnemyCol  = false;
             for(int i=0;i<number_of_enemies;i++){
                 if(player_enemy_collision(&jugador,(enemies+i),letter,6)){
                     playerEnemyCol = true;
                     break;
                 }
             }
-            if(!playerEnemyCol){ //if there is no collision we can update player position safely.
+            playerBorderCol = border_collision(&(jugador.obj),letter,6);
+
+            if(!playerEnemyCol&&!playerBorderCol){ //if there is no collision we can update player position safely.
                 struct position updatedPos = changePosition(&(jugador.obj),letter,6);
 		        playerPos.x 	    += updatedPos.x;
 		        playerPos.y 	    += updatedPos.y;
