@@ -90,8 +90,18 @@
  *@return           bool                        True if there is collision 
  */bool enemy_enemies_collision(struct EnemyObj* enemy,char movement,int rate, struct EnemyObj** enemies, int number_enemies);
 
-
-bool border_collision(struct object* obj, char movement, int rate);
+/*      FUNCTION:   border_collision  
+ *PURPOSE:          Handles if the next movement of an entity object (player or enemy) collides with the borders of the screen
+ *                  , returns response as a boolean. Used without a valid movement or rate, it would return check if the
+                    objects current position is within the screen.
+ *PRECONDITION:     Valid and well formed struct object pointer.
+ *POSTCONDITION:    Verifies if the object is within game scene.
+ *                  
+ *@params           struct object* obj          Pointer to an entity object (player, enemy... anything holding such struct).
+ *                  char movement               Char representing next entity movement.
+ *                  int rate                    Rate of movement.
+ *@return           bool                        True if there is collision 
+ */bool border_collision(struct object* obj, char movement, int rate);
 
 //... rest of collision functions ...
 

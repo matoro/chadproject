@@ -256,13 +256,14 @@ bool border_collision(struct object* obj, char movement, int rate){
 
     if(!obj||!(movement=='W'||movement=='A'||movement=='S'||movement=='D'||movement=='Q'||movement=='E'))   return false;
     //VARs
-    int border_x, border_y, x, y, offset;
+    int border_x, border_y, x, y, offset_min, offset_max;
     struct position newPos;    
 
     //DEF
-    offset = 5;                         //5px
-    border_x = WIDTH-offset;
-    border_y = 9*HEIGHT/10-offset;      //constants from screen.h   
+    offset_min = 5;
+    offset_max = 15;                    //to compensate objects top-left struct position origin (0,0) and their projection.
+    border_x = WIDTH-offset_max;
+    border_y = 9*HEIGHT/10-offset_max;  //constants from screen.h   
     x = obj->posObj.x;
     y = obj->posObj.y;
     
@@ -270,7 +271,7 @@ bool border_collision(struct object* obj, char movement, int rate){
     newPos.x         += x;
     newPos.y         += y;
 
-    if(newPos.x>border_x||newPos.x<offset||newPos.y>border_y||newPos.y<offset){
+    if(newPos.x>border_x||newPos.x<offset_min||newPos.y>border_y||newPos.y<offset_min){
         return true;
     }else{
         return false;
