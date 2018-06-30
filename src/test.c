@@ -28,6 +28,7 @@ int main(){
 	int number_of_bullets       = 0;
 	int number_of_enemies       = 0;
 	int number_of_droppables    = 0;
+    int score                   = 0;
 
 	struct position playerPos   = {WIDTH/2,HEIGHT/2,0};
 	struct position enemyPos    = {WIDTH/4,HEIGHT/2,90};
@@ -48,10 +49,10 @@ int main(){
 /*
 GAME
 */
-
+/*
     //TESTING PRINTSAVESCOREBOARD
     if(!printSaveScore(&plotter, 999))    return 0;
-
+*/
     //MENU
     bool cont = true;
     do{
@@ -86,7 +87,7 @@ GAME
 
 	//CLEAR SCREEN AND INITIAL PLOTS
 	plotter.clear();
-    printUserInterface(&jugador, &bars, &number_of_bars, &plotter);
+    printUserInterface(&jugador, &bars, &number_of_bars, score, &plotter);
 	plotVisibleComponents(&plotter, jugador, bars, number_of_bars, bullets, number_of_bullets, enemies, number_of_enemies, droppables, number_of_droppables);
 
 
@@ -106,7 +107,8 @@ GAME
 			fprintf(stdout,"PLAYER AMMO: %d",jugador.ammo);
 		}else if (letter==' '){
 		//testing shooting
-			if(hasAmmo(&jugador)&&(jugador.player_weapon!=NO_WEAPON)){  
+            score++;
+            if(hasAmmo(&jugador)&&(jugador.player_weapon!=NO_WEAPON)){  
                 //if player has ammo and a weapon.
                 createBullet(&(jugador.obj), &bullets, &number_of_bullets, jugador.player_weapon, jugador.ammo_type);
                 jugador.ammo--;
@@ -209,7 +211,7 @@ GAME
         
         //clears, updates bars and prints user interface and rest of components again.
 		plotter.clear();
-		printUserInterface(&jugador, &bars, &number_of_bars, &plotter);
+		printUserInterface(&jugador, &bars, &number_of_bars, score, &plotter);
 		plotVisibleComponents(&plotter, jugador, bars, number_of_bars, bullets, number_of_bullets, enemies, number_of_enemies, droppables, number_of_droppables);
 
 		//updates the position of all bullets

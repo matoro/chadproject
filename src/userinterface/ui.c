@@ -5,21 +5,27 @@
 #include "ui.h"
 
 
-void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* numBars, SDL_Plotter* plot){
+void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* numBars, int score, SDL_Plotter* plot){
 
     if(!player || !plot) return;
 
     //VARs
     int UI_height, UI_width;
-    struct texture uiColor,fontColor, terrainColor, sandColor, waterColor;
+    struct texture uiColor,fontColor, terrainColor, sandColor, waterColor, scoreColor;
+    struct position scorePos;
     char* gun_type  = getGunMsg(player);
     char* ammo_type = getAmmoMsg(player);
-    int fontSize = 3;
-    int thinSize = 0;
-
+    char score_str[12] = "0";
+    int fontSize  = 3;
+    int thinSize  = 0;
+    int scoreSize = 5;
+ 
     UI_height = 9*HEIGHT/10;   
     UI_width  = WIDTH;
     
+    if(score>0) sprintf(score_str,"%d",score);    
+    scorePos = {13*WIDTH/15,HEIGHT/30,0};
+
     //TERRAIN DESIGN AUX VARs
     int waterLimit      = 20;
     int sandRadius      = UI_height/2;
@@ -47,6 +53,10 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
     waterColor.red    = 100;
     waterColor.green  = 175;
     waterColor.blue   = 255;
+
+    scoreColor.red    = 70;
+    scoreColor.green  = 10;
+    scoreColor.blue   = 70;
 
     if(*bars==NULL||*numBars==0){
         //createBar holds the barSize at {100,20}px
@@ -96,7 +106,8 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
     struct position textAmmoPos = {4*UI_width/12,UI_height+34,0};
     plotText(gun_type,textGunPos,fontColor,fontSize,thinSize,plot);
     plotText(ammo_type,textAmmoPos,fontColor,fontSize,thinSize,plot);
-    
+    plotText(score_str,scorePos,scoreColor,scoreSize,thinSize,plot);
+
     return;
 }
 
