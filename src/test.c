@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "graphic/visiblecomponents.h"
 #include "graphic/screen.h"	            //Contains SDL and plotting functions
@@ -29,8 +30,10 @@ int main(){
 	int number_of_enemies       = 0;
 	int number_of_droppables    = 0;
     int score                   = 0;
+    
+    bool quit, cont;
 
-	struct position playerPos   = {WIDTH/2,HEIGHT/2,0};
+    struct position playerPos   = {WIDTH/2,HEIGHT/2,0};
 	struct position enemyPos    = {WIDTH/4,HEIGHT/2,90};
 	struct position enemyPos1   = {WIDTH/2,HEIGHT/4,180};
 	struct position enemyPos2   = {3*WIDTH/4,HEIGHT/2,270};
@@ -44,17 +47,14 @@ int main(){
 	char dropType_1[2] = {'P','S'}; 	//(P)otion-(S)imple
 	char dropType_2[2] = {'W','P'};		//(W)eapon-(P)istol
 	char dropType_3[2] = {'A','N'};		//(A)mmo-(N)ormal
+    
 
+    srand(time(NULL));
 
-/*
-GAME
-*/
-/*
-    //TESTING PRINTSAVESCOREBOARD
-    if(!printSaveScore(&plotter, 999))    return 0;
-*/
+GAME:
     //MENU
-    bool cont = true;
+    quit = false;
+    cont = true;
     do{
         char option = printMenu(&plotter);
         if(option == '3'){
@@ -69,10 +69,14 @@ GAME
         }else{break;}
     }while(cont);
     
+    //RESET
+    score = 0;
+    number_of_enemies    = 0;
 
-	//DEFINITON
-	jugador	  = createPlayer(playerDim,&playerPos);//16X16@MIDDLE OF SCREEN
-	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos);
+    playerPos   = {WIDTH/2,HEIGHT/2,0};
+	jugador	    = createPlayer(playerDim,&playerPos);//16X16@MIDDLE OF SCREEN
+    
+    createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos);
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos1);
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos2);
 	
@@ -84,8 +88,7 @@ GAME
 	setCurrentType((droppables+1),dropType_2);
 	setCurrentType((droppables+2),dropType_3);
 
-
-	//CLEAR SCREEN AND INITIAL PLOTS
+    //CLEAR SCREEN AND INITIAL PLOTS
 	plotter.clear();
     printUserInterface(&jugador, &bars, &number_of_bars, score, &plotter);
 	plotVisibleComponents(&plotter, jugador, bars, number_of_bars, bullets, number_of_bullets, enemies, number_of_enemies, droppables, number_of_droppables);
@@ -101,6 +104,11 @@ GAME
 		//simple test for bar.
 			jugador.health -= 5;
 			fprintf(stdout,"PLAYER HEALTH: %d",jugador.health);
+            if(!isAlive(&jugador)){
+                //END GAME
+                if(!printSaveScore(&plotter, score))    quit = true;
+                goto END;
+            }
 		}else if (letter=='G'){
 		//simple test for bar.
             jugador.ammo -= 5;
@@ -187,8 +195,9 @@ GAME
                 }
             }
             if(!isAlive(&jugador)){
-            //END GAME
-            //TODO
+                //END GAME
+                if(!printSaveScore(&plotter, score))    quit = true;
+                goto END;
             }
         }
         if(number_of_bullets > 0){
@@ -234,21 +243,37 @@ GAME
 
 	}
 
-/*
-END
-*/
-
+END:
+    int i;
 	//free all visible components dyn allocated struct texture[]
 	free(jugador.obj.textureObj);
-	//free object textures
-	for(int i = 0; i < number_of_bars; i ++) free((bars+i)->obj.textureObj);
-	for(int i = 0; i < number_of_enemies; i ++) free((enemies+i)->obj.textureObj);
-	for(int i = 0; i < number_of_droppables; i ++) free((droppables+i)->dropObj.textureObj);
-	//free objects
+	for(i=0; i<number_of_enemies; i++){
+        free((enemies+i)->obj.textureObj);
+    }
+    for(i=0; number_of_bars>0;){
+        deleteBar(&bars,&number_of_bars,i);
+    }
+	for(i=0; number_of_droppables>0;){
+        deleteDroppable(&droppables,&number_of_droppables,i);
+    }
+	for(i=0; number_of_bullets>0;){
+        deleteBullet(&bullets,&number_of_bullets,i);
+    }
+    
+    //free objects
 	free(bars);
 	free(enemies);
 	free(droppables);
-
-	plotter.setQuit(true);
-	return 0;
+    free(bullets);
+    bars        = NULL;
+    enemies     = NULL;
+    droppables  = NULL;
+    bullets     = NULL; 
+    
+    if(!quit){
+        goto GAME;
+    }else{
+	    plotter.setQuit(true);
+	    return 0;
+    }
 }
