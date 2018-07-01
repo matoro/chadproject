@@ -244,13 +244,15 @@ GAME:
 	}
 
 END:
+/*  DELETE FUNCTIONS NOT WORKING AS EXPECTED  > SEG FAULTs. ASK MORTON.
+    
     int i;
 	//free all visible components dyn allocated struct texture[]
 	free(jugador.obj.textureObj);
 	for(i=0; i<number_of_enemies; i++){
         free((enemies+i)->obj.textureObj);
     }
-    for(i=0; number_of_bars>0;){
+    for(i=0; number_of_bars>0;){ // i++?
         deleteBar(&bars,&number_of_bars,i);
     }
 	for(i=0; number_of_droppables>0;){
@@ -259,7 +261,7 @@ END:
 	for(i=0; number_of_bullets>0;){
         deleteBullet(&bullets,&number_of_bullets,i);
     }
-    
+*/  
     //free objects
 	free(bars);
 	free(enemies);
@@ -269,7 +271,12 @@ END:
     enemies     = NULL;
     droppables  = NULL;
     bullets     = NULL; 
-    
+//  
+    number_of_enemies = 0;
+    number_of_bars = 0;
+    number_of_droppables = 0;
+    number_of_bullets = 0;
+//
     if(!quit){
         goto GAME;
     }else{
