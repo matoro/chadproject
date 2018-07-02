@@ -42,16 +42,20 @@ void createBar(struct BarObj **bars, int *number_of_bars, struct PlayerObj* play
 }
 
 void deleteBar(struct BarObj **bars, int *number_of_bars, int bar_number){
-	for(int i = bar_number; i < (*number_of_bars-1); i++){
+	if(bar_number > *number_of_bars) return; // If the bar to be deleted does not exist
+	(*number_of_bars)--;
+	for(int i = bar_number; i < (*number_of_bars); i++){
 		*(*bars+i) = *(*bars+i+1);
 		*((*bars+i)->obj.textureObj) = *((*bars+i+1)->obj.textureObj); //texture can't be reassigned like the rest of the object variables because it is a pointer.
 	}
-	free((*bars+bar_number)->obj.textureObj);
-	if(!(*bars = (struct BarObj*)realloc(*bars, sizeof(struct BarObj)*(*number_of_bars-1)))){
-		printf("Memory reallocation failed.");
+	if(*number_of_bars > 0){
+		if(!(*bars = (struct BarObj*)realloc(*bars, sizeof(struct BarObj)*(*number_of_bars)))){
+			printf("Memory reallocation failed.");
+		}
+	}else{
+		free(*bars);
+		*bars = NULL;
 	}
-	(*number_of_bars)--;
-	if(*number_of_bars == 0) *bars = NULL;
 }
 
 void setCurrentValue(struct BarObj* currentbar,int newvalue){
