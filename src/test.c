@@ -3,7 +3,6 @@
  *GAME TESTING
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -244,7 +243,6 @@ GAME:
 	}
 
 END:
-
     
     int i;
 	//free all visible components dyn allocated struct texture[]
@@ -253,7 +251,6 @@ END:
         free((enemies+i)->obj.textureObj);
     }
     for(i=0; number_of_bars>0;){
-	printf("N_BARS = %i\n", number_of_bars);
         deleteBar(&bars,&number_of_bars,i);
     }
 	for(i=0; number_of_droppables>0;){
@@ -263,11 +260,6 @@ END:
         deleteBullet(&bullets,&number_of_bullets,i);
     }
 
-    number_of_enemies = 0;
-    number_of_bars = 0;
-    number_of_droppables = 0;
-    number_of_bullets = 0;
-//
     if(!quit){
         goto GAME;
     }else{
