@@ -13,7 +13,7 @@ void createBullet(struct object *shooter, struct BulletObj **bullets, int *numbe
     struct size rifleSize   = {2,8};
     struct texture bulletBlack;
     struct texture bulletRed;
-    struct texture bulletBrown;
+    struct texture bulletBlue;
 	
     bulletBlack.red   = 0;
 	bulletBlack.green = 0;
@@ -23,15 +23,15 @@ void createBullet(struct object *shooter, struct BulletObj **bullets, int *numbe
 	bulletRed.green = 15;
 	bulletRed.blue  = 15;
 
-    bulletBrown.red   = 130;
-	bulletBrown.green = 80;
-	bulletBrown.blue  = 0;
+    bulletBlue.red   = 30;
+	bulletBlue.green = 0;
+	bulletBlue.blue  = 200;
 
     newBullet.shotBy    = arms;
     newBullet.ammoUsed  = ammo;
     
     bulletSize    = (arms == PISTOL) ? pistolSize : ((arms == SHOTGUN) ? shotgunSize : ((arms == MACHINEGUN) ? mgSize : rifleSize));
-    bulletTexture = (ammo == NORMAL) ? bulletBlack : ((ammo == INCENDIARY) ? bulletRed : bulletBrown);
+    bulletTexture = (ammo == NORMAL) ? bulletBlack : ((ammo == INCENDIARY) ? bulletRed : bulletBlue);
 	
 
     //BULLET POSITION
