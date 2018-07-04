@@ -12,6 +12,7 @@
 #include "graphic/screen.h"	            //Contains SDL and plotting functions
 #include "collision/collision.h"
 #include "userinterface/ui.h"
+#include "gamelogic/gamelogic.h"
 
 int main(){
 
@@ -108,7 +109,17 @@ GAME:
                 if(!printSaveScore(&plotter, score))    quit = true;
                 goto END;
             }
-		}else if (letter=='G'){
+		}else if(letter=='O'){
+        //TODO: test spawnDroppable
+            
+            spawnDroppable(&droppables, &number_of_droppables, jugador.health, jugador.ammo);
+
+        }else if(letter=='P'){
+        //TODO: test spawnEnemy
+
+            spawnEnemy(&enemies, &number_of_enemies, jugador.obj, score);
+
+        }else if (letter=='G'){
 		//simple test for bar.
             jugador.ammo -= 5;
 			fprintf(stdout,"PLAYER AMMO: %d",jugador.ammo);

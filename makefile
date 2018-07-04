@@ -13,7 +13,8 @@ SRC	= src/test.c		                \
 	  src/object/bullet.c               \
       src/utils/charset.c	            \
       src/collision/collision.c         \
-      src/userinterface/ui.c
+      src/userinterface/ui.c            \
+      src/gamelogic/gamelogic.c
 
 #individual objects
 OBJS	= $(SRC:.c=.o)

@@ -2,6 +2,7 @@
  *  GAMELOGIC IMPLEMENTATION
  *  @author leba39, mortonman.
  */
+#include "gamelogic.h"
 
 void spawnDroppable(struct Droppable** droppables, int* num_droppables, int hp, int ammo){
  
@@ -45,7 +46,7 @@ void spawnDroppable(struct Droppable** droppables, int* num_droppables, int hp, 
         }
         createDrop(droppables,num_droppables,&drop_pos);
         index = *num_droppables-1;//droppables[0]
-        setCurrentType(droppables[index],drop_type);
+        setCurrentType((*droppables+index),drop_type);
     }else{
         fprintf(stdout,"Did not spawn any droppable this time!\n"); //debug
     }
@@ -99,7 +100,7 @@ struct position getRandomPos(){
     offset_min    = 5;
     offset_max    = 15;
     border_x      = WIDTH-offset_max;
-    border_y      = 9*HEIGHT/10-offset-max;
+    border_y      = 9*HEIGHT/10-offset_max;
 
     //RAND
     //make sure from the get go to get a valid position within the game screen and not touching the borders (offsets). 
@@ -122,7 +123,7 @@ void setEnemyDirection(struct position* enemy_pos, struct position player_pos){
     //DEF
     factor = 180/PI;
     x_e = enemy_pos->x;
-    y_e = enemy_pox->y;
+    y_e = enemy_pos->y;
     x_p = player_pos.x;
     y_p = player_pos.y;
 

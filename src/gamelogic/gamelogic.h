@@ -10,9 +10,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+
 #include "../object/droppable.h"
 #include "../object/enemy.h"
 #include "../graphic/screen.h"//I only want the CONSTs, next time put them all in separate file
+#include "../collision/collision.h"
+
 //D E F I N E
 #define PI 3.14
 
