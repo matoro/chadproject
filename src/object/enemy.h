@@ -165,7 +165,6 @@ struct EnemyObj{
  *@params   struct EnemyObj **enemies	A pointer to a pointer to the first EnemyObj.
  *	        int number_of_enemies		The number of enemies.
  *	        struct PlayerObj player		The player.
- *          SDL_Plotter *plot           Pointer to active SDL plotter.
  *          struct BulletObj **bullets  A pointer to a pointer to the first bullet from the array of bullets.
  *          int *number_of_bullets      Pointer to the int holding the current number of bullets on play.
  */void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct PlayerObj player, struct BulletObj **bullets, int *number_of_bullets);
@@ -182,11 +181,10 @@ struct EnemyObj{
 
 /** FUNCTION: attack
  *PURPOSE: Makes the enemy attack the player, moving towards him and shooting. Also updates enemy sight state if he has lost sight of him.
- *PRECONDITION:     Valid plot, enemies and bullets pointers. Enemy_index smaller than n_enemies.
+ *PRECONDITION:     Valid enemies and bullets pointers. Enemy_index smaller than n_enemies.
  *POSTCONDITION:    Enemy attacks player until he loose sight of him.  
  *@params   int enemy_index             Int containing the index of the enemy we want it to search.   
  *          struct PlayerObj player     Struct containing a copy of the current player.
- *          SDL_Plotter *plot           Pointer to active SDL plotter.
  *          struct BulletObj **bullets  A pointer to a pointer to the first bullet from the array of bullets.
  *          int *number_of_bullets      Pointer to the int holding the current number of bullets on play.
  *          struct EnemyObj **enemies   A pointer to a pointer to the first enemy from the array of enemies.
@@ -198,22 +196,21 @@ struct EnemyObj{
  *POSTCONDITION: True will be returned if the player is on the enemy range of vision.
  *@params   struct EnemyObj enemy       A copy of the enemy struct in question.
  *          struct position playerPos   A copy of the current position of the player. (struct)
- *@return   true                        Enemy can see the player.
+ *@return   bool                        True if enemy can see the player.
  */bool locIsSeen(struct EnemyObj enemy, struct position playerPos);
 
 /** FUNCTION: createSightLine
- *PURPOSE: Creates one sightline based upon the current enemy position and a given offset and a constant depth of view.
- *POSTCONDITION: A sightline containing an array of 12 struct positions (separated 16 pixels from one another) is allocated in memory, defined and returned.
+ *PURPOSE: Creates one LOS based upon the current enemy position and a given offset.
  *@params   struct EnemyObj enemy       A copy of the enemy struct in question.
- *          int degree_offset           Direction of the sightline (variation +-º taking 0 as the current enemy dir).
- *@return   struct position*            A pointer to an array of 12 struct positions.   
+ *          int end_width_offset        The amount by which the outer end of the LOS will be wider (or narrower if the value is negative) than the inner end.
+ *@return   struct LOS			A the LOS for the given enemy and offset.
  */struct LOS createSightLine(struct EnemyObj enemy, int end_width_offset);
 
 /** FUNCTION: dirToLoc 
- *PURPOSE:  Help gives direction to a given location.  
+ *PURPOSE:  Gives the direction to a given location from the enemy location.  
  *@params   struct EnemyObj enemy       A copy of the enemy object.
- *          struct position playerPos   A struct to the location we need directions to.
- *@return   int                     1 or -1.
+ *          struct position playerPos   The target location.
+ *@return   int                     1 if right, 2 if left.
  */int dirToLoc(struct EnemyObj enemy, struct position location);
 
 #endif
