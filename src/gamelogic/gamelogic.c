@@ -145,3 +145,66 @@ void setEnemyDirection(struct position* enemy_pos, struct position player_pos){
 
     return;
 }
+
+void updateScore(time_t* t_0, int* current_score){
+
+    if(!t_0||!current_score)    return;
+
+    //VARs
+    time_t t_now;
+    int sec_passed;
+
+    //TIME
+    t_now       = time(NULL);
+    sec_passed  = t_now-*t_0;
+    *t_0        = time(NULL); 
+    
+    //UPDATE
+    *current_score += sec_passed;
+    return;
+}
+
+bool onCooldown(struct timeval* t_last_shot, enum weapon player_weapon){
+
+    if(!t_last_shot||player_weapon==NO_WEAPON)  return true;
+
+    //VARs
+    struct timeval t_current;
+    double elapsed_time;
+
+    //TIME
+    gettimeofday(&t_current,NULL);
+    elapsed_time  = (t_current.tv_sec - t_last_shot->tv_sec)*1000.0;      // sec to ms
+    elapsed_time += (t_current.tv_usec - t_last_shot->tv_usec)/1000.0;   // us to ms
+    
+    switch(player_weapon){
+
+        case PISTOL:
+            if(elapsed_time>500){
+                gettimeofday(t_last_shot,NULL); //update;
+                return false;
+            }
+            break;
+        case SHOTGUN:
+            if(elapsed_time>1500){
+                gettimeofday(t_last_shot,NULL); //update;
+                return false;
+            }
+            break;
+        case MACHINEGUN:
+            if(elapsed_time>300){
+                gettimeofday(t_last_shot,NULL); //update;
+                return false;
+            }
+            break;
+        case RIFLE:
+            if(elapsed_time>2000){
+                gettimeofday(t_last_shot,NULL); //update;
+                return false;
+            }
+            break;
+        default:
+            break;
+    }
+    return true;
+}

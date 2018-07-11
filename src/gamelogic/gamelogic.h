@@ -10,10 +10,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <sys/time.h>
 
 #include "../object/droppable.h"
 #include "../object/enemy.h"
-#include "../graphic/screen.h"//I only want the CONSTs, next time put them all in separate file
+#include "../object/weapon.h"
+#include "../graphic/screen.h"          //I only want the CONSTs, next time put them all in separate file
 #include "../collision/collision.h"
 
 //D E F I N E
@@ -57,5 +59,12 @@
  *@params           struct position* enemy_pos      Pointer to the enemy position struct.
  *                  struct position player_pos      Value of the players position struct.
  */void setEnemyDirection(struct position* enemy_pos, struct position player_pos);
+
+
+void updateScore(time_t* t_0, int* current_score);
+
+
+bool onCooldown(struct timeval* t_last_shot, enum weapon player_weapon);
+
 
 #endif

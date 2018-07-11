@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <sys/time.h>
 
 #include "graphic/visiblecomponents.h"
 #include "graphic/screen.h"	            //Contains SDL and plotting functions
@@ -32,6 +33,9 @@ int main(){
     int score                   = 0;
     
     bool quit, cont;
+    
+    time_t t_0;
+    struct timeval t_cooldown;
 
     struct position playerPos   = {WIDTH/2,HEIGHT/2,0};
 	struct position enemyPos    = {WIDTH/4,HEIGHT/2,90};
@@ -47,8 +51,8 @@ int main(){
 	char dropType_1[2] = {'P','S'}; 	//(P)otion-(S)imple
 	char dropType_2[2] = {'W','P'};		//(W)eapon-(P)istol
 	char dropType_3[2] = {'A','N'};		//(A)mmo-(N)ormal
+       
     
-
     srand(time(NULL));
 
 GAME:
@@ -70,8 +74,10 @@ GAME:
     }while(cont);
     
     //RESET
+    gettimeofday(&t_cooldown,NULL);
+    t_0   = time(NULL);
     score = 0;
-    number_of_enemies    = 0;
+    number_of_enemies = 0;
 
     playerPos   = {WIDTH/2,HEIGHT/2,0};
 	jugador	    = createPlayer(playerDim,&playerPos);//16X16@MIDDLE OF SCREEN
@@ -125,8 +131,7 @@ GAME:
 			fprintf(stdout,"PLAYER AMMO: %d",jugador.ammo);
 		}else if (letter==' '){
 		//testing shooting
-            score++;
-            if(hasAmmo(&jugador)&&(jugador.player_weapon!=NO_WEAPON)){  
+            if(hasAmmo(&jugador)&&(!onCooldown(&t_cooldown, jugador.player_weapon))){  
                 //if player has ammo and a weapon.
                 createBullet(&(jugador.obj), &bullets, &number_of_bullets, jugador.player_weapon, jugador.ammo_type);
                 jugador.ammo--;
@@ -220,14 +225,15 @@ GAME:
                 }
                 if(!isAlive((enemies+i))){
                     deleteEnemy(&enemies,&number_of_enemies,i);
+                    score += 10;
                     break;
                 }
             }
         }
   
-		//update player new  position, health and ammo bar.
+		//update player new  position, health, ammo bar and score.
         setPosition(&(jugador.obj),&playerPos); 
-        
+        updateScore(&t_0,&score);
         //clears, updates bars and prints user interface and rest of components again.
 		plotter.clear();
 		printUserInterface(&jugador, &bars, &number_of_bars, score, &plotter);
