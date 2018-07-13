@@ -22,6 +22,11 @@
 //D E F I N E
 #define PI 3.14
 
+//V A R s
+extern int RATE_MVMT_PLAYER;
+extern int RATE_MVMT_ENEMY;
+extern int RATE_MVMT_BULLET;
+
 //F U N C T I O N s
 
 

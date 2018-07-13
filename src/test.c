@@ -15,6 +15,11 @@
 #include "userinterface/ui.h"
 #include "gamelogic/gamelogic.h"
 
+//GLOBAL
+int RATE_MVMT_PLAYER = 6;
+int RATE_MVMT_ENEMY  = 6;
+int RATE_MVMT_BULLET = 5;
+
 int main(){
 
 	//VARs

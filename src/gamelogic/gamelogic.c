@@ -249,8 +249,9 @@ void setBulletTime(struct timeval* t_last_end, bool mode, struct PlayerObj* play
         }
 
         //SET VALUES
-
-
+        RATE_MVMT_PLAYER = 4;
+        RATE_MVMT_ENEMY  = 2;
+        RATE_MVMT_BULLET = 3;
 
         //UPDATE TIME
         gettimeofday(t_last_end,NULL);
@@ -258,9 +259,9 @@ void setBulletTime(struct timeval* t_last_end, bool mode, struct PlayerObj* play
     }else{
 
         //UNSET VALUES
-
-
-
+        RATE_MVMT_PLAYER = 6;
+        RATE_MVMT_ENEMY  = 6;
+        RATE_MVMT_BULLET = 5;
     }
 
     return;
