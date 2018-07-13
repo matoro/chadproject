@@ -14,6 +14,7 @@
 
 #include "../object/droppable.h"
 #include "../object/enemy.h"
+#include "../object/player.h"
 #include "../object/weapon.h"
 #include "../graphic/screen.h"          //I only want the CONSTs, next time put them all in separate file
 #include "../collision/collision.h"
@@ -66,5 +67,8 @@ void updateScore(time_t* t_0, int* current_score);
 
 bool onCooldown(struct timeval* t_last_shot, enum weapon player_weapon);
 
+signed char bulletTimeStatus(struct timeval* t_last_end);
+
+void setBulletTime(struct timeval* t_last_end, signed char mode, struct PlayerObj* player, bool* first_blood);
 
 #endif

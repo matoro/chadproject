@@ -37,7 +37,7 @@ void createBullet(struct object *shooter, struct BulletObj **bullets, int *numbe
  */
 void deleteBullet(struct BulletObj **bullets, int *number_of_bullets, int bullet_number);
 
-/**	FUNCTION: createBullet
+/**	FUNCTION: updateBulletPos
  *PURPOSE: Updates the positions of all bullets.
  *PRECONDITION: All bullets have valid positions. The given number of bullets is equal to or less that the current number of bullets.
  *POSTCONDITION: All bullets move forward.

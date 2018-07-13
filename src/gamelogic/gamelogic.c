@@ -208,3 +208,60 @@ bool onCooldown(struct timeval* t_last_shot, enum weapon player_weapon){
     }
     return true;
 }
+
+signed char bulletTimeStatus(struct timeval t_last_end){
+
+    //VARs
+    struct timeval t_current;
+    double elapsed_time;
+
+    //TIME
+    gettimeofday(&t_current,NULL);
+    elapsed_time  = (t_current.tv_sec - t_last_end.tv_sec)*1000.0;      // sec to ms
+    elapsed_time += (t_current.tv_usec - t_last_end.tv_usec)/1000.0;   // us to ms
+
+    if(elapsed_time < 0){
+        return -1;
+    }else if(elapsed_time > 25000){
+        return 0;   //no cooldown
+    }else if(elapsed_time < 5000){
+        return 1;   //still running
+    }else{
+        return 2;   //in between
+    }
+}
+
+void setBulletTime(struct timeval* t_last_end, bool mode, struct PlayerObj* player, bool* first_blood){
+
+    if(!t_last_end||!player||!first_blood)  return;
+
+    /*  MODE:   true    -> set bullet time
+     *          false   -> unset bullet time   
+     */
+
+    if(mode&&(*first_blood||player->health>10)){
+
+        //PAY BULLET TIME
+        if(*first_blood == true){
+            *first_blood = false;
+        }else{
+            player->health -= 10;
+        }
+
+        //SET VALUES
+
+
+
+        //UPDATE TIME
+        gettimeofday(t_last_end,NULL);
+    
+    }else{
+
+        //UNSET VALUES
+
+
+
+    }
+
+    return;
+}
