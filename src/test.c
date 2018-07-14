@@ -77,6 +77,7 @@ GAME:
     
     //RESET
     first_blood = true;
+    BT_STATUS   = 0;
     gettimeofday(&bullet_time,NULL);
     gettimeofday(&t_cooldown,NULL);
     t_0   = time(NULL);
@@ -110,19 +111,18 @@ GAME:
 	char letter = '\0';
 	while(letter != '0')
 	{
-        if(bulletTimeStatus(bullet_time)==2)    setBulletTime(&bullet_time, false, &(jugador.health), &first_blood);
+        if((BT_STATUS=bulletTimeStatus(bullet_time)) == 2)  setBulletTime(&bullet_time, false, &(jugador.health), &first_blood);
 
         if(letter=='R'){
             //TEST BULLETIME
-            signed char status;
-            status = bulletTimeStatus(bullet_time);
-            if(status==1){
+            BT_STATUS = bulletTimeStatus(bullet_time);
+            if(BT_STATUS==1){
                 fprintf(stdout,"Bullet time still active!\n");
-            }else if(status==-1){
+            }else if(BT_STATUS==-1){
                 fprintf(stderr,"Elapsed time inside bullet_time is negative!\n");
             }else{
-                fprintf(stdout,"BULLET TIME: %s\n",(status==0) ? "SET" : "UNSET");
-                setBulletTime(&bullet_time,(status==0), &(jugador.health), &first_blood);
+                fprintf(stdout,"BULLET TIME: %s\n",(BT_STATUS==0) ? "SET" : "UNSET");
+                setBulletTime(&bullet_time,(BT_STATUS==0), &(jugador.health), &first_blood);
             }
 
         }else if(letter=='L'){

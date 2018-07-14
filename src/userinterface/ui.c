@@ -11,7 +11,7 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
 
     //VARs
     int UI_height, UI_width;
-    struct texture uiColor,fontColor, terrainColor, sandColor, waterColor, scoreColor;
+    struct texture uiColor,fontColor, terrainColor, sandColor, waterColor, scoreColor, bTimeClr, bTimeCooldownClr, bTimeReadyClr;
     struct position scorePos;
     char* gun_type  = getGunMsg(player);
     char* ammo_type = getAmmoMsg(player);
@@ -54,9 +54,17 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
     waterColor.green  = 175;
     waterColor.blue   = 255;
 
-    scoreColor.red    = 70;
-    scoreColor.green  = 10;
-    scoreColor.blue   = 70;
+    bTimeReadyClr.red    = 250;
+    bTimeReadyClr.green  = 250;
+    bTimeReadyClr.blue   = 50;
+
+    bTimeClr.red    = 200;
+    bTimeClr.green  = 10;
+    bTimeClr.blue   = 10;
+
+    bTimeCooldownClr.red    = 70;
+    bTimeCooldownClr.green  = 10;
+    bTimeCooldownClr.blue   = 70;
 
     if(*bars==NULL||*numBars==0){
         //createBar holds the barSize at {100,20}px
@@ -102,6 +110,7 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
         uiColor.blue++;
     }
     //plot text
+    scoreColor = (BT_STATUS == 1) ? bTimeClr : ((BT_STATUS == 2) ? bTimeCooldownClr : bTimeReadyClr);
     struct position textGunPos  = {4*UI_width/12,UI_height+14,0};
     struct position textAmmoPos = {4*UI_width/12,UI_height+34,0};
     plotText(gun_type,textGunPos,fontColor,fontSize,thinSize,plot);

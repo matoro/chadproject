@@ -14,6 +14,7 @@
 #include "../graphic/screen.h"
 #include "../object/bar.h"
 #include "../object/player.h"
+#include "../gamelogic/globals.h"
 
 //D E F I N E
 

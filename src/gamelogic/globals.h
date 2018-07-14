@@ -10,5 +10,6 @@
 extern int RATE_MVMT_PLAYER;
 extern int RATE_MVMT_ENEMY;
 extern int RATE_MVMT_BULLET;
+extern signed char BT_STATUS;
 
 #endif
