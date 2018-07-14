@@ -148,7 +148,7 @@ void setEnemyDirection(struct position* enemy_pos, struct position player_pos){
 
 void updateScore(time_t* t_0, int* current_score){
 
-    if(!t_0||!current_score)    return;
+    if(!t_0||!current_score||*t_0<0||*current_score<0)    return;
 
     //VARs
     time_t t_now;
@@ -157,10 +157,12 @@ void updateScore(time_t* t_0, int* current_score){
     //TIME
     t_now       = time(NULL);
     sec_passed  = t_now-*t_0;
-    *t_0        = time(NULL); 
-    
+    *t_0        = time(NULL);     
+    if(sec_passed<=0)   return;
+
     //UPDATE
     *current_score += sec_passed;
+    
     return;
 }
 

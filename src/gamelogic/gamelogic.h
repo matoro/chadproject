@@ -60,14 +60,43 @@
  *                  struct position player_pos      Value of the players position struct.
  */void setEnemyDirection(struct position* enemy_pos, struct position player_pos);
 
+/*      FUNCTION: updateScore
+ *PURPOSE:          Given the current score and the time since the game started, it will increment the score accordingly.
+ *PRECONDITION:     Valid time_t and current_score pointers. Score must be positive.
+ *POSTCONDITION:    Score gets updated every second.
+ *@params           struct time_t*  time_t          Pointer to the time_t holding game start time.
+ *                  int*            current_score   Pointer to variable holding the games score.
+ */void updateScore(time_t* t_0, int* current_score);
 
-void updateScore(time_t* t_0, int* current_score);
+/*      FUNCTION: onCooldown
+ *PURPOSE:          Given the current players weapon and the last time he shot it, it will return wether
+ *                  if its on cooldown or not.
+ *PRECONDITION:     Valid timeval pointer.
+ *POSTCONDITION:    Checks for cooldown on the players weapon.
+ *@params           struct timeval* t_last_shot     Pointer to the timeval holding the last time it was shot.
+ *                  enum weapon     player_weapon   Value of the players weapon.
+ *@return           bool                            True if its on cooldown and therefore player can't shoot. False otherwise.
+ */bool onCooldown(struct timeval* t_last_shot, enum weapon player_weapon);
 
+/*      FUNCTION: bulletTimeStatus
+ *PURPOSE:          Given the value of the last time bullet-time action was used, it will return wether if its on cooldown,
+ *                  if its ready to use again or if it is currently being used/activated.
+ *POSTCONDITION:    Value representing the actual state of the bullet-time functionality is returned.
+ *@params           struct timeval  t_last_end      Value of the last time bullet-time was used by the player.
+ *@return           signed char                     Range[-1, 2]. -1 If there is something odd, 0 if there is no cooldown,
+ *                                                  1 if bullet-time is going on and 2 if it is on cooldown.
+ */signed char bulletTimeStatus(struct timeval t_last_end);
 
-bool onCooldown(struct timeval* t_last_shot, enum weapon player_weapon);
-
-signed char bulletTimeStatus(struct timeval t_last_end);
-
-void setBulletTime(struct timeval* t_last_end, bool mode, int* hp, bool* first_blood);
+/*      FUNCTION: setBulletTime
+ *PURPOSE:          Changes the values of the global variables holding the movement rates in order to set/unset bullet-time.
+ *PRECONDITION:     Valid t_last_end, hp and first_blood pointers.
+ *POSTCONDITION:    Values for the global variables will be modified accordingly.
+ *@params           struct timeval* t_last_end      Pointer to the timeval struct holding the last time bullet time was used.
+ *                  bool mode                       For logic purposes. True to SET, false to UNSET.
+ *                  int* hp                         Pointer to the players current health points.
+ *                  bool* first_blood               Pointer to boolean. It will be true if the player has recently killed an enemy,
+ *                                                  making the price of the bullet-time action free for him. Otherwise it will cost
+ *                                                  him 10 hp. 
+ */void setBulletTime(struct timeval* t_last_end, bool mode, int* hp, bool* first_blood);
 
 #endif
