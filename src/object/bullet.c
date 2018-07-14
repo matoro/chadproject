@@ -85,7 +85,7 @@ void deleteBullet(struct BulletObj **bullets, int *number_of_bullets, int bullet
 void updateBulletPos(struct BulletObj **bullets, int *number_of_bullets){
 	//updates the positions of all bullets.
 	for(int i = 0; i < *number_of_bullets; i++){
-		struct position updatedPos = changePosition(&((*bullets+i)->obj), 'W', 5);
+		struct position updatedPos = changePosition(&((*bullets+i)->obj), 'W', RATE_MVMT_BULLET);
 		(*bullets+i)->obj.posObj.x += updatedPos.x;
 		(*bullets+i)->obj.posObj.y += updatedPos.y;
 		//deletes bullet if it is too close to the edge of the screen, this prevents seg faults or looping bullets depending on the direction.

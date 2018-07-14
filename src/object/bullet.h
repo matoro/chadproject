@@ -7,7 +7,7 @@
 
 
 #include "player.h"
-
+#include "../gamelogic/globals.h"
 
 struct BulletObj{
 	struct object obj;

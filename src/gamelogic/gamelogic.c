@@ -231,27 +231,27 @@ signed char bulletTimeStatus(struct timeval t_last_end){
     }
 }
 
-void setBulletTime(struct timeval* t_last_end, bool mode, struct PlayerObj* player, bool* first_blood){
+void setBulletTime(struct timeval* t_last_end, bool mode, int* hp, bool* first_blood){
 
-    if(!t_last_end||!player||!first_blood)  return;
+    if(!t_last_end||!hp||!first_blood)  return;
 
     /*  MODE:   true    -> set bullet time
      *          false   -> unset bullet time   
      */
 
-    if(mode&&(*first_blood||player->health>10)){
+    if(mode&&(*first_blood||*hp>10)){
 
-        //PAY BULLET TIME
+        //PAY BULLET TIME PRICE
         if(*first_blood == true){
             *first_blood = false;
         }else{
-            player->health -= 10;
+            *hp -= 10;
         }
 
         //SET VALUES
-        RATE_MVMT_PLAYER = 4;
-        RATE_MVMT_ENEMY  = 2;
-        RATE_MVMT_BULLET = 3;
+        RATE_MVMT_PLAYER = 3;
+        RATE_MVMT_ENEMY  = 1;
+        RATE_MVMT_BULLET = 2;
 
         //UPDATE TIME
         gettimeofday(t_last_end,NULL);

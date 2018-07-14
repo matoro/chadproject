@@ -14,11 +14,7 @@
 #include "collision/collision.h"
 #include "userinterface/ui.h"
 #include "gamelogic/gamelogic.h"
-
-//GLOBAL
-int RATE_MVMT_PLAYER = 6;
-int RATE_MVMT_ENEMY  = 6;
-int RATE_MVMT_BULLET = 5;
+#include "gamelogic/globals.h"
 
 int main(){
 
@@ -37,10 +33,11 @@ int main(){
 	int number_of_droppables    = 0;
     int score                   = 0;
     
-    bool quit, cont;
+    bool quit, cont, first_blood;
     
     time_t t_0;
     struct timeval t_cooldown;
+    struct timeval bullet_time;
 
     struct position playerPos   = {WIDTH/2,HEIGHT/2,0};
 	struct position enemyPos    = {WIDTH/4,HEIGHT/2,90};
@@ -79,8 +76,11 @@ GAME:
     }while(cont);
     
     //RESET
+    first_blood = true;
+    gettimeofday(&bullet_time,NULL);
     gettimeofday(&t_cooldown,NULL);
     t_0   = time(NULL);
+    bullet_time.tv_sec -= 30;
     score = 0;
     number_of_enemies = 0;
 
@@ -108,10 +108,37 @@ GAME:
 	//GAME LOOP VARs
 	playerPos = getPosition(&(jugador.obj));	//object.h function
 	char letter = '\0';
-
 	while(letter != '0')
 	{
-		if (letter=='H'){
+        if(bulletTimeStatus(bullet_time)==2)    setBulletTime(&bullet_time, false, &(jugador.health), &first_blood);
+
+        if(letter=='R'){
+            //TEST BULLETIME
+            signed char status;
+            status = bulletTimeStatus(bullet_time);
+            if(status==1){
+                fprintf(stdout,"Bullet time still active!\n");
+            }else if(status==-1){
+                fprintf(stderr,"Elapsed time inside bullet_time is negative!\n");
+            }else{
+                fprintf(stdout,"BULLET TIME: %s\n",(status==0) ? "SET" : "UNSET");
+                setBulletTime(&bullet_time,(status==0), &(jugador.health), &first_blood);
+            }
+
+        }else if(letter=='L'){
+
+            //DEBUG LIST ALL VARIABLES.
+            fprintf(stdout,"GLOBAL, RATE PLAYER: %d\n",RATE_MVMT_PLAYER);
+            fprintf(stdout,"GLOBAL, RATE ENEMY: %d\n",RATE_MVMT_ENEMY);
+            fprintf(stdout,"GLOBAL, RATE BULLET: %d\n",RATE_MVMT_BULLET);
+            fprintf(stdout,"PLAYER AMMO: %d\n",jugador.ammo);
+            fprintf(stdout,"PLAYER HEALTH: %d\n",jugador.health);
+            fprintf(stdout,"PLAYER DIR: %d\n",playerPos.direction);
+			fprintf(stdout,"PLAYER x: %d\n",playerPos.x);
+			fprintf(stdout,"PLAYER y: %d\n",playerPos.y);
+            fprintf(stdout,"FIRST BLOOD: %s\n",(first_blood) ? "TRUE": "FALSE");
+
+        }else if (letter=='H'){
 		//simple test for bar.
 			jugador.health -= 5;
 			fprintf(stdout,"PLAYER HEALTH: %d",jugador.health);
@@ -122,7 +149,6 @@ GAME:
             }
 		}else if(letter=='O'){
         //TODO: test spawnDroppable
-            
             spawnDroppable(&droppables, &number_of_droppables, jugador.health, jugador.ammo);
 
         }else if(letter=='P'){
@@ -147,7 +173,7 @@ GAME:
             if(number_of_droppables>0){
                   
                 for(int i=0;i<number_of_droppables;i++){
-                    if(player_droppable_collision(&jugador,(droppables+i),letter,6)){
+                    if(player_droppable_collision(&jugador,(droppables+i),letter,RATE_MVMT_PLAYER)){
                         
                         switch((droppables+i)->currentType){
                             case 'A':
@@ -193,13 +219,13 @@ GAME:
                 //collision with enemies
             bool playerEnemyCol = false;
             for(int i=0;i<number_of_enemies;i++){
-                if(player_enemy_collision(&jugador,(enemies+i),letter,6)){
+                if(player_enemy_collision(&jugador,(enemies+i),letter,RATE_MVMT_PLAYER)){
                     playerEnemyCol = true;
                     break;
                 }
             }
             if(!playerEnemyCol){ //if there is no collision we can update player position safely.
-                struct position updatedPos = changePosition(&(jugador.obj),letter,6);
+                struct position updatedPos = changePosition(&(jugador.obj),letter,RATE_MVMT_PLAYER);
 		        playerPos.x 	    += updatedPos.x;
 		        playerPos.y 	    += updatedPos.y;
 		        playerPos.direction += updatedPos.direction;
@@ -231,6 +257,7 @@ GAME:
                 if(!isAlive((enemies+i))){
                     deleteEnemy(&enemies,&number_of_enemies,i);
                     score += 10;
+                    first_blood = true;
                     break;
                 }
             }
@@ -253,15 +280,9 @@ GAME:
 		bool keyhit = plotter.kbhit();
 		if (keyhit){
 			letter = plotter.getKey();
-			//Debug traces
-			fprintf(stdout,"PLAYER DIR: %d\n",playerPos.direction);
-			fprintf(stdout,"PLAYER x: %d\n",playerPos.x);
-			fprintf(stdout,"PLAYER y: %d\n",playerPos.y);
 		}else{
-			letter = '\0';
-			//keeps the box from moving all the time in the last dir.
+			letter = '\0';  //keeps the box from moving all the time in the last dir.
 		}
-
 	}
 
 END:

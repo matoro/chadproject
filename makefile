@@ -14,7 +14,8 @@ SRC	= src/test.c		                \
       src/utils/charset.c	            \
       src/collision/collision.c         \
       src/userinterface/ui.c            \
-      src/gamelogic/gamelogic.c
+      src/gamelogic/gamelogic.c         \
+      src/gamelogic/globals.c
 
 #individual objects
 OBJS	= $(SRC:.c=.o)

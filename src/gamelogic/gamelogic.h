@@ -12,9 +12,9 @@
 #include <math.h>
 #include <sys/time.h>
 
+#include "globals.h"
 #include "../object/droppable.h"
 #include "../object/enemy.h"
-#include "../object/player.h"
 #include "../object/weapon.h"
 #include "../graphic/screen.h"          //I only want the CONSTs, next time put them all in separate file
 #include "../collision/collision.h"
@@ -22,13 +22,7 @@
 //D E F I N E
 #define PI 3.14
 
-//V A R s
-extern int RATE_MVMT_PLAYER;
-extern int RATE_MVMT_ENEMY;
-extern int RATE_MVMT_BULLET;
-
 //F U N C T I O N s
-
 
 /*      FUNCTION: spawnDroppable
  *PURPOSE:          Spawns a droppable on the map of a random type when the probability is matched (20% success).
@@ -72,8 +66,8 @@ void updateScore(time_t* t_0, int* current_score);
 
 bool onCooldown(struct timeval* t_last_shot, enum weapon player_weapon);
 
-signed char bulletTimeStatus(struct timeval* t_last_end);
+signed char bulletTimeStatus(struct timeval t_last_end);
 
-void setBulletTime(struct timeval* t_last_end, signed char mode, struct PlayerObj* player, bool* first_blood);
+void setBulletTime(struct timeval* t_last_end, bool mode, int* hp, bool* first_blood);
 
 #endif
