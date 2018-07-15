@@ -1,0 +1,16 @@
+#GAME CONTROLS
+
+INGAME:
+
+    +MOVEMENT   : 'W', 'S', 'A', 'D', 'Q' , 'E'.
+    +ACTION     : 'Space' [shoot], 'R' [bullet-time].
+
+MENUS:
+
+    +MAIN       : Numbers ['1','2','3'].
+    +TOP SCORES : 'b' [back to main].
+    +SAVE SCORE : 'Enter' [save], '1' [clear input].
+
+EVERYWHERE:
+
+    +EXIT       : '0' [goes back to main menu].
