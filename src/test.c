@@ -92,6 +92,9 @@ GAME:
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos1);
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos2);
 	
+	createBar(&bars, &number_of_bars, &jugador,health,healthBarPos);
+	createBar(&bars, &number_of_bars, &jugador,ammo, ammoBarPos);
+	
     createDrop(&droppables, &number_of_droppables,&dropPosP);	//taken==false by default
 	createDrop(&droppables, &number_of_droppables,&dropPosW);
 	createDrop(&droppables, &number_of_droppables,&dropPosA);
@@ -216,15 +219,19 @@ GAME:
                 }
                 
             }
-                //collision with enemies
-            bool playerEnemyCol = false;
+            //TODO: Try collision logic implementation. player_enemy_collision() and border_collision
+        
+            bool playerBorderCol = false;
+            bool playerEnemyCol  = false;
             for(int i=0;i<number_of_enemies;i++){
                 if(player_enemy_collision(&jugador,(enemies+i),letter,RATE_MVMT_PLAYER)){
                     playerEnemyCol = true;
                     break;
                 }
             }
-            if(!playerEnemyCol){ //if there is no collision we can update player position safely.
+            playerBorderCol = border_collision(&(jugador.obj),letter,RATE_MVMT_PLAYER);
+
+            if(!playerEnemyCol&&!playerBorderCol){ //if there is no collision we can update player position safely.
                 struct position updatedPos = changePosition(&(jugador.obj),letter,RATE_MVMT_PLAYER);
 		        playerPos.x 	    += updatedPos.x;
 		        playerPos.y 	    += updatedPos.y;
@@ -273,6 +280,9 @@ GAME:
 
 		//updates the position of all bullets
 		updateBulletPos(&bullets,&number_of_bullets);
+
+		//updates the enemies
+		updateEnemyBehavior(&enemies, number_of_enemies,jugador, &bullets, &number_of_bullets);
 
 		
         //updates plotter, checks for key hit.

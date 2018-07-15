@@ -6,11 +6,23 @@
 #define ENEMY_H_INCLUDED
 
 #include <stdbool.h>
+#include <time.h>
+#include <stdlib.h>
 #include "object.h"
+#include "player.h"
+#include "bullet.h"
 #include "../graphic/screen.h"
 #include "../graphic/SDL_Plotter.h"
+#include "../collision/collision.h"     //collision logic
 
 //S T R U C T s
+struct LOS{
+
+	struct position point1;
+	struct position point2;
+	struct position point3;
+	struct position point4;
+};
 
 /**	STRUCT: EnemyObj
  *PURPOSE: Holds the health and ammo variables relavent to the enemy class,
@@ -30,6 +42,9 @@ struct EnemyObj{
 	int fov     = 60;
 	bool active = false;
 	bool sight  = false;
+	struct position last_player_loc = {300,300,0};// assumes player is in the middle at first.
+	int cooldown = 0;
+	struct LOS line_of_sight;
 	//enums for type of weapon and ammo go here. Dont forget the includes as well when this component merges into 'testing'
 	//...	
 };
@@ -135,14 +150,67 @@ struct EnemyObj{
  *	  struct position*	The position values of the enemy object. Struct position pointer.
  */void createEnemy(struct EnemyObj ** enemies, int *number_of_enemies, struct size dim, struct position* pos);
 
-/*	FUNCTION:deleteEnemy
-PURPOSE: Deletes a enemy from the array of enemies.
-PRECONDITION: A pointer to a valid array of enemies with at least 1 member, the number of a enemies that exists within the array.
-POSTCONDITION: The specified enemies is removed. All enemies after that enemies are moved back one space in the array.
-@params struct EnemyObj **enemies	A pointer to a pointer to the first EnemyObj.
-	int *number_of_enemies		A pointer the the number of enemies.
-	int enemy_number		The position in the array of the enemy to be deleted, starts at 0.
-*/
-void deleteEnemy(struct EnemyObj ** enemies, int *number_of_enemies, int enemy_number);
+/**	FUNCTION:deleteEnemy
+ *PURPOSE: Deletes a enemy from the array of enemies.
+ *PRECONDITION: A pointer to a valid array of enemies with at least 1 member, the number of a enemies that exists within the array.
+ *POSTCONDITION: The specified enemies is removed. All enemies after that enemies are moved back one space in the array.
+ *@params struct EnemyObj **enemies	A pointer to a pointer to the first EnemyObj.
+ *	int *number_of_enemies		A pointer the the number of enemies.
+ *	int enemy_number		The position in the array of the enemy to be deleted, starts at 0.
+ */void deleteEnemy(struct EnemyObj ** enemies, int *number_of_enemies, int enemy_number);
+
+/** FUNCTION:updateEnemyBehavior
+ *PURPOSE: Makes the enemies act based on thier relation to the player.
+ *POSTCONDITION: The enemy acts based on the current game conditions
+ *@params   struct EnemyObj **enemies	A pointer to a pointer to the first EnemyObj.
+ *	        int number_of_enemies		The number of enemies.
+ *	        struct PlayerObj player		The player.
+ *          struct BulletObj **bullets  A pointer to a pointer to the first bullet from the array of bullets.
+ *          int *number_of_bullets      Pointer to the int holding the current number of bullets on play.
+ */void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct PlayerObj player, struct BulletObj **bullets, int *number_of_bullets);
+
+/** FUNCTION: search
+ *PURPOSE: Makes the enemy search for the player, trying to localize it, turning around if he has lost sight of it and advancing towards it otherwise. 
+ *PRECONDITION:     Valid enemies pointer, enemy_index must be smaller than n_enemies.
+ *POSTCONDITION:    Enemy acts accordingly to its current sight and active state.
+ *@params   int enemy_index             Int containing the index of the enemy we want it to search.   
+ *          struct PlayerObj player     Struct containing a copy of the current player.
+ *          struct EnemyObj **enemies   A pointer to a pointer to the first enemy from the array of enemies.
+ *          int n_enemies               Int containing the current number of enemies onplay.
+ */void search(int enemy_index, struct PlayerObj player, struct EnemyObj **enemies, int n_enemies);
+
+/** FUNCTION: attack
+ *PURPOSE: Makes the enemy attack the player, moving towards him and shooting. Also updates enemy sight state if he has lost sight of him.
+ *PRECONDITION:     Valid enemies and bullets pointers. Enemy_index smaller than n_enemies.
+ *POSTCONDITION:    Enemy attacks player until he loose sight of him.  
+ *@params   int enemy_index             Int containing the index of the enemy we want it to search.   
+ *          struct PlayerObj player     Struct containing a copy of the current player.
+ *          struct BulletObj **bullets  A pointer to a pointer to the first bullet from the array of bullets.
+ *          int *number_of_bullets      Pointer to the int holding the current number of bullets on play.
+ *          struct EnemyObj **enemies   A pointer to a pointer to the first enemy from the array of enemies.
+ *          int n_enemies               Int containing the current number of enemies onplay.
+ */void attack(int enemy_index, struct PlayerObj player, struct BulletObj **bullets, int *number_of_bullets, struct EnemyObj **enemies, int n_enemies);
+
+/** FUNCTION: loc_is_seen
+ *PURPOSE: Test if an enemy sees the player at the moment.
+ *POSTCONDITION: True will be returned if the player is on the enemy range of vision.
+ *@params   struct EnemyObj enemy       A copy of the enemy struct in question.
+ *          struct position playerPos   A copy of the current position of the player. (struct)
+ *@return   bool                        True if enemy can see the player.
+ */bool locIsSeen(struct EnemyObj enemy, struct position playerPos);
+
+/** FUNCTION: createSightLine
+ *PURPOSE: Creates one LOS based upon the current enemy position and a given offset.
+ *@params   struct EnemyObj enemy       A copy of the enemy struct in question.
+ *          int end_width_offset        The amount by which the outer end of the LOS will be wider (or narrower if the value is negative) than the inner end.
+ *@return   struct LOS			A the LOS for the given enemy and offset.
+ */struct LOS createSightLine(struct EnemyObj enemy, int end_width_offset);
+
+/** FUNCTION: dirToLoc 
+ *PURPOSE:  Gives the direction to a given location from the enemy location.  
+ *@params   struct EnemyObj enemy       A copy of the enemy object.
+ *          struct position playerPos   The target location.
+ *@return   int                     1 if right, 2 if left.
+ */int dirToLoc(struct EnemyObj enemy, struct position location);
 
 #endif

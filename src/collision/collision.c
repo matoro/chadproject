@@ -212,3 +212,68 @@ bool bullet_enemy_collision(struct BulletObj* bullet, struct EnemyObj* enemy){
         return false;
     }
 }
+
+bool enemy_enemies_collision(struct EnemyObj* enemy, char movement, int rate, struct EnemyObj** enemies, int number_enemies){
+    //Function should be called only when the user wants to move the player.
+
+    if(!enemy||!enemies)     return false;
+
+    //VARs
+    struct position enemyPos, newPos;
+
+    //FETCH POSITION
+    enemyPos = getPosition(&(enemy->obj));
+
+    //GET FUTURE POSITION AND SET IT AS CURRENT IN PLAYER.
+    newPos = changePosition(&(enemy->obj),movement,rate);
+    newPos.x         += enemyPos.x;
+    newPos.y         += enemyPos.y;
+    newPos.direction += enemyPos.direction;
+    setPosition(&(enemy->obj),&newPos);
+    
+    //CHECK IF NEW-FUTURE POS OVERLAPS|COLLIDES WITH OTHER ENEMIES AND SET OLD POSITION BACK
+
+    for(int i=0; i<number_enemies; i++){
+
+        //we need to avoid checkOverlap() on the enemy with itself.
+        struct EnemyObj* itself = ((*enemies)+i);   
+
+        if(enemy!=itself){
+
+            if(checkOverlap(&(enemy->obj),&(((*enemies)+i)->obj))){
+                setPosition(&(enemy->obj),&enemyPos);
+                return true;
+            }else{
+                setPosition(&(enemy->obj),&enemyPos);
+                return false;
+            }
+        }
+    }
+
+}
+
+bool border_collision(struct object* obj, char movement, int rate){
+
+    if(!obj||!(movement=='W'||movement=='A'||movement=='S'||movement=='D'||movement=='Q'||movement=='E'))   return false;
+    //VARs
+    int border_x, border_y, x, y, offset_min, offset_max;
+    struct position newPos;    
+
+    //DEF
+    offset_min = 5;
+    offset_max = 15;                    //to compensate objects top-left struct position origin (0,0) and their projection.
+    border_x = WIDTH-offset_max;
+    border_y = 9*HEIGHT/10-offset_max;  //constants from screen.h   
+    x = obj->posObj.x;
+    y = obj->posObj.y;
+    
+    newPos = changePosition(obj,movement,rate);
+    newPos.x         += x;
+    newPos.y         += y;
+
+    if(newPos.x>border_x||newPos.x<offset_min||newPos.y>border_y||newPos.y<offset_min){
+        return true;
+    }else{
+        return false;
+    }
+}

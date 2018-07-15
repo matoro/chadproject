@@ -45,6 +45,9 @@ void createBullet(struct object *shooter, struct BulletObj **bullets, int *numbe
 	struct position updatedPos = changePosition(&(newBullet.obj), 'W', 10);
 	newBullet.obj.posObj.x += updatedPos.x;
 	newBullet.obj.posObj.y += updatedPos.y;
+	updatedPos = changePosition(&(newBullet.obj), 'E', 16);
+	newBullet.obj.posObj.x += updatedPos.x;
+	newBullet.obj.posObj.y += updatedPos.y;
 	setSize(&newBullet.obj,bulletSize);
 
     //END BULLET POSITION. BULLET TEXTURE BEGINS

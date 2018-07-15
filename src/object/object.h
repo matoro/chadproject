@@ -142,4 +142,12 @@ struct object{
  *@return struct position       Data block containing adjusted position values.
  */struct position changePosition(struct object *obj,char movement, int rate);
 
+/** FUNCTION: calcDistance
+ *PURPOSE:  Calculates the distance between two given locations on the map.
+ *PRECONDITION:     Well formed struct positions (x,y and dir within range).
+ *@params   struct position obj1    Copy of the first location.
+ *          struct position obj2    Copy of the second location.
+ *@return   int                     Shortest distance between those two points.
+ */int calcDistance(struct position obj1, struct position obj2);
+
 #endif

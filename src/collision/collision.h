@@ -14,6 +14,7 @@
 #include "../object/enemy.h"
 #include "../object/droppable.h"
 #include "../object/bullet.h"
+#include "../graphic/screen.h" 
 
 //F U N C T I O N s
 
@@ -75,6 +76,32 @@
  *                  struct EnemyObj* enemy      Pointer to the player.
  *@return           bool                        True if there is collision 
  */bool bullet_enemy_collision(struct BulletObj* bullet, struct EnemyObj* enemy);
+
+/*      FUNCTION:   enemy_enemies_collision  
+ *PURPOSE:          Handles if the next movement of an enemy collides with another enemy; returns response as a boolean.
+ *PRECONDITION:     Valid enemy(single) and enemies(array) pointers.
+ *POSTCONDITION:    Enemy gets permission to update its position.
+ *                  
+ *@params           struct EnemyObj* enemy      Pointer to the enemy.
+ *                  char movement               Char representing next movement
+ *                  int rate                    Rate of movement.
+ *                  struct EnemyObj** enemies   Pointer to the enemies array.
+ *                  int number_enemies          Number of enemies onplay.
+ *@return           bool                        True if there is collision 
+ */bool enemy_enemies_collision(struct EnemyObj* enemy,char movement,int rate, struct EnemyObj** enemies, int number_enemies);
+
+/*      FUNCTION:   border_collision  
+ *PURPOSE:          Handles if the next movement of an entity object (player or enemy) collides with the borders of the screen
+ *                  , returns response as a boolean. Used without a valid movement or rate, it would return check if the
+                    objects current position is within the screen.
+ *PRECONDITION:     Valid and well formed struct object pointer.
+ *POSTCONDITION:    Verifies if the object is within game scene.
+ *                  
+ *@params           struct object* obj          Pointer to an entity object (player, enemy... anything holding such struct).
+ *                  char movement               Char representing next entity movement.
+ *                  int rate                    Rate of movement.
+ *@return           bool                        True if there is collision 
+ */bool border_collision(struct object* obj, char movement, int rate);
 
 //... rest of collision functions ...
 
