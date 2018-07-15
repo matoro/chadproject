@@ -21,7 +21,7 @@ void spawnDroppable(struct Droppable** droppables, int* num_droppables, int hp, 
 
     if(probability){
         //DEF
-        opt      = (1+rand()%3);
+        opt      = (hp>80) ? (1+rand()%2) : (1+rand()%3);
         drop_pos = getRandomPos();
         switch(opt){
 
@@ -30,15 +30,15 @@ void spawnDroppable(struct Droppable** droppables, int* num_droppables, int hp, 
                 opt = (1+rand()%3);
                 drop_type[1] = (opt==1) ? 'N' : ((opt==2) ? 'I': 'E');
                 break;
-            case 2: //POTION
-                drop_type[0] = 'P';
-                opt = (1+rand()%2);
-                drop_type[1] = (opt==1) ? 'S' : 'F';
-                break;
-            case 3: //WEAPON
+            case 2: //WEAPON
                 drop_type[0] = 'W';
                 opt = (1+rand()%4);
                 drop_type[1] = (opt==1) ? 'P' : ((opt==2) ? 'S': ((opt==3) ? 'M' : 'R'));
+                break;
+            case 3: //POTION
+                drop_type[0] = 'P';
+                opt = (1+rand()%2);
+                drop_type[1] = (opt==1) ? 'S' : 'F';
                 break;
             default:
                 fprintf(stderr,"Something odd in spawnDroppable!\n");

@@ -223,7 +223,7 @@ void attack(int enemy_index,struct PlayerObj player, struct BulletObj **bullets,
 	y2 = player.obj.posObj.y;
 	x2 = player.obj.posObj.x;
 	//shoot, enemy will always shoot if player is visible and time is right
-	if((*enemies+enemy_index)->cooldown%300 == 0){
+	if((*enemies+enemy_index)->cooldown%50 == 0){
 		createBullet(&((*enemies+enemy_index)->obj),bullets,number_of_bullets,PISTOL,NORMAL);
 	}else if((*enemies+enemy_index)->cooldown%10 == 0){
 		struct EnemyObj aimingE = *(*enemies+enemy_index);// enemy struct for purpose of aiming

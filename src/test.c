@@ -33,12 +33,13 @@ int main(){
 	int number_of_droppables    = 0;
     int score                   = 0;
     
-    bool quit, cont, first_blood;
+    bool quit, cont, first_blood, spawn_time;
     
     time_t t_0;
     struct timeval t_cooldown;
     struct timeval bullet_time;
 
+    struct position gameoverPos = {WIDTH/4,HEIGHT/3,0};
     struct position playerPos   = {WIDTH/2,HEIGHT/2,0};
 	struct position enemyPos    = {WIDTH/4,HEIGHT/2,90};
 	struct position enemyPos1   = {WIDTH/2,HEIGHT/4,180};
@@ -49,11 +50,14 @@ int main(){
 	struct position dropPosW    = {7*WIDTH/8,HEIGHT/8,0};
 	struct position dropPosA    = {WIDTH/2,HEIGHT/8,0};
 		
+    struct texture gameoverClr;  //defaults to white 
+
 	    //auxiliary
 	char dropType_1[2] = {'P','S'}; 	//(P)otion-(S)imple
 	char dropType_2[2] = {'W','P'};		//(W)eapon-(P)istol
 	char dropType_3[2] = {'A','N'};		//(A)mmo-(N)ormal
        
+    char* gameover_str = (char*)"GAME OVER!";
     
     srand(time(NULL));
 
@@ -76,6 +80,7 @@ GAME:
     }while(cont);
     
     //RESET
+    spawn_time  = true;
     first_blood = true;
     BT_STATUS   = 0;
     gettimeofday(&bullet_time,NULL);
@@ -111,10 +116,23 @@ GAME:
 	char letter = '\0';
 	while(letter != '0')
 	{
-        if((BT_STATUS=bulletTimeStatus(bullet_time)) == 2)  setBulletTime(&bullet_time, false, &(jugador.health), &first_blood);
+ 
+        //SPAWN ENEMIES AND DROPPABLES
+        if(score%10!=0)  spawn_time = true;
+        if(score%10==0&&spawn_time){
+            spawnDroppable(&droppables, &number_of_droppables, jugador.health, jugador.ammo);
+            spawnEnemy(&enemies, &number_of_enemies, jugador.obj, score);
+            spawn_time = false;
+        }
+        if(number_of_enemies<1){
+            while(number_of_enemies<3){
+                spawnEnemy(&enemies, &number_of_enemies, jugador.obj, score);
+            }
+        }
 
+        if((BT_STATUS=bulletTimeStatus(bullet_time)) == 2)  setBulletTime(&bullet_time, false, &(jugador.health), &first_blood);
         if(letter=='R'){
-            //TEST BULLETIME
+        //TEST BULLETIME
             BT_STATUS = bulletTimeStatus(bullet_time);
             if(BT_STATUS==1){
                 fprintf(stdout,"Bullet time still active!\n");
@@ -126,8 +144,7 @@ GAME:
             }
 
         }else if(letter=='L'){
-
-            //DEBUG LIST ALL VARIABLES.
+        //DEBUG. LIST ALL VARIABLES.
             fprintf(stdout,"GLOBAL, RATE PLAYER: %d\n",RATE_MVMT_PLAYER);
             fprintf(stdout,"GLOBAL, RATE ENEMY: %d\n",RATE_MVMT_ENEMY);
             fprintf(stdout,"GLOBAL, RATE BULLET: %d\n",RATE_MVMT_BULLET);
@@ -138,30 +155,8 @@ GAME:
 			fprintf(stdout,"PLAYER y: %d\n",playerPos.y);
             fprintf(stdout,"FIRST BLOOD: %s\n",(first_blood) ? "TRUE": "FALSE");
 
-        }else if (letter=='H'){
-		//simple test for bar.
-			jugador.health -= 5;
-			fprintf(stdout,"PLAYER HEALTH: %d",jugador.health);
-            if(!isAlive(&jugador)){
-                //END GAME
-                if(!printSaveScore(&plotter, score))    quit = true;
-                goto END;
-            }
-		}else if(letter=='O'){
-        //TODO: test spawnDroppable
-            spawnDroppable(&droppables, &number_of_droppables, jugador.health, jugador.ammo);
-
-        }else if(letter=='P'){
-        //TODO: test spawnEnemy
-
-            spawnEnemy(&enemies, &number_of_enemies, jugador.obj, score);
-
-        }else if (letter=='G'){
-		//simple test for bar.
-            jugador.ammo -= 5;
-			fprintf(stdout,"PLAYER AMMO: %d",jugador.ammo);
 		}else if (letter==' '){
-		//testing shooting
+		//SHOOT
             if(hasAmmo(&jugador)&&(!onCooldown(&t_cooldown, jugador.player_weapon))){  
                 //if player has ammo and a weapon.
                 createBullet(&(jugador.obj), &bullets, &number_of_bullets, jugador.player_weapon, jugador.ammo_type);
@@ -178,7 +173,7 @@ GAME:
                         switch((droppables+i)->currentType){
                             case 'A':
                                 jugador.ammo_type = (droppables+i)->type.drop_ammo;                 
-                                jugador.ammo      = (jugador.ammo+20 > 50) ? 50 : jugador.ammo+20;
+                                jugador.ammo      = (jugador.ammo+30 > 50) ? 50 : jugador.ammo+30;
                                 break;
 
                             case 'P':
@@ -245,7 +240,12 @@ GAME:
                 }
             }
             if(!isAlive(&jugador)){
-                //END GAME
+                
+                //END GAME        
+                plotText(gameover_str, gameoverPos, gameoverClr, 8, 1, &plotter);
+                plotter.update();
+                while((time(NULL)-t_0)<=5);
+
                 if(!printSaveScore(&plotter, score))    quit = true;
                 goto END;
             }
