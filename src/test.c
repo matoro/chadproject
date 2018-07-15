@@ -92,9 +92,6 @@ GAME:
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos1);
 	createEnemy(&enemies,&number_of_enemies,playerDim,&enemyPos2);
 	
-	createBar(&bars, &number_of_bars, &jugador,health,healthBarPos);
-	createBar(&bars, &number_of_bars, &jugador,ammo, ammoBarPos);
-	
     createDrop(&droppables, &number_of_droppables,&dropPosP);	//taken==false by default
 	createDrop(&droppables, &number_of_droppables,&dropPosW);
 	createDrop(&droppables, &number_of_droppables,&dropPosA);

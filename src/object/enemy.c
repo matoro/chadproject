@@ -164,12 +164,12 @@ void search(int enemy_index, struct PlayerObj player, struct EnemyObj **enemies,
 		x2 = (*enemies+i)->obj.posObj.x;
 		if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 20){
 			if((*enemies+enemy_index)->cooldown%6 == 0
-					&& !border_collision(&((*enemies+enemy_index)->obj), 'Q', 6)){
-				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'E', 6);
+					&& !border_collision(&((*enemies+enemy_index)->obj), 'Q', RATE_MVMT_ENEMY)){
+				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'E', RATE_MVMT_ENEMY);
 				(*enemies+enemy_index)->obj.posObj.x += updatedPos.x*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
 				(*enemies+enemy_index)->obj.posObj.y += updatedPos.y*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
-			}else if(!border_collision(&((*enemies+enemy_index)->obj), 'W', 6)){
-				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', 6);
+			}else if(!border_collision(&((*enemies+enemy_index)->obj), 'W', RATE_MVMT_ENEMY)){
+				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', RATE_MVMT_ENEMY);
 				(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
 				(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
 			}
@@ -178,11 +178,11 @@ void search(int enemy_index, struct PlayerObj player, struct EnemyObj **enemies,
 	}
 	struct position memoryPosition = (*enemies+enemy_index)->last_player_loc;
 	if((*enemies+enemy_index)->cooldown%4 == 0){
-		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'A', 6);
+		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'A', RATE_MVMT_ENEMY);
 		(*enemies+enemy_index)->obj.posObj.direction += updatedPos.direction*dirToLoc(*(*enemies+enemy_index), memoryPosition);
 	}
 	if((*enemies+enemy_index)->cooldown%12 == 0){// move toward last know player location, moves slower while searching.
-		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', 6); // will never lead enemy off screen
+		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', RATE_MVMT_ENEMY); // will never lead enemy off screen
 		(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
 		(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
 	}
@@ -207,13 +207,13 @@ void attack(int enemy_index,struct PlayerObj player, struct BulletObj **bullets,
 		y2 = (*enemies+i)->obj.posObj.y;	
 		x2 = (*enemies+i)->obj.posObj.x;
 		if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 50){
-			if((*enemies+enemy_index)->cooldown%6 == 0 && !border_collision(&((*enemies+enemy_index)->obj), 'E', 6) 
-					&& !border_collision(&((*enemies+enemy_index)->obj), 'Q', 6)){
-				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'E', 6);
+			if((*enemies+enemy_index)->cooldown%6 == 0 && !border_collision(&((*enemies+enemy_index)->obj), 'E', RATE_MVMT_ENEMY) 
+					&& !border_collision(&((*enemies+enemy_index)->obj), 'Q', RATE_MVMT_ENEMY)){
+				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'E', RATE_MVMT_ENEMY);
 				(*enemies+enemy_index)->obj.posObj.x += updatedPos.x*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
 				(*enemies+enemy_index)->obj.posObj.y += updatedPos.y*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
-			}else if(!border_collision(&((*enemies+enemy_index)->obj), 'W', 6)){
-				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', 6);
+			}else if(!border_collision(&((*enemies+enemy_index)->obj), 'W', RATE_MVMT_ENEMY)){
+				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', RATE_MVMT_ENEMY);
 				(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
 				(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
 			}
@@ -229,21 +229,21 @@ void attack(int enemy_index,struct PlayerObj player, struct BulletObj **bullets,
 		struct EnemyObj aimingE = *(*enemies+enemy_index);// enemy struct for purpose of aiming
 		aimingE.line_of_sight = createSightLine(*(*enemies+enemy_index), -3);// smaller LOS for aiming.
 		if(!locIsSeen(aimingE, player.obj.posObj)){
-			struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'A', 6);
+			struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'A', RATE_MVMT_ENEMY);
 			(*enemies+enemy_index)->obj.posObj.direction += updatedPos.direction*dirToLoc(*(*enemies+enemy_index), player.obj.posObj);
 		}
 	}else if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) > 100 && (*enemies+enemy_index)->cooldown%6 == 0){//pursue player if too far
-		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', 6);
+		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', RATE_MVMT_ENEMY);
 		(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
 		(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
 	}else if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 50 && (*enemies+enemy_index)->cooldown%6 == 0 
-			&& !border_collision(&((*enemies+enemy_index)->obj), 'S', 6)){//move back from player if too close
-		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'S', 6);
+			&& !border_collision(&((*enemies+enemy_index)->obj), 'S', RATE_MVMT_ENEMY)){//move back from player if too close
+		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'S', RATE_MVMT_ENEMY);
 		(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
 		(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
 	}else if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 50 && (*enemies+enemy_index)->cooldown%6 == 0 
-			&& !border_collision(&((*enemies+enemy_index)->obj), 'E', 6)){
-		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'E', 6);
+			&& !border_collision(&((*enemies+enemy_index)->obj), 'E', RATE_MVMT_ENEMY)){
+		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'E', RATE_MVMT_ENEMY);
 		(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
 		(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
 	}

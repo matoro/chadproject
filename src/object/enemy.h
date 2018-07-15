@@ -14,6 +14,7 @@
 #include "../graphic/screen.h"
 #include "../graphic/SDL_Plotter.h"
 #include "../collision/collision.h"     //collision logic
+#include "../gamelogic/globals.h"
 
 //S T R U C T s
 struct LOS{
