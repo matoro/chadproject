@@ -594,7 +594,10 @@ bool printSaveScore(SDL_Plotter* plot, int score){
                     fprintf(stderr,"SAVING SCORE ERROR. Numcode: %d\n",err);
                     return false;
                 }
-            }else{
+            }else if(letra!=0){ //fixes error when the user would press the keyboard while the main thread is sleeping showing "game over" for five seconds
+                                //plotter would save these keyhits as a batch of N null strokes and they would show up here making count>MAX_NAME, filling
+                                //the nickname with null garbage and not letting the player input anything until he hit '1' to clear the nickname array and
+                                //reset the count back to 0.
                 //add letter
                 if(count<MAX_NAME-1)    nickname[count++] = letra;
             }
