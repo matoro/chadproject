@@ -73,40 +73,39 @@ void createEnemy(struct EnemyObj ** enemies, int *number_of_enemies,struct size 
 	
 	struct EnemyObj e;
 	setSize(&e.obj,dim);            //DIMENSION
-        setPosition(&e.obj,pos);        //POSITION
+    setPosition(&e.obj,pos);        //POSITION
 
-        struct texture skinColor;
-        skinColor.red   = 255;
-        skinColor.green = 210;
-        skinColor.blue  = 160;
+    struct texture skinColor;
+    skinColor.red   = 230;
+    skinColor.green = 160;
+    skinColor.blue  = 110;
 
-        struct texture darkHair;	
-        darkHair.red   = 5;
-        darkHair.green = 5;
-        darkHair.blue  = 5;
+    struct texture hairColor;	
+    hairColor.red   = 70;
+    hairColor.green = 20;
+    hairColor.blue  = 0;
 
-        struct texture eyeColor;	//RED for enemies.
-        eyeColor.red   = 180;
-        eyeColor.green = 5;
-        eyeColor.blue  = 5;
+    struct texture eyeColor;	//RED for enemies.
+    eyeColor.red   = 180;
+    eyeColor.green = 5;
+    eyeColor.blue  = 5;
 
 	int totalPixel = dim.alto * dim.ancho;
-        e.obj.textureObj = (struct texture*)malloc(sizeof(struct texture)*totalPixel);
+    e.obj.textureObj = (struct texture*)malloc(sizeof(struct texture)*totalPixel);
 	
 	//WE PAINT THE OBJECT
 
 
 	int count = 0;
-        for(int i = 0;i<dim.ancho;i++){
-                for(int j = 0;j<dim.alto;j++){
-                        setTexture(&e.obj,(i<=(dim.alto)&&j<=(dim.ancho/2)) ? skinColor:darkHair,count);        //IN-HALF
-                        if(i<=(dim.alto)&&j==(dim.ancho/4)){                                                    //HORIZONTAL QUARTER
-                                if(abs(dim.alto/2-i)>dim.alto/8)        setTexture(&e.obj,eyeColor,count);      //AVOID CENTER
-                        }
-
-                        count++;
+    for(int i = 0;i<dim.ancho;i++){
+        for(int j = 0;j<dim.alto;j++){
+                setTexture(&e.obj,(i<=(dim.alto)&&j<=(dim.ancho/2)) ? skinColor:hairColor,count);       //IN-HALF
+                if(i<=(dim.alto)&&j==(dim.ancho/4)){                                                    //HORIZONTAL QUARTER
+                    if(abs(dim.alto/2-i)>dim.alto/8)        setTexture(&e.obj,eyeColor,count);          //AVOID CENTER
                 }
+                count++;
         }
+    }
 	
 	if(!*enemies){
 		if(!(*enemies = (struct EnemyObj*)malloc(sizeof(struct EnemyObj)))) printf("Memory allocation failed.");

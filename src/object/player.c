@@ -50,13 +50,13 @@ struct PlayerObj createPlayer(struct size dim, struct position* pos){
 	setPosition(&a.obj,pos);	//POSITION
 	
 	struct texture skinColor;
-	skinColor.red   = 255;
+	skinColor.red   = 255; 
 	skinColor.green = 210;
 	skinColor.blue  = 160;
 
 	struct texture darkHair;
-	darkHair.red   = 5;
-	darkHair.green = 5; 
+	darkHair.red   = 25;
+	darkHair.green = 25; 
 	darkHair.blue  = 5;
 
 	struct texture eyeColor;
