@@ -30,11 +30,12 @@ All these seven layers could be classified in major groups if we were to focus o
 This approach will de discussed later in the layer interaction chapter.
 
 ### src/objects:
-Under this directory we can find all the modelling our project uses. It presents structs and related object-functions to create what could be regarded as class objects by those familiar with OOP style programming.
+Under this directory we can find all the modelling our project uses. It presents structs and related object-functions to create what could be regarded as classes by those familiar with OOP style programming.
 
 *Struct definitions*, *function declarations* and *enums* can be found inside *.h files meanwhile their implementations fall under their *.c counterparts.
 
 Table of contents:
+
 | H FILE | C FILE | DESCRIPTION |
 |:---:|:---:|:---|
 |object.h|object.c|Main attributte of every visual model. It comprehends size, texture and position on the screen. Plus auxiliary functions.|
