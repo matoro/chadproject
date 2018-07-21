@@ -73,39 +73,40 @@ void createEnemy(struct EnemyObj ** enemies, int *number_of_enemies,struct size 
 	
 	struct EnemyObj e;
 	setSize(&e.obj,dim);            //DIMENSION
-    setPosition(&e.obj,pos);        //POSITION
+        setPosition(&e.obj,pos);        //POSITION
 
-    struct texture skinColor;
-    skinColor.red   = 230;
-    skinColor.green = 160;
-    skinColor.blue  = 110;
+        struct texture skinColor;//slightly darker that player skin color for easy differentiation
+        skinColor.red   = 190;
+        skinColor.green = 160;
+        skinColor.blue  = 120;
 
-    struct texture hairColor;	
-    hairColor.red   = 70;
-    hairColor.green = 20;
-    hairColor.blue  = 0;
+        struct texture darkHair;	//DARK BROWN for easy differentiation from player
+        darkHair.red   = 60;
+        darkHair.green = 30;
+        darkHair.blue  = 15;
 
-    struct texture eyeColor;	//RED for enemies.
-    eyeColor.red   = 180;
-    eyeColor.green = 5;
-    eyeColor.blue  = 5;
+        struct texture eyeColor;	//RED for enemies.
+        eyeColor.red   = 180;
+        eyeColor.green = 5;
+        eyeColor.blue  = 5;
 
 	int totalPixel = dim.alto * dim.ancho;
-    e.obj.textureObj = (struct texture*)malloc(sizeof(struct texture)*totalPixel);
+        e.obj.textureObj = (struct texture*)malloc(sizeof(struct texture)*totalPixel);
 	
 	//WE PAINT THE OBJECT
 
 
 	int count = 0;
-    for(int i = 0;i<dim.ancho;i++){
-        for(int j = 0;j<dim.alto;j++){
-                setTexture(&e.obj,(i<=(dim.alto)&&j<=(dim.ancho/2)) ? skinColor:hairColor,count);       //IN-HALF
-                if(i<=(dim.alto)&&j==(dim.ancho/4)){                                                    //HORIZONTAL QUARTER
-                    if(abs(dim.alto/2-i)>dim.alto/8)        setTexture(&e.obj,eyeColor,count);          //AVOID CENTER
+        for(int i = 0;i<dim.ancho;i++){
+                for(int j = 0;j<dim.alto;j++){
+                        setTexture(&e.obj,(i<=(dim.alto)&&j<=(dim.ancho/2)) ? skinColor:darkHair,count);        //IN-HALF
+                        if(i<=(dim.alto)&&j==(dim.ancho/4)){                                                    //HORIZONTAL QUARTER
+                                if(abs(dim.alto/2-i)>dim.alto/8)        setTexture(&e.obj,eyeColor,count);      //AVOID CENTER
+                        }
+
+                        count++;
                 }
-                count++;
         }
-    }
 	
 	if(!*enemies){
 		if(!(*enemies = (struct EnemyObj*)malloc(sizeof(struct EnemyObj)))) printf("Memory allocation failed.");
@@ -141,7 +142,6 @@ void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct
 			(*enemies+i)->line_of_sight = createSightLine(*(*enemies+i), 60);
 			(*enemies+i)->cooldown++;
 			if((*enemies+i)->cooldown > 100000) (*enemies+i)->cooldown = 0;
-		if((*enemies+i)->cooldown%2 != 0) return;
 		if((*enemies+i)->sight){
 			attack(i,player,bullets,number_of_bullets,enemies,number_of_enemies);
 		}else{
@@ -151,28 +151,33 @@ void updateEnemyBehavior(struct EnemyObj **enemies, int number_of_enemies,struct
 }
 
 void search(int enemy_index, struct PlayerObj player, struct EnemyObj **enemies, int n_enemies){
+	//enemy coordinates for easy access
 	int y1 = (*enemies+enemy_index)->obj.posObj.y;
 	int x1 = (*enemies+enemy_index)->obj.posObj.x;
+	//player coordinates for easy access
 	int y2 = player.obj.posObj.y;
 	int x2 = player.obj.posObj.x;
+	//if the enemy is very close to the player or the player is in the enemy's LOS, set make sight 'true'
 	if(locIsSeen(*(*enemies+enemy_index), player.obj.posObj) || sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 50) (*enemies+enemy_index)->sight = true;
+	//collision avoidance
 	for(int i = 0; i < n_enemies; i++){
+		//skip the current enemy to prevent it trying to avoid itself.
 		if(i == enemy_index) i++;
-		if(i > n_enemies) break;
+		//in the case that the current enemy is the last in the array, prevents the loop from continuing with i >=n_enemies
+		if(i >= n_enemies) break; 
+		//coordinates of other enemies
 		y2 = (*enemies+i)->obj.posObj.y;	
 		x2 = (*enemies+i)->obj.posObj.x;
+		//check if the enemy is too close to the other enemy.
 		if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 20){
 			if((*enemies+enemy_index)->cooldown%6 == 0
-					&& !border_collision(&((*enemies+enemy_index)->obj), 'Q', RATE_MVMT_ENEMY)){
+					&& !border_collision(&((*enemies+enemy_index)->obj), 'Q', RATE_MVMT_ENEMY)
+					&& !border_collision(&((*enemies+enemy_index)->obj), 'E', RATE_MVMT_ENEMY)){
 				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'E', RATE_MVMT_ENEMY);
 				(*enemies+enemy_index)->obj.posObj.x += updatedPos.x*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
 				(*enemies+enemy_index)->obj.posObj.y += updatedPos.y*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
-			}else if(!border_collision(&((*enemies+enemy_index)->obj), 'W', RATE_MVMT_ENEMY)){
-				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', RATE_MVMT_ENEMY);
-				(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
-				(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
+				return;
 			}
-			return;
 		}
 	}
 	struct position memoryPosition = (*enemies+enemy_index)->last_player_loc;
@@ -180,14 +185,14 @@ void search(int enemy_index, struct PlayerObj player, struct EnemyObj **enemies,
 		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'A', RATE_MVMT_ENEMY);
 		(*enemies+enemy_index)->obj.posObj.direction += updatedPos.direction*dirToLoc(*(*enemies+enemy_index), memoryPosition);
 	}
-	if((*enemies+enemy_index)->cooldown%12 == 0){// move toward last know player location, moves slower while searching.
+	if((*enemies+enemy_index)->cooldown%12 == 0 && !border_collision(&((*enemies+enemy_index)->obj), 'W', 15)){// move toward last know player location, moves slower while searching.
 		struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', RATE_MVMT_ENEMY); // will never lead enemy off screen
 		(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
 		(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
 	}
 	y2 = memoryPosition.y;
 	x2 = memoryPosition.x;
-	if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) > 12 && (*enemies+enemy_index)->cooldown%1000 == 0){ // looks around for the player if it isn't found
+	if(sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 12 || (*enemies+enemy_index)->cooldown%1000 == 0){ // looks around for the player if it isn't found
 		(*enemies+enemy_index)->last_player_loc.x = rand()%400;
 		(*enemies+enemy_index)->last_player_loc.y = rand()%400;
 	}
@@ -199,7 +204,7 @@ void attack(int enemy_index,struct PlayerObj player, struct BulletObj **bullets,
 	int x1 = (*enemies+enemy_index)->obj.posObj.x;
 	int y2 = player.obj.posObj.y;
 	int x2 = player.obj.posObj.y;
-	if(!locIsSeen(*(*enemies+enemy_index), player.obj.posObj) && sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) < 50) (*enemies+enemy_index)->sight = false;
+	if(!locIsSeen(*(*enemies+enemy_index), player.obj.posObj) && sqrt(((y2-y1)*(y2-y1))+((x2-x1)*(x2-x1))) > 100) (*enemies+enemy_index)->sight = false;
 	for(int i = 0; i < n_enemies; i++){
 		if(i == enemy_index) i++;
 		if(i > n_enemies) break;
@@ -211,12 +216,9 @@ void attack(int enemy_index,struct PlayerObj player, struct BulletObj **bullets,
 				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'E', RATE_MVMT_ENEMY);
 				(*enemies+enemy_index)->obj.posObj.x += updatedPos.x*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
 				(*enemies+enemy_index)->obj.posObj.y += updatedPos.y*dirToLoc(*(*enemies+enemy_index), (*enemies+i)->obj.posObj);
-			}else if(!border_collision(&((*enemies+enemy_index)->obj), 'W', RATE_MVMT_ENEMY)){
-				struct position updatedPos = changePosition(&((*enemies+enemy_index)->obj), 'W', RATE_MVMT_ENEMY);
-				(*enemies+enemy_index)->obj.posObj.x += updatedPos.x;
-				(*enemies+enemy_index)->obj.posObj.y += updatedPos.y;
+				return;
 			}
-			return;
+			
 		}
 	}
 	y2 = player.obj.posObj.y;
