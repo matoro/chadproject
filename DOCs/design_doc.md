@@ -54,6 +54,7 @@ In this folder we can find all the neccessary functions that help us plot both t
 *Function declarations* can be found inside *.h files meanwhile their implementations fall under their *.c counterparts.
 
 Table of contents:
+
 | H FILE | C FILE | DESCRIPTION |
 |:---:|:---:|:---|
 |screen.h|screen.c|Manages two key functions regarding screen-plotting; plotObject and plotText.|
@@ -67,6 +68,7 @@ All functionality regarding interaction with the user in every aspect of the gam
 *Struct definitions* and *function declarations* can be found inside *.h files meanwhile their implementations fall under their *.c counterparts.
 
 Table of contents:
+
 | H FILE | C FILE | DESCRIPTION |
 |:---:|:---:|:---|
 |ui.h|ui.c|Contains functions that plots the in-game UI, as well as the main menu and takes care of the scoreboard system maintenance.|
@@ -78,6 +80,7 @@ This folder contains utils needed for other functions. In particular, it current
 *Function declarations*, *structs* and *constants* can be found inside the .h file meanwhile its implementation fall under the .c counterpart.
 
 Table of contents:
+
 | H FILE | C FILE | DESCRIPTION |
 |:---:|:---:|:---|
 |charset.h|charset.c|Text sprites and its implementation feature getSprite go here.|
@@ -89,6 +92,7 @@ Easy enough, all collision logic goes here. From bottom up auxiliary functions t
 *Function declarations* can be found inside the .h file meanwhile its implementation fall under the .c counterpart.
 
 Table of contents:
+
 | H FILE | C FILE | DESCRIPTION |
 |:---:|:---:|:---|
 |collision.h|collision.c|Pretty self-explanatory. From mapObject and checkOverlap to boolean player_enemy_collision and more...|
@@ -101,6 +105,7 @@ This directory encapsulates game logic functionality that could've just been wri
 *Function declarations* can be found inside *.h files meanwhile their implementations fall under their *.c counterparts.
 
 Table of contents:
+
 | H FILE | C FILE | DESCRIPTION |
 |:---:|:---:|:---|
 |gamelogic.h|gamelogic.c|Functions controlling the spawn of droppables and enemies, as well as bullet-time functionality.|
