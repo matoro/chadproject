@@ -122,5 +122,71 @@ Our entry point conveys all of these different layers into a simple enough class
 It's not difficult to locate and differentiate these parts in the main code (currently `test.c`) in which the commentary makes the same assumptions.
 
 ---
+
 ### 2. LAYER INTERACTION
-`[TODO]`
+
+### MAIN
+
+The main function is the core of the game and interacts directly with every other layer except utils.
+
+#####Interactions with other layers:
++**Objects:** Arrays of all game objects are declared at the beginning of *main()*. Objects are then added to or removed from these arrays with createX and DeleteX functions. Other than this, direct interaction with objects is limited to the player object (the central object of the game). The player's movement and status are handled directly in the main game loop.
++**Graphic:** The SDL Plotter is declared in the beginning of *main()*. During gameplay, objects are plotted with *plotVisibleObjects()*.
++**User Interface:** The user interface functions are used print menus and game interface elements.
++**Collision:** Collision for all objects other than enemies is handled in the main game loop using *X-X-collision()* functions.
++**Game Logic:** Player movement references movement constants. Game logic functions are used to for spawning enemies, spawning droppables, and managing time and score.
+
+### MODEL
+
+The model group handles the location, status, and behavior of game objects.
+
+#### Objects
+
+While the object layer while referenced by many other layers, it doesn't interact directly with many other layers itself.
+
+#####Interactions with other layers:
++**Graphic:** Each object has a plotX function that uses *plotObject()* from *screen.c* in Graphic.
++**Collision:** Enemy collision is handled in *enemy.c* using *X-X-collision()* functions.
++**Gamelogic:** Enemy and bullet speed is determined from constants in *globals.c*.
+
+### LOGIC
+
+The logic group monitors and restricts other game elements. 
+
+#### Collision Logic
+
+The collision logic layer prevents objects from colliding or moving outside of the screen and therefore interacts exclusively with the object layer.
+
+#####Interactions with other layers:
++**Objects:** The locations of objects are used to determine if two objects will collide after a movement.
+
+#### Game Logic
+
+The game logic layer contains functions to spawn enemies and global variables, so it interacts exclusively with the object layer.
+
+#####Interactions with other layers:
++**Objects:** In the spawn fuctions, player status is used to determine if a droppable should spawn and avoid player-enemy overlap. *createDrop()* and *createEnemy()* are used to spawn new drops and enemies.
+
+### PRESENTATION
+
+The presentation group handles the game window and what is plotted in it.
+
+#### Graphic
+
+The graphic layer contains the SDL_Plotter class and functions to plot objects and text. It interacts with the object and util layers.
+
+#####Interactions with other layers:
++**Object:** *plotObject()* plots a pixel representation an object struct.
++**Utils:** *getSprite()* from *charset.c* is used in *plotText*.
+
+#### User Interface
+
+The user interface contains functions to plot menus, the scoreboard, and the game interface. It interacts with the object and  graphic layers.
+
+#####Interactions with other layers:
++**Object:** Updates bar objects. Information for bars is drawn from the player object.
++**Graphic:** *plotObject()* and *plotText()* are used to create UIs.
+
+#### Utils
+
+The utils layer is referenced only by graphic and does not interact with any other layers itself.
