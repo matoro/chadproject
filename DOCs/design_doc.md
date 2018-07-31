@@ -190,3 +190,58 @@ The user interface contains functions to plot menus, the scoreboard, and the gam
 #### Utils
 
 The utils layer is referenced only by graphic and does not interact with any other layers itself.
+
+---
+
+### 3. IMPLEMENTATION PROCESS. RIGHTS AND WRONGS.
+The implementation process will be discussed regarding the [*initial draft*](https://github.com/matoro/chadproject/blob/testing/DOCs/sigproject_game.html) of the game; considering which goals did we achieve, which ones we rejected in our way up and which ones we failed to implement or set aside for future releases.
+
+###### OBJECTIVES
+
+The primary goal was clear, make a **simple 2D shooter game with slow motion mechanics**. We agreed on this list of end-user objectives for our first release:
+
+> **END USER OBJECTIVE**
+>
+> *Primary objective:*
+> - [x] Survival mode -> Kill al enemies.
+> - [ ] Level/career mode -> Reaching a certain point in the map.
+>
+> *Secondary objective:*
+> - [x] High score:
+>    + Survival mode -> Time record.
+>    + Level/career mode -> Kill enemies and complete level faster.
+>  - [x] Collect health potions/powerups/score items.
+
+As of today, the current release hasn't achieved all the proposed objectives mentioned above. We did focus on the *survival mode* aspect of the game, including secondary goals like keeping the high score on a scoreboard ranked system and the implementation of droppables.
+
+###### COMPONENTS
+
+In relation with the **components** necessary for the actual game, we came up with these lists, one from a ***visible vs invisble perspective*** and the other one from a ***layering perspective***.
+
+| VISIBLE COMP | INVISIBLE COMP |
+|:---:|:---:|
+|Player character|Loading level|
+|Enemies|Bullets' trajectory|
+|Weapons|Key listener|
+|Bullets|Object movement|
+|Timer/Score|Collision logic|
+|Level map|Screen boundaries|
+|Health/Ammo bar|Map design|
+|Droppables|Time/Clock|
+
+| ALWAYS IN PLAY | USUALLY IN PLAY | SOMETIMES IN PLAY |
+|:---:|:---:|:---:|
+|Screen|Time/Clock|Bullets|
+|Key Listener|Player/NPCs|Droppables|
+||Players' health/ammo bar|Bullets' trajectory|
+||Collision logic|Load level|
+||AI||
+||Level map||
+||Object movement||
+
+Perhaps the greatest insight on how we ended up layering and organizing the groups shown in the tables back at chapter one comes from these two tables above.
+```
+On the first table, we can almost see how most of the VISIBLE COMP ended up being part of the MODEL -that is, src/objects- and how the INVISIBLE COMP ended up half as LOGIC (collision logic, AI, movement, game loops, timing etc) and the other half as PRESENTATION (screen/map design and UI).
+```
+
+##### RIGHTS AND WRONGS
