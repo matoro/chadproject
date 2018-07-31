@@ -10,7 +10,7 @@
 ---
 ---
 ### 1. LAYER ORGANIZATION
-The [***project***](https://github.com/matoro/chadproject) , currently in *v0.1-alpha* is divided in seven different layers:
+The [***project***](https://github.com/matoro/chadproject), currently in *v0.1-alpha* is divided in seven different layers:
 + src/collision
 + src/gamelogic
 + src/graphic
@@ -132,9 +132,9 @@ The main function is the core of the game and interacts directly with every othe
 ##### Interactions with other layers:
 + **Objects:** Arrays of all game objects are declared at the beginning of *main()*. Objects are then added to or removed from these arrays with createX and DeleteX functions. Other than this, direct interaction with objects is limited to the player object (the central object of the game). The player's movement and status are handled directly in the main game loop.
 + **Graphic:** The SDL Plotter is declared in the beginning of *main()*. During gameplay, objects are plotted with *plotVisibleObjects()*.
-+ **User Interface:** The user interface functions are used print menus and game interface elements.
++ **User Interface:** The user interface functions are used mainly for printing menus and game interface elements.
 + **Collision:** Collision for all objects other than enemies is handled in the main game loop using *X-X-collision()* functions.
-+ **Game Logic:** Player movement references movement constants. Game logic functions are used to for spawning enemies, spawning droppables, and managing time and score.
++ **Game Logic:** Player movement references movement constants. Game logic functions are used for spawning enemies, spawning droppables, and managing time and score.
 
 ### MODEL
 
@@ -142,7 +142,7 @@ The model group handles the location, status, and behavior of game objects.
 
 #### Objects
 
-While the object layer while referenced by many other layers, it doesn't interact directly with many other layers itself.
+While the object layer is referenced by many others, it doesn't interact directly but with a few layers itself.
 
 ##### Interactions with other layers:
 + **Graphic:** Each object has a plotX function that uses *plotObject()* from *screen.c* in Graphic.
@@ -176,7 +176,7 @@ The presentation group handles the game window and what is plotted in it.
 The graphic layer contains the SDL_Plotter class and functions to plot objects and text. It interacts with the object and util layers.
 
 ##### Interactions with other layers:
-+ **Object:** *plotObject()* plots a pixel representation an object struct.
++ **Object:** *plotObject()* plots a pixel representation of an object struct.
 + **Utils:** *getSprite()* from *charset.c* is used in *plotText*.
 
 #### User Interface
