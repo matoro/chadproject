@@ -216,7 +216,7 @@ As of today, the current release hasn't achieved all the proposed objectives men
 
 ###### COMPONENTS
 
-In relation with the **components** necessary for the actual game, we came up with these lists, one from a ***visible vs invisble perspective*** and the other one from a ***layering perspective***.
+In relation with the **components** necessary for the actual game, we came up with these lists, one from a ***visible vs invisible perspective*** and the other one from a ***layering perspective***.
 
 | VISIBLE COMP | INVISIBLE COMP |
 |:---:|:---:|
@@ -240,8 +240,8 @@ In relation with the **components** necessary for the actual game, we came up wi
 ||Object movement||
 
 Perhaps the greatest insight on how we ended up layering and organizing the groups shown in the tables back at chapter one comes from these two tables above.
-```
-On the first table, we can almost see how most of the VISIBLE COMP ended up being part of the MODEL -that is, src/objects- and how the INVISIBLE COMP ended up half as LOGIC (collision logic, AI, movement, game loops, timing etc) and the other half as PRESENTATION (screen/map design and UI).
-```
+
+On the first table, we can almost see how most of the **VISIBLE COMP** ended up being part of the **MODEL** -that is, src/objects- and how the **INVISIBLE COMP** ended up half as **LOGIC** (collision logic, AI, movement, game loops, timing etc) and the other half as **PRESENTATION** (screen/map design and UI).
+
 
 ##### RIGHTS AND WRONGS
