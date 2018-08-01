@@ -246,10 +246,10 @@ On the first table, we can almost see how most of the **VISIBLE COMP** ended up 
 
 ##### RIGHTS AND WRONGS
 
-It is hard to determine what you're doing wrong or right when it is your very first approach to this type of project. Either way, we think that we kept ourselves pretty much restrained to what we had planned and layed out back at our initial drafts - **and that that's a good thing** -; anyway, there are lots of things that we would **implement different if we were to do it again** (from a programming point of view). Here are but a few of them:
+It is hard to determine what you're doing wrong or right when it is your very first approach to this type of project. Either way, we think that we kept ourselves pretty much restrained to what we had planned and layed out back at our initial drafts -**and that that's a good thing**-; anyway, there are lots of things that we would **implement different if we were to do it again** (from a programming point of view). Here are but a few of them:
 
 + Reject the *global variables* that we used for MVMT_RATES in globals.c. It was a good exercise to get to know them (`extern`), but it is considered bad practice and there is really no point in having them (we could just pass them around).
-+ Have some kind of *dump file of CONSTs and DEFINED variables* that are pretty common. In lots of cases, we found ourselves declaring and defining the same `struct`sover and over again. (For example: *struct textures* for a variety of colors, *struct position* etc)
++ Have some kind of *dump file of CONSTs and DEFINED variables* that are pretty common. In lots of cases, we found ourselves declaring and defining the same `struct`s over and over again. (For example: *struct textures* for a variety of colors, *struct position*s etc)
 + Working with *sprites* from the get-go. It wasn't until we implemented the plotText functions and with it the utils/charset that we discovered just how easy it was to just plot the array representation of a figure instead that with raw plotPixel(x,y) and math functions in order to draw squares, circles or make a simple face etc. (note that both our enemies and player characters, as well as the terrain and everything not-a-text is made using this type of procedure).
 + Let go of the *unnecessary OOP style programming*. At first, when we started modeling our `object`s, we made for them auxiliary functions and setters/getters but there is really no need for them in the imperative-referenced world of C. Most of them are kept unused in the current release.
 + [TODO: Add mortons]
