@@ -19,7 +19,7 @@
 int main(){
 
 	//VARs
-	SDL_Plotter plotter(HEIGHT,WIDTH); 	//CONSTANTS DEFINED IN screen.h
+	SDL_Plotter plotter(HEIGHT,WIDTH, false); 	//CONSTANTS DEFINED IN screen.h. false -> NO SOUND
 
 	struct PlayerObj jugador;		
 	struct BarObj    *bars          = NULL;

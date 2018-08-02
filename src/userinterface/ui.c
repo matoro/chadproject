@@ -126,14 +126,18 @@ char printMenu(SDL_Plotter* plot){
     if(!plot)   return 0;
 
     //VARs
+    unsigned char opt, menu_opt;
     char title[] = "CHADPROJECT v1";
     char opt1[]  = "1. Play the game!";
     char opt2[]  = "2. Top 10 scoreboard.";
     char opt3[]  = "3. Exit.";
     struct texture backgroundClr,stripeClr;
     struct texture titleClr;                            //white default value
-    struct texture fontClr;    
+    struct texture fontClr, fontActiveClr;    
     struct position textPos = {WIDTH/4,HEIGHT/4,0};
+    struct position opt1Pos, opt2Pos, opt3Pos;
+
+    opt = 1;
 
     backgroundClr.red   = 110;
     backgroundClr.green = 50;
@@ -146,6 +150,10 @@ char printMenu(SDL_Plotter* plot){
     fontClr.red   = 1;
     fontClr.green = 1;
     fontClr.blue  = 110;
+
+    fontActiveClr.red   = 1;
+    fontActiveClr.green = 140;
+    fontActiveClr.blue  = 240;
 
     //plot background
     plot->clear();
@@ -167,28 +175,50 @@ char printMenu(SDL_Plotter* plot){
             count = 0;
         }
     }
-    //plot title and menu options
+
+    //plot title and set menu option positions
     plotText(title,textPos,titleClr,5,1,plot);
+    
     textPos.y += 50;
     textPos.x += 50;
-    plotText(opt1,textPos,fontClr,3,0,plot);
+    opt1Pos = textPos;
+    
     textPos.y += 20;
-    plotText(opt2,textPos,fontClr,3,0,plot);
+    opt2Pos = textPos;
+    
     textPos.y += 20;
-    plotText(opt3,textPos,fontClr,3,0,plot);
+    opt3Pos = textPos;    
+    
     //check for key pressed
     bool response = false;
     char letra;
     do{
+        //plot menu options
+        plotText(opt1,opt1Pos,(opt==1) ? fontActiveClr : fontClr,3,0,plot);
+        plotText(opt2,opt2Pos,(opt==2) ? fontActiveClr : fontClr,3,0,plot);
+        plotText(opt3,opt3Pos,(opt==3) ? fontActiveClr : fontClr,3,0,plot);
+
         bool keyhit = plot->kbhit();
         if(keyhit){
             letra = plot->getKey();
-            if(letra == '1' || letra == '2' || letra == '3')    response = true;
+            if(letra == 'W'){
+                opt = (opt==1) ? 3 : opt-1;
+            }else if(letra == 'S'){
+                opt = (opt==3) ? 1 : opt+1;
+            }else{
+                if(letra == '1' || letra == '2' || letra == '3' || letra == '(')    response = true;
+            }
         }
         plot->update();
     }while(!response);
 
-    return letra;
+    if(letra == '('){
+        menu_opt = (opt==1) ? '1' : ((opt==2) ? '2' : '3');
+    }else{
+        menu_opt = letra;
+    }
+
+    return menu_opt;
 }
 
 char* getGunMsg(struct PlayerObj* player){  
