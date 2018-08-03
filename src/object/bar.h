@@ -12,13 +12,15 @@
 //CONSTANTS
 const int MAX_HEALTH = 100;
 const int MAX_AMMO   =  50;
+const int MAX_BTIME  =  25;
 
 /*
 *Enum:bartype 	the player statistic represented by the bar: health or ammo.
 */
 enum bartype{
 	HEALTH,
-	AMMO
+	AMMO,
+    BTIME
 };
 
 /*
@@ -42,11 +44,10 @@ struct BarObj{
  *POSTCONDITION: A new bar object is added to the bar object array.
  *@params struct BarObj ** 		A pointer to the array of bar objects.
  *	  int * number_of_bars		A pointer to the number of bars.
- * 	  struct PlayerObj *player	The player from which the health or ammo value is taken.
  *        enum bartype type		The type of bar being created: Health or Ammo.
  *	  
  */
-void createBar(struct BarObj ** bars, int *number_of_bars, struct PlayerObj* player, enum bartype b_type, struct position pos);
+void createBar(struct BarObj ** bars, int *number_of_bars, enum bartype b_type, struct position pos);
 
 /*	FUNCTION:deleteBar
 PURPOSE: Deletes a bar from the array of bars.

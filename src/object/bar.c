@@ -1,16 +1,18 @@
 //IMPLEMENTATION
 #include "bar.h"
 
-void createBar(struct BarObj **bars, int *number_of_bars, struct PlayerObj* player, enum bartype b_type, struct position pos){
+void createBar(struct BarObj **bars, int *number_of_bars, enum bartype b_type, struct position pos){
 
 	//VARs
 	struct BarObj newBar;
-	enum bartype discriminator = HEALTH;
-	struct size barSize = {100,20}; //CHANGE. DIM RELATIVE TO SCREEN DIM
-	struct texture greenHealth;
-	struct texture brownAmmo;
-
-	greenHealth.red   = 5;
+	struct size barSize         = {WIDTH/6,HEIGHT/30};  //CHANGE. DIM RELATIVE TO SCREEN DIM. 100x20
+	struct size bulletBarSize   = {WIDTH/12,HEIGHT/30}; 
+    struct texture greenHealth, brownAmmo, goldBulletTime;
+	enum bartype hp_type    = HEALTH;    //as discriminators
+    enum bartype ammo_type  = AMMO;
+    enum bartype btime_type = BTIME;
+	
+    greenHealth.red   = 5;
 	greenHealth.green = 255;
 	greenHealth.blue  = 5;
 
@@ -18,17 +20,21 @@ void createBar(struct BarObj **bars, int *number_of_bars, struct PlayerObj* play
 	brownAmmo.green = 145;
 	brownAmmo.blue  = 5;
 
-	newBar.type         = b_type;
-	newBar.max	    = (b_type == discriminator) ? MAX_HEALTH : MAX_AMMO;
-	newBar.currentvalue = player->health;
-	setPosition(&newBar.obj, &pos);
-	setSize(&newBar.obj,barSize);
+    goldBulletTime.red   = 250;
+	goldBulletTime.green = 250;
+	goldBulletTime.blue  = 50;
+
+	newBar.type = b_type;
+	newBar.max	= (b_type == hp_type) ? MAX_HEALTH : ((b_type == ammo_type) ? MAX_AMMO : MAX_BTIME);
+	
+    setPosition(&newBar.obj, &pos);
+	setSize(&newBar.obj,(b_type == btime_type) ? bulletBarSize: barSize);
 
 	int totalPixel = barSize.alto * barSize.ancho;
 	newBar.obj.textureObj = (struct texture*)malloc(sizeof(struct texture)*totalPixel);
 
 	//APPLY COLOR ACCORDINGLY
-	for(int i = 0;i<totalPixel;i++)	setTexture(&newBar.obj,(b_type == discriminator) ? greenHealth : brownAmmo,i);
+	for(int i = 0;i<totalPixel;i++)	setTexture(&newBar.obj,(b_type == hp_type) ? greenHealth : ((b_type == ammo_type ) ? brownAmmo : goldBulletTime), i);
 
 	//Allocate memory for new bar
 	if(!(*bars)){
@@ -66,14 +72,13 @@ void setCurrentValue(struct BarObj* currentbar,int newvalue){
 void plotBar(struct BarObj* bar,SDL_Plotter* plot){
 
 	//VARs
-	struct texture redHealth;
-	struct texture blackAmmo;
-    struct texture greenHealth;
-	struct texture brownAmmo;
-	enum bartype discriminator = HEALTH;
-	enum bartype type = bar->type;
+	struct texture redHealth, greenHealth, blackAmmo, brownAmmo, bTimeReady, bTimeCd, bTime;
+    enum bartype type = bar->type;
+	enum bartype hp_type    = HEALTH;    //as discriminators
+	enum bartype ammo_type  = AMMO;
+    enum bartype btime_type = BTIME;
 
-	int pixelsToDraw;
+    int pixelsToDraw;
 	int totalPixel;
 	double deltaChange;
 
@@ -93,20 +98,35 @@ void plotBar(struct BarObj* bar,SDL_Plotter* plot){
 	blackAmmo.green = 5;
 	blackAmmo.blue  = 5;
 
+    bTimeReady.red   = 250;
+	bTimeReady.green = 250;
+	bTimeReady.blue  = 50;
+
+    bTimeCd.red   = 70;
+	bTimeCd.green = 10;
+	bTimeCd.blue  = 70;
+
+    bTime.red   = 200;
+	bTime.green = 10;
+	bTime.blue  = 10;
+
 	//UPDATE TEXTURE STRUCTS [] BEFORE PLOTTING AGAING.
 
 	deltaChange  = (double)(bar->currentvalue)/(bar->max);	
 	totalPixel   = (bar->obj.sizeObj.alto)*(bar->obj.sizeObj.ancho); //dots or ->?
 	pixelsToDraw = round(deltaChange*totalPixel);
 
-    for(int i=0;i<totalPixel;i++){
-        if(i>=pixelsToDraw){
-            setTexture(&(bar->obj),(type == discriminator) ? redHealth   : blackAmmo,i);
-        }else{
-            setTexture(&(bar->obj),(type == discriminator) ? greenHealth : brownAmmo,i);
+    if((type == btime_type)&&(deltaChange == 1)){
+        for(int i=0;i<totalPixel;i++)   setTexture(&(bar->obj), bTimeReady, i);
+    }else{
+        for(int i=0;i<totalPixel;i++){
+            if(i>=pixelsToDraw){
+                setTexture(&(bar->obj),(type == hp_type) ? redHealth   : ((type == ammo_type ) ? blackAmmo : bTimeCd), i);
+            }else{
+                setTexture(&(bar->obj),(type == hp_type) ? greenHealth : ((type == ammo_type ) ? brownAmmo : bTime), i);
+            }
+        
         }
-    
     }
-
     plotObject(&(bar->obj),plot);	//If this doesn't work avoid using bar pointer.
 }

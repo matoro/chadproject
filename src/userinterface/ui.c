@@ -11,20 +11,24 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
 
     //VARs
     int UI_height, UI_width;
-    struct texture uiColor,fontColor, terrainColor, sandColor, waterColor, scoreColor, bTimeClr, bTimeCooldownClr, bTimeReadyClr;
-    struct position scorePos;
+    struct texture uiColor,fontColor, terrainColor, sandColor, waterColor, scoreColor;
+    struct position scorePos, bTimeStrPos;
     char* gun_type  = getGunMsg(player);
     char* ammo_type = getAmmoMsg(player);
-    char score_str[12] = "0";
+    char score_str[12]  = "0";
+    char btime_str[]    = "bullet time";
     int fontSize  = 3;
     int thinSize  = 0;
     int scoreSize = 5;
- 
+    int bTime_value;
+    static int prev_score = -1; 
+
     UI_height = 9*HEIGHT/10;   
     UI_width  = WIDTH;
     
     if(score>0) sprintf(score_str,"%d",score);    
-    scorePos = {13*WIDTH/15,HEIGHT/30,0};
+    scorePos    = {13*WIDTH/15,HEIGHT/30,0};
+    bTimeStrPos = {UI_width/60,UI_height/40,0};
 
     //TERRAIN DESIGN AUX VARs
     int waterLimit      = 20;
@@ -54,33 +58,45 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
     waterColor.green  = 175;
     waterColor.blue   = 255;
 
-    bTimeReadyClr.red    = 250;
-    bTimeReadyClr.green  = 250;
-    bTimeReadyClr.blue   = 50;
-
-    bTimeClr.red    = 200;
-    bTimeClr.green  = 10;
-    bTimeClr.blue   = 10;
-
-    bTimeCooldownClr.red    = 70;
-    bTimeCooldownClr.green  = 10;
-    bTimeCooldownClr.blue   = 70;
+    scoreColor.red    = 70;
+    scoreColor.green  = 10;
+    scoreColor.blue   = 70;
 
     if(*bars==NULL||*numBars==0){
         //createBar holds the barSize at {100,20}px
         struct position healthBarPos    = {UI_width/12,UI_height+60,0};
         struct position ammoBarPos      = {3*UI_width/4,UI_height+60,0};
+        struct position bTimePos        = {UI_width/50,UI_height/10,269};  
         enum bartype health = HEALTH;
         enum bartype ammo   = AMMO;
-        
-        createBar(bars, numBars, player, health, healthBarPos);
-        createBar(bars, numBars, player, ammo, ammoBarPos);
+        enum bartype btime  = BTIME;        
 
+        createBar(bars, numBars, health, healthBarPos);
+        createBar(bars, numBars, ammo, ammoBarPos);
+        createBar(bars, numBars, btime, bTimePos);
+    }
+
+    if((score-prev_score) == 1){
+        if(BT_STATUS == 0){
+            bTime_value = MAX_BTIME;
+        }else{    
+            //BULLET TIME LAST 5 SECONDS        -> 5 each clock/score tick.
+            if(BT_STATUS == 1){
+                bTime_value = (((*bars)+2)->currentvalue)-5;
+            }
+            //BULLET TIME CD LAST 25 SECONDS    -> 1 each clock/score tick.
+            if(BT_STATUS == 2){
+                bTime_value = (((*bars)+2)->currentvalue)+1;
+            }
+        }
+        //update bar
+        setCurrentValue(((*bars)+2),bTime_value);
     }
     //update
     setCurrentValue((*bars),player->health);
     setCurrentValue(((*bars)+1),player->ammo);
-    
+
+
     int i,j;
     //plot terrain
     for(i=0; i<UI_height;i++){
@@ -110,13 +126,17 @@ void printUserInterface(struct PlayerObj* player, struct BarObj** bars, int* num
         uiColor.blue++;
     }
     //plot text
-    scoreColor = (BT_STATUS == 1) ? bTimeClr : ((BT_STATUS == 2) ? bTimeCooldownClr : bTimeReadyClr);
     struct position textGunPos  = {4*UI_width/12,UI_height+14,0};
     struct position textAmmoPos = {4*UI_width/12,UI_height+34,0};
     plotText(gun_type,textGunPos,fontColor,fontSize,thinSize,plot);
     plotText(ammo_type,textAmmoPos,fontColor,fontSize,thinSize,plot);
     plotText(score_str,scorePos,scoreColor,scoreSize,thinSize,plot);
+        //bullet time display
+    plotText(btime_str,bTimeStrPos,scoreColor,2,0,plot);
 
+
+    //save static
+    prev_score = score;
     return;
 }
 
