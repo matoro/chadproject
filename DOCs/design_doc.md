@@ -252,7 +252,8 @@ It is hard to determine what you're doing wrong or right when it is your very fi
 + Have some kind of *dump file of CONSTs and DEFINED variables* that are pretty common. In lots of cases, we found ourselves declaring and defining the same `struct`s over and over again. (For example: *struct textures* for a variety of colors, *struct position*s etc)
 + Working with *sprites* from the get-go. It wasn't until we implemented the plotText functions and with it the utils/charset that we discovered just how easy it was to just plot the array representation of a figure instead that with raw plotPixel(x,y) and math functions in order to draw squares, circles or make a simple face etc. (note that both our enemies and player characters, as well as the terrain and everything not-a-text is made using this type of procedure).
 + Let go of the *unnecessary OOP style programming*. At first, when we started modeling our `object`s, we made for them auxiliary functions and setters/getters but there is really no need for them in the imperative-referenced world of C. Most of them are kept unused in the current release.
-+ [TODO: Add mortons]
++ Waiting to implement *health and ammo bars* as part of the *UI* layer. When initially creating objects, we decided to include bars alongside other objects such as the player character, enemies, and bullets. Bars are currently spit between the object layer and the UI layer. They are created and updated in a UI function, but are objects. In hindsight, it makes more sense to handle bars soley in the UI layer. 
++ Add more *comments* so that our code can be easily understood when we revisit it or it is read by someone else.
 
 ---
 
@@ -263,4 +264,6 @@ There are loads of things we can improve upon the current state of our game. The
 2. Improve *charset resolution* for better text readability.
 3. Build the game in *different window-sizes* (chosen by the user). Most of the work on this part should be already done, as we tried to keep everything % relative to our WIDTH and HEIGHT screen dimensions but we are pretty sure as well that we left hard-coded some values here and there that will break stuff along the way.
 4. Improve the *game AI* so that we have different types of enemies (more intelligent and deadly as the game goes on, without just incrementing their raw damage).
-5. [TODO: Add mortons]
+5. Switch to a *sprite system* for object textures. Perhaps even implement *simple animations* for walking, shooting, ect.
+6. Add more *visual variation* in terrain and enemies.
+7. Quantify *ammo* as a number instead of as a bar. Which is an atypical and somewhat confusing representation.
