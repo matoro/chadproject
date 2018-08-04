@@ -27,7 +27,7 @@ All these seven layers could be classified in major groups if we were to focus o
 ||userinterface|gamelogic|
 ||utils|main|
 
-This approach will de discussed later in the layer interaction chapter.
+This approach will be discussed later in the layer interaction chapter.
 
 ### src/objects:
 Under this directory we can find all the modelling our project uses. It presents structs and related object-functions to create what could be regarded as classes by those familiar with OOP style programming.
@@ -49,7 +49,7 @@ Table of contents:
 |ammo.h||Enum containing different types of ammunition and their multiplier damage value.|
 
 ### src/graphic:
-In this folder we can find all the neccessary functions that help us plot both text and object models into the screen.
+In this folder we can find all the necessary functions that help us plot both text and object models into the screen.
 
 *Function declarations* can be found inside *.h files meanwhile their implementations fall under their *.c counterparts.
 
@@ -165,7 +165,7 @@ The collision logic layer prevents objects from colliding or moving outside of t
 The game logic layer contains functions to spawn enemies and global variables, so it interacts exclusively with the object layer.
 
 ##### Interactions with other layers:
-+ **Objects:** In the spawn fuctions, player status is used to determine if a droppable should spawn and avoid player-enemy overlap. *createDrop()* and *createEnemy()* are used to spawn new drops and enemies.
++ **Objects:** In the spawn functions, player status is used to determine if a droppable should spawn and avoid player-enemy overlap. *createDrop()* and *createEnemy()* are used to spawn new drops and enemies.
 
 ### PRESENTATION
 
@@ -252,7 +252,7 @@ It is hard to determine what you're doing wrong or right when it is your very fi
 + Have some kind of *dump file of CONSTs and DEFINED variables* that are pretty common. In lots of cases, we found ourselves declaring and defining the same `struct`s over and over again. (For example: *struct textures* for a variety of colors, *struct position*s etc)
 + Working with *sprites* from the get-go. It wasn't until we implemented the plotText functions and with it the utils/charset that we discovered just how easy it was to just plot the array representation of a figure instead that with raw plotPixel(x,y) and math functions in order to draw squares, circles or make a simple face etc. (note that both our enemies and player characters, as well as the terrain and everything not-a-text is made using this type of procedure).
 + Let go of the *unnecessary OOP style programming*. At first, when we started modeling our `object`s, we made for them auxiliary functions and setters/getters but there is really no need for them in the imperative-referenced world of C. Most of them are kept unused in the current release.
-+ Waiting to implement *health and ammo bars* as part of the *UI* layer. When initially creating objects, we decided to include bars alongside other objects such as the player character, enemies, and bullets. Bars are currently split between the object layer and the UI layer. They are created and updated in a UI function, but are objects. In hindsight, it makes more sense to handle bars soley in the UI layer. 
++ Waiting to implement *health and ammo bars* as part of the *UI* layer. When initially creating objects, we decided to include bars alongside other objects such as the player character, enemies, and bullets. Bars are currently split between the object layer and the UI layer. They are created and updated in a UI function, but are objects. In hindsight, it makes more sense to handle bars solely in the UI layer. 
 + Add more *comments* so that our code can be easily understood when we revisit it or it is read by someone else.
 
 ---
@@ -262,7 +262,7 @@ It is hard to determine what you're doing wrong or right when it is your very fi
 There are loads of things we can improve upon the current state of our game. There is no end to it, you could always expand it some more. Anyhow, we consider that **a final product may include these features**:
 1. Finish our initial end-user objectives... that is, implement the *level/map* part of the game.
 2. Improve *charset resolution* for better text readability.
-3. Build the game in *different window-sizes* (chosen by the user). Most of the work on this part should be already done, as we tried to keep everything % relative to our WIDTH and HEIGHT screen dimensions but we are pretty sure as well that we left hard-coded some values here and there that will break stuff along the way.
+3. Build the game in *different window-sizes* (chosen by the user). Most of the work on this part should already be done, as we tried to keep everything % relative to our WIDTH and HEIGHT screen dimensions but we are pretty sure as well that we left hard-coded some values here and there that will break stuff along the way.
 4. Improve the *game AI* so that we have different types of enemies (more intelligent and deadly as the game goes on, without just incrementing their raw damage).
 5. Switch to a *sprite system* for object textures. Perhaps even implement *simple animations* for walking, shooting, ect.
 6. Add more *visual variation* in terrain and enemies.
