@@ -8,7 +8,7 @@
 
 //Windows Library
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
+//#include <SDL2/SDL_mixer.h>
 
 #include <string.h>
 #include <iostream>
@@ -31,7 +31,7 @@ const int MAX_THREAD = 100;
 #define MUS_PATH "scratch.wav"
 
 //sample threaded sound function
-static int Sound(void *data);
+//static int Sound(void *data);
 
 struct param{
 	bool play;
@@ -96,8 +96,8 @@ public:
         memset(pixels, WHITE, col * row * sizeof(Uint32));
 
         //SOUND Thread Pool
-        Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 );
-        soundCount = 0;
+        //Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 );
+        //soundCount = 0;
 
       }
 
@@ -205,6 +205,7 @@ public:
     	return col;
     }
 
+    /*
     void initSound(string sound){
     	//int  *threadReturnValue;
 
@@ -219,11 +220,13 @@ public:
 				//SDL_DetachThread(p->threadID);
 		}
     }
+    */
 
     void setQuit(bool flag){
     	this->quit = flag;
     }
 
+    /*
     void playSound(string sound){
     	if(soundMap[sound].running){
     		SDL_CondSignal(soundMap[sound].cond);
@@ -234,6 +237,7 @@ public:
     	soundMap[sound].running = false;
     	SDL_CondSignal(soundMap[sound].cond);
     }
+    */
 
     void Sleep(int ms){
     	SDL_Delay(ms);
@@ -244,6 +248,7 @@ public:
 
 //Threaded Function
 
+/*
 static int Sound(void *data){
 	param *p = (param*)data;
 	p->running = true;
@@ -263,7 +268,7 @@ static int Sound(void *data){
 	p->running = false;
 	return 0;
 }
-
+*/
 
 
 #endif /* SDL_PLOTTER_H_ */
