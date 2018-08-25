@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -g -lSDL2 -lSDL2_mixer -std=c++11
+CXXFLAGS = -lSDL2 -lSDL2_mixer -std=c++11
 
 SONAME 	= game
 SRC	= src/test.c		                \
@@ -24,8 +24,9 @@ OBJS	= $(SRC:.c=.o)
 
 #compilation:
 $(SONAME): $(OBJS) $(SRC)
+	touch scoreboard.bin
 	$(CXX) $(OBJS) $(CXXFLAGS) -o $(SONAME)
-
+	
 .PHONY: all clean
 
 clean:
